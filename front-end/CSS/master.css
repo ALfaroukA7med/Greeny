@@ -3,32 +3,45 @@
   --blackColor: black;
   --greyColor: rgba(0, 0, 0, 0.5);
   --logoColor: #276842;
-  --logInHover: #86ac39;
+  --logInHover: #f3a216;
   --signUpHover: rgb(72, 129, 96);
-  --greyHover: #eee;
+  --greenHover:#f1f5f1;
+  --yellowHover:#f3a216;
   --navBottomColor: rgba(0, 0, 0, 0.194);
   --fontSize: 20px;
   --logoSize: 50px;
-  --cartSize: 65px;
+  --cartSize: 55px;
   --hamburgerSize: 25px;
 }
 * {
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
+body {
+  margin: 0;
+  height: 1000vh;
+  padding-top: 80px; /* Keeps your page content from hiding under the nav */
+}
 a {
   text-decoration: none;
   color: black;
 }
+/* ================================================= Nav ================================================= */
 nav {
   width: 100vw;
+  position: fixed;
+  top: 0;
   display: grid;
   grid-template-columns: auto 1fr auto;
   justify-content: space-between;
   align-items: center;
   padding: 5px 20px;
+  background-color: var(--whiteColor);
   border-bottom: 1px solid var(--navBottomColor);
 }
+
+/* ================================================= Left-Nav ================================================= */
+
 .left-nav {
   display: flex;
   flex-flow: row wrap;
@@ -39,7 +52,11 @@ nav {
 
 img[alt="logo"] {
   width: var(--logoSize);
-  height: var(--logoSize);
+  height: var(--logoSize);  
+  transition-duration: .2s;
+}
+img[alt="logo"]:hover{
+  transform: scale(1.05) ;
 }
 .greeny {
   margin-left: 5px;
@@ -48,6 +65,9 @@ img[alt="logo"] {
   text-transform: capitalize;
   color: var(--logoColor);
 }
+
+/* ================================================= Middle-Nav ================================================= */
+
 .middle-nav {
   display: none;
   flex-basis: 50%;
@@ -65,8 +85,12 @@ img[alt="logo"] {
   border: 1px solid var(--navBottomColor);
   border-radius: 10px;
   border-color: transparent;
-  background-color: var(--greyHover);
+  color: var(--blackColor);
+  background-color: var(--greenHover);
 }
+
+/* ================================================= right-Nav ================================================= */
+
 .right-nav {
   display: flex;
   align-items: center;
@@ -75,7 +99,7 @@ img[alt="logo"] {
 .logIn,
 .signUp {
   display: none;
-  margin-left: 20px;
+  margin: 0 10px;
   padding: 10px 10px;
   border-radius: 10px;
   text-transform: capitalize;
@@ -94,18 +118,20 @@ img[alt="logo"] {
   background-color: var(--signUpHover) !important;
 }
 .logIn:hover {
-  color: var(--whiteColor) !important;
+  color: var(--blackColor) !important;
   background-color: var(--logInHover) !important;
 }
 img[alt="Cart"] {
   width: var(--cartSize);
   height: var(--cartSize);
+  transition-duration: .3s;
   transform: rotateY(180deg);
   padding: 5px;
 }
 img[alt="Cart"]:hover {
-  background-color: var(--greyHover);
+  background-color: var(--yellowHover);
   border-radius: 15px;
+  transform:  scale(1.05) ;
 }
 .hamburger {
   display: flex;
@@ -115,13 +141,14 @@ img[alt="Cart"]:hover {
   height: calc(var(--hamburgerSize) * 0.6);
   margin: 20px;
   cursor: pointer;
+
 }
 .hamburger div {
   flex-basis: 100%;
   height: 3px;
   border-radius: 50px;
   background-color: var(--blackColor);
-  transition: all 0.3s ease-in-out; /* Add this line */
+  transition: all 0.3s ease-in-out;
 }
 
 .hamburger.is-active div:nth-child(1) {
@@ -137,9 +164,17 @@ img[alt="Cart"]:hover {
   transform: translateY(-6px) rotate(-45deg);
   background-color: red;
 }
+
+/* ================================================= Down-Nav ================================================= */
+
 .menu {
+  position: fixed;
+  width: 100%;
+  top: 80px;
   display: none;
   flex-flow: row wrap;
+  border: 1px solid var(--navBottomColor);
+  background-color: var(--whiteColor);
 }
 .menu a {
   flex-basis: 100%;
@@ -162,18 +197,26 @@ img[alt="Cart"]:hover {
   border: 1px solid var(--navBottomColor);
   border-radius: 10px;
   border-color: transparent;
-  background-color: #eeeeee;
+  color: var(--blackColor);
+  background-color: var(--greenHover);
 }
 .show {
   display: flex;
   justify-content: space-between;
 }
-/* @media (max-width: 767px) {
-} */
+
+/* ================================================= Media Queries ================================================= */
+
+/*
+  @media (max-width: 767px) {
+  }
+*/
+
 @media (min-width: 640px) {
   a[href="log.html"] {
     display: none !important;
   }
+
   .logIn,
   .signUp {
     display: block;
@@ -188,14 +231,13 @@ img[alt="Cart"]:hover {
   .show {
     display: none;
   }
+
   div.hamburger {
     display: none;
   }
 }
 
 @media (min-width: 992px) {
-  :root {
-  }
   .middle-nav a {
     padding: 10px 20px;
   }
