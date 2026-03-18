@@ -4,6 +4,14 @@
     <meta charset="UTF-8" />
     <title>Greeny</title>
     <link rel="stylesheet" href="/CSS/master.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
       :root {
         scroll-behavior: smooth;
@@ -20,21 +28,21 @@
   <body>
     <nav>
       <a class="left-nav" href="index.html">
-        <img src="../media/photos/cart.png" alt="logo" />
+        <img src="../media/photos/cartbaw.png" alt="logo" />
         <p class="greeny">greeny</p>
       </a>
       <div class="middle-nav">
         <a href="index.html" class="active-link">home</a>
-        <a href="index.html">marketplace</a>
-        <a href="index.html">refrence</a>
-        <a href="index.html">community</a>
+        <a href="market.html">marketplace</a>
+        <a href="refrence.html">refrence</a>
+        <a href="community.html">community</a>
       </div>
       <div class="right-nav">
         <a href="cart.html" title="Go to Cart">
-          <img src="../media/photos/cartbaw.png" alt="Cart" />
+          <img src="../media/photos/cart.png" alt="Cart" />
         </a>
-        <a class="logIn">log in</a>
-        <a class="signUp">Join us</a>
+        <a class="logIn" href="log.html">log in</a>
+        <a class="signUp" href="log.html">sign up</a>
         <div class="hamburger" title="Menu ">
           <div></div>
           <div></div>
@@ -50,6 +58,50 @@
       <a href="log.html" class="logIn">log in</a>
       <a href="log.html" class="signUp">join us</a>
     </div>
+
+    <!-- =============================================== -->
+
+    <section class="hero-section">
+      <div class="overlay"></div>
+
+      <div class="hero-content">
+        <h1 class="main-title">
+          Where Farms <br />
+          <span class="highlight">Meet Community</span>
+        </h1>
+
+        <p class="description">
+          Buy directly from our marketplace, discover gardening tips, and
+          connect with a community that loves growing things.
+        </p>
+
+        <div class="hero-btns">
+          <button class="btn btn-primary">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <a href="market.html"> Shop the Market </a>
+          </button>
+          <button class="btn btn-secondary">
+            <i class="fa-solid fa-user-group"></i>
+            <a href="community.html"> Join Community </a>
+          </button>
+        </div>
+
+        <div class="stats-container">
+          <div class="stat-box">
+            <h3 class="stat-number">120+</h3>
+            <p class="stat-label">Local Farmers</p>
+          </div>
+          <div class="stat-box">
+            <h3 class="stat-number">1,200+</h3>
+            <p class="stat-label">Products</p>
+          </div>
+          <div class="stat-box">
+            <h3 class="stat-number">8,500+</h3>
+            <p class="stat-label">Community Members</p>
+          </div>
+        </div>
+      </div>
+    </section>
     <script src="/JavaScript/script.js"></script>
   </body>
 </html>
