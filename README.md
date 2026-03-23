@@ -4,7 +4,7 @@
 
 ---
 
-## ✨ Key Features
+## 🎉 Key Features
 
 ### 🛒 1. Agricultural Marketplace
 [cite_start]A multi-vendor e-commerce space connecting buyers and sellers of agricultural goods[cite: 16].
