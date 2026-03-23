@@ -120,17 +120,42 @@ img[alt="logo"] {
 .signUp:hover {
   background-color: var(--lighterDarkGreen) !important;
 }
+.cart-icon-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 10px;
+}
 
+.cart-badge {
+  position: absolute;
+  top: -2px;
+  left: -5px;
+  background-color: var(--yellow); 
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--whiteColor);
+  transition: transform 0.2s ease;
+  z-index: 10;
+}
+
+.cart-badge.bump {
+  transform: scale(1.3);
+}
 img[alt="Cart"] {
   width: var(--cartSize);
   height: var(--cartSize);
   transform: rotateY(180deg);
   padding: 5px;
 }
-img[alt="Cart"]:hover {
-  border-radius: 15px;
-  transform: rotateY(180deg) scale(1.05);
-}
+
 .hamburger {
   display: flex;
   flex-flow: row wrap;
@@ -179,6 +204,8 @@ img[alt="Cart"]:hover {
   margin: 10px 20px;
   padding: 8px 12px;
   text-transform: capitalize;
+  border: 1px solid transparent;
+  border-radius: 10px;
   color: var(--greyColor);
 }
 .menu .logIn,
@@ -193,9 +220,6 @@ img[alt="Cart"]:hover {
   font-weight: bold;
 }
 .menu a:hover {
-  border: 1px solid var(--navBorderColor);
-  border-radius: 10px;
-  border-color: transparent;
   color: var(--blackColor);
   background-color: var(--lightGreen);
 }
@@ -266,7 +290,7 @@ img[alt="Cart"]:hover {
   display: flex;
   align-items: center;
   position: relative;
-  background-image: url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop");
+  background-image: url(/media/photos/hero-farm.jpg);
   background-size: cover;
   background-position: center;
   padding: 0 5%;
@@ -400,7 +424,6 @@ img[alt="Cart"]:hover {
 }
 /* ==================Products-Section================ */
 
-/* Base Resets & Variables */
 :root {
   --primary-green: #237a4e;
   --dark-green: #113f28;
@@ -411,7 +434,7 @@ img[alt="Cart"]:hover {
   --border-radius: 16px;
 }
 .container {
-  padding: 40px ;
+  padding: 5%;
 }
 
 .section-header {
@@ -437,7 +460,9 @@ img[alt="Cart"]:hover {
   color: var(--dark-green);
   font-weight: 700;
 }
-
+h2.title {
+  margin: 0;
+}
 .view-all {
   color: var(--primary-green);
   text-decoration: none;
@@ -457,14 +482,12 @@ img[alt="Cart"]:hover {
   text-decoration: underline;
 }
 
-/* Grid Layout */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
 }
 
-/* Product Card Styling */
 .product-card {
   background: var(--white);
   border-radius: var(--border-radius);
@@ -482,7 +505,6 @@ img[alt="Cart"]:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* Image & Badges */
 .card-image {
   position: relative;
   height: 220px;
@@ -494,7 +516,9 @@ img[alt="Cart"]:hover {
   height: 100%;
   object-fit: cover;
 }
-
+.product-card:hover img {
+  transform: scale(1.05);
+}
 .badge {
   position: absolute;
   top: 16px;
@@ -511,7 +535,6 @@ img[alt="Cart"]:hover {
   right: 16px;
 }
 
-/* Badge Colors */
 .badge-vegetables {
   background: #dcfce7;
   color: #166534;
@@ -529,7 +552,6 @@ img[alt="Cart"]:hover {
   color: var(--white);
 }
 
-/* Card Content */
 .card-content {
   padding: 24px;
   display: flex;
@@ -577,7 +599,6 @@ img[alt="Cart"]:hover {
   gap: 6px;
 }
 
-/* Card Footer (Price and Button) */
 .card-footer {
   margin-top: auto;
   display: flex;
@@ -614,4 +635,184 @@ img[alt="Cart"]:hover {
 
 .add-btn:hover {
   background-color: var(--dark-green);
+}
+/* ======================= community-Section ======================== */
+.community-section .container {
+  padding-bottom: 20px;
+}
+.community-section {
+  background-color: var(--bg-color);
+  padding-bottom: 5%;
+}
+
+.comm-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+}
+
+.comm-subtitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-green);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.comm-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  color: var(--dark-green);
+  font-weight: 700;
+  margin: 0;
+}
+
+.comm-view-all {
+  color: var(--primary-green);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.comm-view-all i {
+  font-size: 0.8rem;
+}
+
+.comm-view-all:hover {
+  text-decoration: underline;
+}
+
+.comm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+}
+
+.comm-card {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.comm-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.comm-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.comm-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.comm-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comm-name-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.comm-user-name {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 1.05rem;
+}
+
+.comm-badge {
+  background: #e6f4ea;
+  color: #166534;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.comm-post-date {
+  font-size: 0.85rem;
+  color: var(--text-gray);
+}
+
+.comm-card-image {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+}
+
+.comm-post-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.comm-card-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.comm-interactions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.comm-action {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.comm-action:hover {
+  color: var(--primary-green);
+}
+
+.comm-post-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .comm-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .comm-grid {
+    grid-template-columns: 1fr;
+  }
 }
