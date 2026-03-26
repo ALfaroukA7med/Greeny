@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Greeny Marketplace</title>
     <link rel="stylesheet" href="/CSS/master.css" />
+    <link rel="stylesheet" href="/CSS/log.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
       rel="stylesheet"
@@ -37,7 +38,8 @@
           <span class="cart-badge">0</span>
         </a>
         <a class="logIn" href="log.html">log in</a>
-        <a class="signUp" href="log.html">sign up</a>
+        <a class="signUp" href="log.html?tab=register">sign up</a>
+
         <div class="hamburger" title="Menu ">
           <div></div>
           <div></div>
@@ -53,6 +55,65 @@
       <a href="log.html" class="logIn">log in</a>
       <a href="log.html" class="signUp">join us</a>
     </div>
+
+    <div class="auth-layout">
+      <div class="auth-banner">
+        <div class="auth-overlay"></div>
+        <div class="auth-quote-box">
+          <h2 class="auth-quote">
+            "Growing food is like printing your own money."
+          </h2>
+          <p class="auth-quote-sub">
+            Join our community of farmers and gardening enthusiasts
+          </p>
+        </div>
+      </div>
+
+      <div class="auth-content">
+        <div class="auth-form-container">
+          <div class="auth-header">
+            <h1>Welcome back</h1>
+            <p>Sign in to continue to Greeny</p>
+          </div>
+
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-signin">Sign In</button>
+            <button class="auth-tab" id="tab-register">Register</button>
+          </div>
+
+          <form id="loginForm" class="auth-form">
+            <div class="input-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="password">Password</label>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="••••••••"
+                  required
+                />
+                <i
+                  class="fa-regular fa-eye toggle-password"
+                  id="togglePassword"
+                ></i>
+              </div>
+            </div>
+            
+            <button type="submit" class="auth-submit-btn">Sign In</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script src="/JavaScript/log.js"></script>
     <script src="/JavaScript/script.js"></script>
   </body>

@@ -39,3 +39,12 @@ if (scrollTopBtn) {
     window.scrollTo({ top: 0 });
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const tabRegister = document.getElementById("tab-register");
+  const urlParams = new URLSearchParams(window.location.search);
+  const requestedTab = urlParams.get("tab");
+  if (requestedTab === "register") {
+    tabRegister.click();
+  }
+});
