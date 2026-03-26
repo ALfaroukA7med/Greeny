@@ -18,9 +18,12 @@
   font-family: "Inter", sans-serif;
   transition-duration: 0.3s;
 }
+*::selection {
+  background-color: var(--yellow);
+  color: var(--blackColor);
+}
 body {
   margin: 0;
-  height: 1000vh;
 }
 a {
   text-decoration: none;
@@ -131,7 +134,7 @@ img[alt="logo"] {
   position: absolute;
   top: -2px;
   left: -5px;
-  background-color: var(--yellow); 
+  background-color: var(--yellow);
   color: white;
   font-size: 0.75rem;
   font-weight: 700;
@@ -724,12 +727,14 @@ h2.title {
   height: 48px;
   border-radius: 50%;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .comm-user-info {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  cursor: pointer;
 }
 
 .comm-name-badge {
@@ -814,5 +819,173 @@ h2.title {
   }
   .comm-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ======================= CTA-Section ======================== */
+.cta-section {
+  background-color: var(--lighterDarkGreen, #347d52);
+  padding: 100px 5%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cta-content {
+  max-width: 600px;
+}
+
+.cta-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  color: var(--whiteColor, white);
+  margin: 0 0 16px 0;
+  font-weight: 700;
+}
+
+.cta-description {
+  font-size: 1.1rem;
+  color: var(--white);
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.cta-btns {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.btn-cta-yellow {
+  background-color: var(--blackColor);
+  color: var(--white);
+}
+
+.btn-cta-yellow:hover {
+  background-color: var(--yellow);
+}
+
+.btn-cta-dark {
+  background-color: #000000;
+  color: var(--whiteColor, white);
+}
+
+.btn-cta-dark:hover {
+  background-color: var(--whiteColor);
+  color: black;
+}
+
+/* ======================= Footer ======================== */
+.site-footer {
+  background-color: #0f1a14;
+  padding: 60px 5% 20px 5%;
+  color: #a0aec0;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.footer-brand {
+  max-width: 350px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+
+.footer-logo img {
+  width: 30px;
+  height: 30px;
+}
+
+.greeny-text {
+  font-family: "Playfair Display", serif;
+  margin-left: 8px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--whiteColor, white);
+  text-transform: capitalize;
+}
+
+.footer-description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .cta-title {
+    font-size: 2.2rem;
+  }
+
+  .cta-btns {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-btns .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ======================= Scroll to Top ======================== */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 10px;
+  z-index: 99;
+  background-color: var(--lighterDarkGreen, #347d52);
+  color: var(--whiteColor, white);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.scroll-top-btn.show-btn {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+  background-color: var(--yellow, #f3a216);
+  color: var(--blackColor, black);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 992px) {
+  .scroll-top-btn {
+    display: flex;
   }
 }

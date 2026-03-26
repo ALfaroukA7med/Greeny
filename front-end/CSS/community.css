@@ -1,0 +1,68 @@
+/* ======================= Community Page Header ======================== */
+.container {
+  padding: 0;
+}
+.comm-page-header {
+  background-color: #edf2ed;
+  padding: 50px 5%;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.comm-page-badge {
+  color: var(--primary-green, #237a4e);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.comm-page-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3.5rem;
+  color: var(--dark-green, #113f28);
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+.comm-page-desc {
+  color: #64748b;
+  font-size: 1.15rem;
+  margin: 0;
+}
+.comm-grid {
+  padding: 32px 0;
+  background-color: #f9f8f6;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 550px) {
+  .comm-grid {
+    padding: 32px 5%;
+  }
+}
+@media (min-width: 640px) {
+  .comm-grid {
+    padding: 32px 10%;
+  }
+}
+@media (min-width: 768px) {
+  .comm-page-title {
+    font-size: 2.5rem;
+  }
+  .comm-grid {
+    padding: 32px 15%;
+  }
+}
+@media (min-width: 890px) {
+  .comm-grid {
+    padding: 32px 20%;
+  }
+}
+
+@media (min-width: 992px) {
+  .comm-grid {
+    padding: 32px 25%;
+  }
+}
