@@ -1,9 +1,10 @@
-// Toggle Password Visibility 
+// Toggle Password Visibility
 document.addEventListener("click", function (e) {
   if (e.target.classList.contains("toggle-password")) {
     const passwordInput = e.target.previousElementSibling;
     if (passwordInput && passwordInput.tagName === "INPUT") {
-      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      const type =
+        passwordInput.getAttribute("type") === "password" ? "text" : "password";
       passwordInput.setAttribute("type", type);
       e.target.classList.toggle("fa-eye");
       e.target.classList.toggle("fa-eye-slash");
@@ -11,62 +12,46 @@ document.addEventListener("click", function (e) {
   }
 });
 
-// DOM Loaded 
+// DOM Loaded
 document.addEventListener("DOMContentLoaded", () => {
-  const navElement = document.querySelector("nav");
-  const layout = document.querySelector(".auth-layout");
+  let tabSignIn = document.querySelector("#tab-signin");
+  let tabRegister = document.querySelector("#tab-register");
+  let submitBtn = document.querySelector(".auth-submit-btn");
+  let fullName = document.querySelector(".fullName");
+  let confirmPassword = document.querySelector(".confirm-pass-group");
 
-  if (navElement && layout) {
-    let navHeight = navElement.offsetHeight;
-    layout.style.minHeight = `calc(100vh - ${navHeight}px)`;
-    document.body.style.paddingTop = `${navHeight}px`;
-  }
+  tabSignIn.addEventListener("click", () => {
+    tabSignIn.classList.add("active");
+    tabRegister.classList.remove("active");
+    submitBtn.textContent = "Sign In";
+    confirmPassword.classList.add("hide");
+    fullName.classList.add("hide");
+  });
 
-  const tabSignIn = document.getElementById("tab-signin");
-  const tabRegister = document.getElementById("tab-register");
-  const submitBtn = document.querySelector(".auth-submit-btn");
-  const authForm = document.getElementById("loginForm");
-  
-  if (authForm) {
-    const formSubmitBtn = authForm.querySelector(".auth-submit-btn");
-
-    const confirmPasswordHTML = `
-      <div class="input-group confirm-pass-group">
-        <label for="confirm-password">Confirm Password</label>
-        <div class="password-wrapper">
-          <input
-            type="password"
-            id="confirm-password"
-            placeholder="••••••••"
-            required
-          />
-          <i class="fa-regular fa-eye toggle-password"></i>
-        </div>
-      </div>
-    `;
-
-    if (tabSignIn && tabRegister) {
-      tabSignIn.addEventListener("click", () => {
-        tabSignIn.classList.add("active");
-        tabRegister.classList.remove("active");
-        submitBtn.textContent = "Sign In";
-
-        const confirmGroup = document.querySelector(".confirm-pass-group");
-        if (confirmGroup) {
-          confirmGroup.remove();
-        }
-      });
-
-      tabRegister.addEventListener("click", () => {
-        tabRegister.classList.add("active");
-        tabSignIn.classList.remove("active");
-        submitBtn.textContent = "Register";
-
-        if (!document.querySelector(".confirm-pass-group")) {
-          formSubmitBtn.insertAdjacentHTML("beforebegin", confirmPasswordHTML);
-        }
-      });
-    }
+  tabRegister.addEventListener("click", () => {
+    tabRegister.classList.add("active");
+    tabSignIn.classList.remove("active");
+    submitBtn.textContent = "Register";
+    confirmPassword.classList.remove("hide");
+    fullName.classList.remove("hide");
+  });
+  let urlParams = new URLSearchParams(window.location.search);
+  let requestedTab = urlParams.get("tab");
+  if (requestedTab === "register") {
+    tabRegister.click();
   }
 });
-
+// scroll to top
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+if (scrollTopBtn) {
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      scrollTopBtn.classList.add("show-btn");
+    } else {
+      scrollTopBtn.classList.remove("show-btn");
+    }
+  });
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0 });
+  });
+}

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Greeny Marketplace</title>
     <link rel="stylesheet" href="/CSS/master.css" />
+    <link rel="stylesheet" href="/CSS/cart.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
       rel="stylesheet"
@@ -54,7 +55,55 @@
       <a href="log.html" class="logIn">log in</a>
       <a href="log.html" class="signUp">join us</a>
     </div>
+<header class="cart-page-header">
+      <div class="container">
+        <h1 class="cart-title">Your Cart</h1>
+        <p class="cart-subtitle" id="cart-item-count">0 items ready to harvest</p>
+      </div>
+    </header>
 
+    <section class="cart-section">
+      <div class="container cart-layout">
+        
+        <div class="cart-left-side">
+          <div class="cart-items-wrapper" id="cart-items-wrapper">
+            </div>
+
+          <button class="clear-cart-btn" id="clear-cart-btn">Clear cart</button>
+        </div>
+
+        <div class="cart-right-side">
+          <div class="cart-summary-box">
+            <h2 class="summary-title">Order Summary</h2>
+            
+            <div class="summary-row">
+              <span id="summary-subtotal-text">Subtotal (0 items)</span>
+              <span id="summary-subtotal-price">$0.00</span>
+            </div>
+            
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span id="summary-shipping-price">$0.00</span>
+            </div>
+
+            <div class="free-shipping-alert" id="free-shipping-alert">
+              Add $0.00 more for free shipping
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-row total-row">
+              <span>Total</span>
+              <span id="summary-total-price">$0.00</span>
+            </div>
+
+            <button class="btn-checkout">Proceed to Checkout <i class="fa-solid fa-arrow-right"></i></button>
+            <a href="market.html" class="continue-shopping">Continue Shopping</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-brand">

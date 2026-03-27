@@ -21,32 +21,6 @@
     />
   </head>
   <body>
-    <nav>
-      <a class="left-nav" href="index.html">
-        <img src="../media/plants-svgrepo-com.svg" alt="logo" />
-        <p class="greeny">greeny</p>
-      </a>
-      <div class="middle-nav">
-        <a href="index.html" class="active-link">home</a>
-        <a href="market.html">marketplace</a>
-        <a href="community.html">community</a>
-        <a href="refrence.html">refrence</a>
-      </div>
-      <div class="right-nav">
-        <a href="cart.html" title="Go to Cart" class="cart-icon-container">
-          <img src="../media/photos/cart.png" alt="Cart" />
-          <span class="cart-badge">0</span>
-        </a>
-        <a class="logIn" href="log.html">log in</a>
-        <a class="signUp" href="log.html?tab=register">sign up</a>
-
-        <div class="hamburger" title="Menu ">
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </nav>
     <div class="menu">
       <a href="index.html" class="active-link">home</a>
       <a href="market.html">marketplace</a>
@@ -59,6 +33,10 @@
     <div class="auth-layout">
       <div class="auth-banner">
         <div class="auth-overlay"></div>
+        <a class="sign-logo2" href="index.html">
+          <img src="../media/plants-svgrepo-com.svg" alt="logo" />
+          <span class="greeny">greeny</span>
+        </a>
         <div class="auth-quote-box">
           <h2 class="auth-quote">
             "Growing food is like printing your own money."
@@ -71,34 +49,47 @@
 
       <div class="auth-content">
         <div class="auth-form-container">
+          <a class="sign-logo" href="index.html">
+            <img src="../media/plants-svgrepo-com.svg" alt="logo" />
+            <span class="greeny">greeny</span>
+          </a>
           <div class="auth-header">
             <h1>Welcome back</h1>
             <p>Sign in to continue to Greeny</p>
           </div>
-
           <div class="auth-tabs">
             <button class="auth-tab active" id="tab-signin">Sign In</button>
             <button class="auth-tab" id="tab-register">Register</button>
           </div>
-
           <form id="loginForm" class="auth-form">
+            <div class="input-group fullName hide">
+              <label for="fullName">Full Name</label>
+              <div class="fullName-wrapper">
+                <input
+                  type="text"
+                  id="fullName"
+                  placeholder="Lorem ipsum dolor sit amet"
+"
+                  required
+                />
+              </div>
+            </div>
             <div class="input-group">
               <label for="email">Email</label>
               <input
                 type="email"
                 id="email"
-                placeholder="you@example.com"
+                placeholder="loremIpsumDolorSitAmet@example.com"
                 required
               />
             </div>
-
             <div class="input-group">
               <label for="password">Password</label>
               <div class="password-wrapper">
                 <input
                   type="password"
                   id="password"
-                  placeholder="••••••••"
+                  placeholder="••••••••••••••••"
                   required
                 />
                 <i
@@ -107,14 +98,24 @@
                 ></i>
               </div>
             </div>
-            
+            <div class="input-group confirm-pass-group hide">
+              <label for="confirm-password">Confirm Password</label>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="confirm-password"
+                  placeholder="••••••••••••••••"
+                  required
+                />
+                <i class="fa-regular fa-eye toggle-password"></i>
+              </div>
+            </div>
+
             <button type="submit" class="auth-submit-btn">Sign In</button>
           </form>
         </div>
       </div>
     </div>
-
     <script src="/JavaScript/log.js"></script>
-    <script src="/JavaScript/script.js"></script>
   </body>
 </html>
