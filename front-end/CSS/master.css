@@ -64,8 +64,8 @@ nav {
 }
 
 img[alt="logo"] {
-  width: var(--logoSize);
-  height: var(--logoSize);
+  width: 50px;
+  height: 75px;
 }
 
 .greeny {
@@ -908,8 +908,8 @@ h2.title {
 }
 
 .footer-logo img {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 75px;
 }
 
 .greeny-text {
