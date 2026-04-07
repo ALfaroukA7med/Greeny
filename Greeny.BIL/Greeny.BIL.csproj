@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="ModelVM\" />
+    <Folder Include="Helper\" />
+    <Folder Include="Global\" />
+    <Folder Include="ResponseResult\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+</Project>

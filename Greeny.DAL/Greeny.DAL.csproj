@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Configuration\" />
+    <Folder Include="Database\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Global\" />
+    <Folder Include="Repo\Abstraction\" />
+    <Folder Include="Repo\Implementation\" />
+  </ItemGroup>
+
+</Project>
