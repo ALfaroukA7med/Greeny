@@ -4,6 +4,9 @@
   padding: 50px 5%;
   border-bottom: 1px solid #e2e8f0;
 }
+.container{
+  padding:0;
+}
 .market-badge {
   color: var(--primary-green, #237a4e);
   font-weight: 600;
