@@ -21,7 +21,7 @@ namespace Greeny.Data.Configurations
             builder.Property(b => b.Date)
                 .HasDefaultValueSql("GETDATE()");
 
-
+            // User Relationship
             builder.HasOne(b => b.User)
                 .WithMany(u => u.Blogs)
                 .HasForeignKey(b => b.UserId);
