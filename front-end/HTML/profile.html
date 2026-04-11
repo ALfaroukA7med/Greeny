@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <title>Greeny</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>Profile</title>
     <link rel="stylesheet" href="/CSS/master.css" />
+    <link rel="stylesheet" href="/CSS/profile.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
       rel="stylesheet"
@@ -20,12 +21,11 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
   </head>
-
   <body>
     <nav>
       <a class="left-nav" href="index.html">
         <img src="..\media\photos\Transparent Greeny leaf.png" alt="logo" />
-        <p class="greeny">Greeny</p>
+        <p class="greeny">greeny</p>
       </a>
       <div class="middle-nav">
         <a href="index.html" class="active-link">home</a>
@@ -54,61 +54,68 @@
       <a href="community.html">community</a>
       <a href="refrence.html">refrence</a>
       <a href="log.html" class="logIn">log in</a>
-      <a href="log.html?tab=register" class="signUp">join us</a>
+      <a href="log.html" class="signUp">join us</a>
     </div>
+    <a href="index.html" class="back-link"
+      ><i class="fa-solid fa-arrow-left"></i> Back</a
+    >
+    <header class="vendor-profile-header">
+      <div class="container">
+        <div class="vendor-header-content">
+          <div class="vendor-main-info">
+            <div class="vendor-avatar-wrapper">
+              <img
+                src="https://i.pravatar.cc/150?img=11"
+                alt="Marcus Green"
+                class="vendor-avatar"
+              />
+            </div>
 
-    <!-- ======================= Hero-Section ======================== -->
+            <div class="vendor-details">
+              <div class="vendor-name-row">
+                <h1 class="vendor-name">Marcus Green</h1>
+                <span class="badge badge-verified"
+                  ><i class="fa-regular fa-circle-check"></i> Verified
+                  Farmer</span
+                >
+              </div>
+              <p class="vendor-location">
+                <i class="fa-solid fa-location-dot"></i> Riverside Valley, CA
+              </p>
 
-    <section class="hero-section">
-      <div class="overlay"></div>
-
-      <div class="hero-content">
-        <h1 class="main-title">
-          Where Farms <br />
-          <span class="highlight">Meet Community</span>
-        </h1>
-
-        <p class="description">
-          Buy directly from our marketplace, discover gardening tips, and
-          connect with a community that loves growing things.
-        </p>
-
-        <div class="hero-btns">
-          <button class="btn btn-primary">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <a href="market.html"> Shop the Market </a>
-          </button>
-          <button class="btn btn-secondary">
-            <i class="fa-solid fa-user-group"></i>
-            <a href="community.html"> Join Community </a>
-          </button>
+              <div class="vendor-stats">
+                <span
+                  ><i class="fa-solid fa-star"></i>
+                  <strong>4.9</strong> rating</span
+                >
+                <span
+                  ><i class="fa-solid fa-bag-shopping"></i>
+                  <strong>342</strong> sales</span
+                >
+                <span><i class="fa-regular fa-calendar"></i> Joined 2021</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="stats-container">
-          <div class="stat-box">
-            <h3 class="stat-number">120+</h3>
-            <p class="stat-label">Local Farmers</p>
+        <div class="vendor-bio-card">
+          <div class="bio-specialty">
+            <span class="specialty-label">SPECIALTY</span>
+            <span class="badge badge-specialty">Organic Vegetables</span>
           </div>
-          <div class="stat-box">
-            <h3 class="stat-number">1,200+</h3>
-            <p class="stat-label">Products</p>
-          </div>
-          <div class="stat-box">
-            <h3 class="stat-number">8,500+</h3>
-            <p class="stat-label">Community Members</p>
-          </div>
+          <p class="bio-text">
+            Third-generation farmer specializing in organic vegetables and
+            heirloom tomatoes. Passionate about sustainable farming and sharing
+            knowledge with the community.
+          </p>
         </div>
       </div>
-    </section>
-
-    <!-- ======================= Products-Section ======================== -->
-
+    </header>
     <section class="products-section">
       <div class="container">
         <div class="section-header">
           <div class="header-titles">
-            <span class="subtitle">FRESH PICKS</span>
-            <h2 class="title">Featured Products</h2>
+            <h2 class="title">Products</h2>
           </div>
           <a href="#" class="view-all"
             >View All <i class="fa-solid fa-chevron-right"></i
@@ -224,14 +231,11 @@
         </div>
       </div>
     </section>
-
-    <!-- ======================= community-Section ======================== -->
     <section class="community-section">
       <div class="container">
         <div class="comm-section-header">
           <div class="comm-header-titles">
-            <span class="comm-subtitle">GROWING TOGETHER</span>
-            <h2 class="comm-title">From the Community</h2>
+            <h2 class="comm-title">Posts</h2>
           </div>
           <a href="community.html" class="comm-view-all"
             >See All Posts <i class="fa-solid fa-chevron-right"></i
@@ -241,11 +245,11 @@
         <div class="comm-grid">
           <article class="comm-card">
             <div class="comm-card-header">
-                <img
-                  src="https://i.pravatar.cc/150?img=11"
-                  alt="Marcus Green"
-                  class="comm-avatar"
-                />
+              <img
+                src="https://i.pravatar.cc/150?img=11"
+                alt="Marcus Green"
+                class="comm-avatar"
+              />
               <div class="comm-user-info">
                 <div class="comm-name-badge">
                   <span class="comm-user-name">Marcus Green</span>
@@ -320,21 +324,6 @@
         </div>
       </div>
     </section>
-
-    <section class="cta-section">
-      <div class="cta-content">
-        <h2 class="cta-title">Ready to Grow?</h2>
-        <p class="cta-description">
-          Join thousands of farmers and gardeners sharing their love for
-          growing.
-        </p>
-        <div class="cta-btns">
-          <a href="log.html" class="btn btn-cta-yellow">Get Started Free</a>
-          <a href="market.html" class="btn btn-cta-dark">Browse Market</a>
-        </div>
-      </div>
-    </section>
-
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-brand">
@@ -359,7 +348,9 @@
     <button id="scrollTopBtn" class="scroll-top-btn" title="Go to top">
       <i class="fa-solid fa-arrow-up"></i>
     </button>
-    <script src="/JavaScript/home.js"></script>
+
+    <script src="/JavaScript/market.js"></script>
+    <script src="/JavaScript/community.js"></script>
     <script src="/JavaScript/script.js"></script>
   </body>
 </html>

@@ -1,4 +1,3 @@
-// Toggle Password Visibility
 document.addEventListener("click", function (e) {
   if (e.target.classList.contains("toggle-password")) {
     const passwordInput = e.target.previousElementSibling;
@@ -12,7 +11,6 @@ document.addEventListener("click", function (e) {
   }
 });
 
-// DOM Loaded
 document.addEventListener("DOMContentLoaded", () => {
   let tabSignIn = document.querySelector("#tab-signin");
   let tabRegister = document.querySelector("#tab-register");
@@ -41,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     tabRegister.click();
   }
 });
-// scroll to top
 const scrollTopBtn = document.getElementById("scrollTopBtn");
 if (scrollTopBtn) {
   window.addEventListener("scroll", () => {

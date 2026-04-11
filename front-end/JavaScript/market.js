@@ -1,4 +1,3 @@
-// products adding
 const addButtons = document.querySelectorAll(".add-btn");
 const cartBadge = document.querySelector(".cart-badge");
 addButtons.forEach((btn) => {

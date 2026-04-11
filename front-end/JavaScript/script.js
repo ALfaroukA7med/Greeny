@@ -1,16 +1,14 @@
-// hamburger
 let hamburger = document.querySelector(".hamburger");
 let menu = document.querySelector(".menu");
 let nav = document.querySelector("nav").offsetHeight;
 let hero = document.querySelector(".hero-section");
-document.body.style.paddingTop = `${nav}px`; // => to make the menu down the navbar
+document.body.style.paddingTop = `${nav}px`;
 hamburger.onclick = (_) => {
   menu.classList.toggle("show");
 };
 hamburger.addEventListener("click", (_) => {
   hamburger.classList.toggle("is-active");
 });
-// currrent opened page
 let currentUrl = window.location.href;
 let links = document.querySelectorAll(".middle-nav a");
 let mobLinks = document.querySelectorAll(".menu a");
@@ -24,7 +22,6 @@ let curPageLink = function (link) {
 links.forEach(curPageLink);
 mobLinks.forEach(curPageLink);
 
-// Scroll to Top Button Logic
 const scrollTopBtn = document.getElementById("scrollTopBtn");
 if (scrollTopBtn) {
   window.addEventListener("scroll", () => {
@@ -46,4 +43,22 @@ document.addEventListener("DOMContentLoaded", () => {
   if (requestedTab === "register") {
     tabRegister.click();
   }
+});
+const cards = document.querySelectorAll(".product-title");
+cards.forEach((card) => {
+  card.addEventListener("click", function () {
+    window.open("/html/product.html");
+  });
+});
+const comUsers = document.querySelectorAll(".comm-user-info");
+comUsers.forEach((user) => {
+  user.addEventListener("click", function () {
+    window.open("/html/profile.html");
+  });
+});
+const avatars = document.querySelectorAll(".comm-avatar");
+avatars.forEach((avatar) => {
+  avatar.addEventListener("click", function () {
+    window.open("/html/profile.html");
+  });
 });

@@ -507,7 +507,6 @@ h2.title {
     box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
 }
 
 .product-card:hover {
@@ -592,6 +591,7 @@ h2.title {
   font-family: "Playfair Display", serif;
   font-size: 1.25rem;
   margin-bottom: 12px;
+  cursor: pointer;
   color: var(--text-dark);
 }
 
@@ -991,6 +991,18 @@ h2.title {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
+@media (max-width:400px) {
+  .stat-box{
+    margin: 0;
+    flex-basis: 20%;
+  }
+  .btn{
+    font-size: .85rem;
+  }
+  nav{
+    padding: 5px 0;
+  }
+}
 @media (min-width: 992px) {
   .scroll-top-btn {
     display: flex;
