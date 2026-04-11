@@ -15,7 +15,7 @@
             builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             // Bolgs relationship
-            builder.HasMany(u => u.Blogs)
+            builder.HasMany(u => u.Posts)
            .WithOne(b => b.User)
            .HasForeignKey(b => b.UserId)
            .OnDelete(DeleteBehavior.Cascade);

@@ -1,31 +1,42 @@
-﻿using Greeny.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿
 
 namespace Greeny.Data.Configurations
 {
-    public class BlogConfig : IEntityTypeConfiguration<Blog>
+    public class PostConfig : IEntityTypeConfiguration<Post>
     {
-        public void Configure(EntityTypeBuilder<Blog> builder)
+        public void Configure(EntityTypeBuilder<Post> builder)
         {
-            builder.HasKey(b => b.Id);
+            builder.ToTable("Posts");
 
-            builder.Property(b => b.Content)
+            builder.HasKey(p => p.Id);
+
+           
+            builder.Property(p => p.Content)
                 .IsRequired()
-                .HasMaxLength(300);
+                .HasMaxLength(5000); 
 
-            builder.Property(b => b.Content)
+            builder.Property(p => p.ImagePath)
+                .HasMaxLength(255)
+                .IsRequired(false);
+
+            builder.Property(p => p.Votes)
+                .HasDefaultValue(0);
+
+            builder.Property(p => p.Date)
                 .IsRequired()
-                .HasMaxLength(300);
-
-            builder.Property(b => b.Date)
                 .HasDefaultValueSql("GETDATE()");
 
             // User Relationship
-            builder.HasOne(b => b.User)
-                .WithMany(u => u.Blogs)
-                .HasForeignKey(b => b.UserId);
+            builder.HasOne(p => p.User)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // Comments Relationship
+            builder.HasMany(p => p.Comments)
+                .WithOne(c => c.Post)
+                .HasForeignKey(c => c.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

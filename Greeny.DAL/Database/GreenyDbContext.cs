@@ -1,4 +1,5 @@
-﻿namespace Greeny.DAL.Database
+﻿using System.Reflection;
+namespace Greeny.DAL.Database
 {
     public class GreenyDbContext : IdentityDbContext<User>
     {
@@ -6,32 +7,16 @@
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-
-        public DbSet<Post> Blogs { get; set; }
-
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
-
         public DbSet<Comment> Comments { get; set; }
-
         public DbSet<Notification> Notifications { get; set; }
-
         public DbSet<Order> Orders { get; set; }
-
         public DbSet<OrderItem> OrderItems { get; set; }
-
         public DbSet<Payment> Payments { get; set; }
-
         public DbSet<ReferencePlanet> ReferencePlanets { get; set; }
-
         public DbSet<Review> Reviews { get; set; }
-
-        public DbSet<User> Users { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

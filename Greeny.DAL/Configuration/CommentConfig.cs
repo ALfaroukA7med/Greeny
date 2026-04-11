@@ -16,9 +16,9 @@
 
             //Blog comments relation 
 
-            builder.HasOne(c => c.Blog)
+            builder.HasOne(c => c.Post)
                 .WithMany(b => b.Comments)
-                .HasForeignKey(c => c.BlogId);
+                .HasForeignKey(c => c.PostId);
         }
     }
 }

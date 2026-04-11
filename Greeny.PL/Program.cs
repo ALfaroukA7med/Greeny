@@ -1,3 +1,6 @@
+using Greeny.DAL.Database;
+using Microsoft.EntityFrameworkCore;
+
 namespace Greeny.PL
 {
     public class Program
@@ -6,10 +9,16 @@ namespace Greeny.PL
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var config = builder.Configuration.GetConnectionString("ProjectConnection");
+            builder.Services.AddDbContext<GreenyDbContext>(options =>
+                options.UseSqlServer(config));
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

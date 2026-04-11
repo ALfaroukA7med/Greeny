@@ -14,7 +14,7 @@ namespace Greeny.DAL.Entities
 
         // Relationships
         public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
-        public ICollection<Post> Blogs { get; set; } =  new HashSet<Post>();
+        public ICollection<Post> Posts { get; set; } =  new HashSet<Post>();
         public ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
         public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
         public ICollection<Order> Orders { get; set; } = new HashSet<Order>();
