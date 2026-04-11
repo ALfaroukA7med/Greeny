@@ -7,10 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Enums\**" />
+    <Compile Remove="Repo\**" />
+    <EmbeddedResource Remove="Enums\**" />
+    <EmbeddedResource Remove="Repo\**" />
+    <None Remove="Enums\**" />
+    <None Remove="Repo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Database\" />
-    <Folder Include="Enums\" />
-    <Folder Include="Repo\Abstraction\" />
-    <Folder Include="Repo\Implementation\" />
   </ItemGroup>
 
   <ItemGroup>

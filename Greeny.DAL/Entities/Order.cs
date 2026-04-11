@@ -2,16 +2,16 @@
 {
     public class Order
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public decimal TotalPrice { get; set; } = 0.0m;
         public string Address { get; set; }
         public string Status { get; set; } = "Pending";
         public DateTime Date { get; set; } = DateTime.Now;
-
+        
         // Relationships
         public  ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
 
-        public int? PaymentId { get; set; }
+        public string? PaymentId { get; set; }
         public  Payment? Payment { get; set; }
 
         public string UserId { get; set; }

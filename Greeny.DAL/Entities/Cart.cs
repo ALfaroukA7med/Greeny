@@ -2,7 +2,7 @@
 {
     public class Cart
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         // Relationships
         public ICollection<CartItem> CartItems { get; set; } = new HashSet<CartItem>();
