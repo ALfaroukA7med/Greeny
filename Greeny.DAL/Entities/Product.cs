@@ -8,5 +8,16 @@
         public string? Image { get; set; } = null;
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
+
+        // Relationships
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
+
+        public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
+
+        public ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
+        public ICollection<CartItem> CartItems { get; set; } = new HashSet<CartItem>();
     }
 }
