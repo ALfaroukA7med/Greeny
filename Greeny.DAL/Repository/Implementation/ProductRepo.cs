@@ -65,5 +65,54 @@ namespace Greeny.DAL.Repository.Implementation
                 return true;
         }
 
+
+        public async Task<IEnumerable<Product>> SearchByNameAsync(string name)
+        {
+            return await _context.Products
+                .Where(p => p.Name.Contains(name))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetInStockAsync()
+        {
+            return await _context.Products
+                .Where(p => p.Quantity > 0)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetOutStockAsync()
+        {
+            return await _context.Products
+                .Where(p => p.Quantity == 0)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetMostExpensiveAsync()
+        {
+            return await _context.Products
+                .OrderByDescending(p => p.Price)
+                .Take(10)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetLestExpensiveAsync()
+        {
+            return await _context.Products
+                .OrderBy(p => p.Price)
+                .Take(10)
+                .ToListAsync();
+        }
+
+        public async Task<bool> ExistsByNameAsync(string name)
+        {
+            return await _context.Products
+                .AnyAsync(p => p.Name == name);
+        }
+
+        public async Task<bool> ExistsByIdAsync(string Id)
+        {
+            return await _context.Products
+                .AnyAsync(p => p.Id == Id);
+        }
     }
 }
