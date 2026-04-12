@@ -13,5 +13,14 @@ namespace Greeny.DAL.Repository.Interfaces
         Task<bool> UpdateAsync(ReferencePlanet referencePlanet);
 
         Task<bool> DeleteAsync(string id);
+
+        Task<ReferencePlanet> GetBySciNameAsync(string sciName);
+
+        Task<ReferencePlanet> GetByCommonNameAsync(string commonName);
+
+        Task<bool> ExistsByIdAsync(string id);
+
+
+
     }
 }

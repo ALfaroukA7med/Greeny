@@ -1,5 +1,6 @@
 ﻿using Greeny.DAL.Database;
 using Greeny.DAL.Repository.Interfaces;
+using System.Security.AccessControl;
 
 namespace Greeny.DAL.Repository.Implementation
 {
@@ -62,5 +63,23 @@ namespace Greeny.DAL.Repository.Implementation
             return true;
         }
 
+        public async Task<ReferencePlanet?> GetBySciNameAsync(string sciName)
+        {
+            var result = await _context.ReferencePlanets.FirstOrDefaultAsync(rf => rf.SciName == sciName);
+            return result;
+        }
+
+        public async Task<ReferencePlanet?> GetByCommonNameAsync(string commonName)
+        {
+            var result = await _context.ReferencePlanets.FirstOrDefaultAsync(rf => rf.CommonName == commonName);
+            return result;
+        }
+
+        public async Task<bool> ExistsByIdAsync(string id)
+        {
+            var result = await _context.ReferencePlanets.FirstOrDefaultAsync(rf => rf.Id == id);
+            if(result == null) { return false; }
+            return true;
+        }
     }
 }
