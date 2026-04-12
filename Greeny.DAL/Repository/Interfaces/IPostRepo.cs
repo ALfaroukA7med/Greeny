@@ -12,5 +12,15 @@ namespace Greeny.DAL.Repository.Interfaces
         Task<bool> UpdateAsync(Post post);
          
         Task<bool> DeleteAsync(string id);
+
+        Task<IEnumerable<Post>> SearchAsync(string keyword);
+        Task<IEnumerable<Post>> GetRecentAsync();
+
+        Task<int> CountByUserIdAsync(string userId);
+
+        Task<bool> HasPostsAsync(string userId);
+
+        Task<bool> DeleteAllByUserIdAsync(string userId);
+
     }
 }

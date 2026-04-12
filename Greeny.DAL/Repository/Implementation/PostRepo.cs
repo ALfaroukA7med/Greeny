@@ -61,5 +61,43 @@ namespace Greeny.DAL.Repository.Implementation
                 return true;
         }
 
+        public async Task<IEnumerable<Post>> SearchAsync(string keyword)
+        {
+            return await _context.Posts
+                .Where(p => p.Content.Contains(keyword))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Post>> GetRecentAsync()
+        {
+           var date = DateTime.Now;
+            return await _context.Posts
+                .Where(p => p.Date >= date)
+                .OrderByDescending(p => p.Date)
+                .Take(10)
+                .ToListAsync();
+        }
+
+
+        public async Task<int> CountByUserIdAsync(string userId)
+        {
+            return await _context.Posts
+                .CountAsync(p => p.UserId == userId);
+        }
+
+        public async Task<bool> HasPostsAsync(string userId)
+        {
+            return await _context.Posts
+                .AnyAsync(p => p.UserId == userId);
+        }
+
+        public async Task<bool> DeleteAllByUserIdAsync(string userId)
+        {
+            var rows = await _context.Posts
+                .Where(p => p.UserId == userId)
+                .ExecuteDeleteAsync();
+
+            return rows > 0;
+        }
     }
 }
