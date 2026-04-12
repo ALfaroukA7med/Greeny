@@ -20,6 +20,8 @@ namespace Greeny.DAL.Repository.Interfaces
         Task<IEnumerable<Product>> GetLestExpensiveAsync();
         Task<bool> ExistsByNameAsync(string name);
         Task<bool> ExistsByIdAsync(string name);
+        Task<IEnumerable<Product>> GetAllByCategoryIdAsync(string categoryId);
+
 
     }
 }

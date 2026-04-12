@@ -22,5 +22,8 @@ namespace Greeny.DAL.Repository.Interfaces
 
         Task<bool> DeleteAllByUserIdAsync(string userId);
 
+        Task<IEnumerable<Post>> GetAllByUserIdAsync(string userId);
+
+
     }
 }

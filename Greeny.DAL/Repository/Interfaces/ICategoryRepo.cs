@@ -12,5 +12,11 @@ namespace Greeny.DAL.Repository.Interfaces
         Task<bool> UpdateAsync(Category category);
 
         Task<bool> DeleteAsync(string id);
+
+        Task<Category?> SearchByName(string name);
+
+        Task<bool> ExistsByIdAsync(string id);
+
+
     }
 }
