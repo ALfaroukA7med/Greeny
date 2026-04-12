@@ -57,5 +57,17 @@ namespace Greeny.DAL.Repository.Implementation
                 await _context.SaveChangesAsync();
                 return true;
         }
+
+        public async Task<Category?> SearchByName(string name)
+        {
+            return await _context.Categories
+              .FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
+        }
+
+        public async Task<bool> ExistsByIdAsync(string id)
+        {
+            var result = await _context.Categories.AnyAsync(c => c.Id == id);
+            return true;
+        }
     }
 }

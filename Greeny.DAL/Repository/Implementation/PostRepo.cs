@@ -99,5 +99,13 @@ namespace Greeny.DAL.Repository.Implementation
 
             return rows > 0;
         }
+
+
+        public async Task<IEnumerable<Post>> GetAllByUserIdAsync(string userId)
+        {
+            return await _context.Posts.Where(p => p.UserId == userId).ToListAsync();
+        }
+
+
     }
 }

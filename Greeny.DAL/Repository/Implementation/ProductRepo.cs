@@ -114,5 +114,10 @@ namespace Greeny.DAL.Repository.Implementation
             return await _context.Products
                 .AnyAsync(p => p.Id == Id);
         }
+
+        public async Task<IEnumerable<Product>> GetAllByCategoryIdAsync(string categoryId)
+        {
+            return await _context.Products.Where(p=>p.CategoryId== categoryId).ToListAsync();
+        }
     }
 }
