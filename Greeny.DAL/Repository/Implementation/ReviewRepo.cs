@@ -54,5 +54,41 @@ namespace Greeny.DAL.Repository.Implementation
             await _context.SaveChangesAsync();
             return true;
         }
+
+
+      public async Task<IEnumerable<Review>> GetAllByProductIDAsync(string productId)
+        {
+            var reviews = await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync();
+            return reviews;
+        }
+
+        public async Task<int> CountByProductIdAsync(string productId)
+        {
+            var reviews = await _context.Reviews.CountAsync(r => r.ProductId == productId);
+            return reviews;
+        }
+
+        public async Task<List<Review>> GetByUserIdAsync(string userId)
+        {
+            var reviews = await _context.Reviews.Where(r => r.UserId == userId).ToListAsync();
+            return reviews;
+        }
+
+        public async Task<bool> ExistsAsync(string userId, string productId)
+        {
+            return await _context.Reviews.AnyAsync(r => r.UserId == userId && r.ProductId == productId);
+        }
+
+
+        public async Task<double> GetAverageRatingForProductAsync(string productId)
+        {
+            var reviews = _context.Reviews.Where(r => r.ProductId == productId);
+
+            if (!await reviews.AnyAsync()) { return 0; }
+
+            return await reviews.AverageAsync(r => r.Stars);
+        }
+
+
     }
 }
