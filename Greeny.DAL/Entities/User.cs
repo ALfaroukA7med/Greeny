@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
-
-namespace Greeny.DAL.Entities
+﻿namespace Greeny.DAL.Entities
 {
     public class User : IdentityUser
     {
@@ -19,7 +16,7 @@ namespace Greeny.DAL.Entities
         public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
         public ICollection<Order> Orders { get; set; } = new HashSet<Order>();
         public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
-        public int? CartId { get; set; } 
+        public string? CartId { get; set; } 
         public Cart? Cart { get; set; } = null;
 
     }

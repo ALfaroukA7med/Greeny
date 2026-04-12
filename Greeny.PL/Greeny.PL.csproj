@@ -17,8 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Greeny.BIL\Greeny.BIL.csproj" />
-    <ProjectReference Include="..\Greeny.DAL\Greeny.DAL.csproj" />
+    <ProjectReference Include="..\Greeny.BIL\Greeny.BLL.csproj" />
   </ItemGroup>
 
 </Project>

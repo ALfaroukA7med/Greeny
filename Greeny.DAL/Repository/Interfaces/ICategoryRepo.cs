@@ -1,0 +1,16 @@
+﻿
+namespace Greeny.DAL.Repository.Interfaces
+{
+    public interface ICategoryRepo
+    {
+        Task<IEnumerable<Category>> GetAllAsync();
+
+        Task<Category> GetByIdAsync(string id);
+
+        Task<bool> CreateAsync(Category category);
+
+        Task<bool> UpdateAsync(Category category);
+
+        Task<bool> DeleteAsync(string id);
+    }
+}
