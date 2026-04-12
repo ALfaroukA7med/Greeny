@@ -56,9 +56,28 @@ namespace Greeny.DAL.Repository.Implementation
         {
             var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (result == null) { return false; }
-            _context.Users.Remove(result);
-            await _context.SaveChangesAsync();
+            result.IsDeleted = true;
             return true;
+        }
+
+        public async Task<bool> IsActiveAsync(string id)
+        {
+            return await _context.Users.AsNoTracking().AnyAsync(u => u.Id == id && !u.IsDeleted);
+        }
+
+        public async Task<bool> IsNoActiveAsync(string id)
+        {
+            return await _context.Users.AsNoTracking().AnyAsync(u => u.Id == id && u.IsDeleted==true);
+        }
+
+        public async Task<IEnumerable<User>> GetAllActiveAsync()
+        {
+            return await _context.Users.Where(u=>u.IsDeleted==false).ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetAllNoActiveAsync()
+        {
+            return await _context.Users.Where(u => u.IsDeleted == true).ToListAsync();
         }
     }
 }
