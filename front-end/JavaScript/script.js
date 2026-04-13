@@ -14,7 +14,6 @@ let links = document.querySelectorAll(".middle-nav a");
 let mobLinks = document.querySelectorAll(".menu a");
 let curPageLink = function (link) {
   link.classList.remove("active-link");
-  console.log("hi" + " " + currentUrl.substring(currentUrl.length - 8));
   if (link.href === currentUrl) {
     if (!currentUrl.includes("log.html")) link.classList.add("active-link");
   }
@@ -47,18 +46,27 @@ document.addEventListener("DOMContentLoaded", () => {
 const cards = document.querySelectorAll(".product-title");
 cards.forEach((card) => {
   card.addEventListener("click", function () {
-    window.open("/html/product.html");
+    window.open("/html/product.html", self);
   });
 });
 const comUsers = document.querySelectorAll(".comm-user-info");
 comUsers.forEach((user) => {
   user.addEventListener("click", function () {
-    window.open("/html/profile.html");
+    window.open("/html/profile.html", self);
   });
 });
 const avatars = document.querySelectorAll(".comm-avatar");
 avatars.forEach((avatar) => {
   avatar.addEventListener("click", function () {
-    window.open("/html/profile.html");
+    window.open("/html/profile.html", self);
+  });
+});
+
+let comments = document.querySelectorAll(".fa-comment");
+comments.forEach((comment) => {
+  comment.addEventListener("click", function () {
+      const cardBody = this.closest(".comm-card-body");
+      let commentsSection = cardBody.querySelector(".comm-comments-section");
+      commentsSection.classList.toggle('show');
   });
 });

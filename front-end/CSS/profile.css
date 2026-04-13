@@ -2,10 +2,7 @@
   background-color: #edf2ed;
   border-bottom: 1px solid #e2e8f0;
 }
-.container {
-  padding: 42px;
-}
-.back-link {
+  .back-link {
   padding: 25px 42px 0;
   color: #64748b;
   text-decoration: none;
