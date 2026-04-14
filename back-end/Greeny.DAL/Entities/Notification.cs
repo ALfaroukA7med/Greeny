@@ -2,10 +2,10 @@
 {
     public class Notification
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Content { get; set; }
         public bool IsRead { get; set; } = false;
-        public DateTime Date { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.UtcNow;
         // Relationships
 
         public string ReceiverId { get; set; } 

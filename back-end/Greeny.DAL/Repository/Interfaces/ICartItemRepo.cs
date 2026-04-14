@@ -6,12 +6,19 @@ namespace Greeny.DAL.Repository.Interfaces
     {
         Task<IEnumerable<CartItem>> GetAllAsync();
 
-        Task<CartItem> GetByIdAsync(string id);
+        Task<CartItem> GetByIdAsync(int id);
 
         Task<bool> CreateAsync(CartItem cartItem);
 
         Task<bool> UpdateAsync(CartItem cartItem);
 
-        Task<bool> DeleteAsync(string id);
+        Task<bool> DeleteAsync(int id);
+
+        Task<IEnumerable<CartItem>> GetByCartIdAsync(int cartId);
+        Task<IEnumerable<CartItem>> GetCartWithProductAsync(int cartId);
+        Task<CartItem> GetByCartAndProductAsync(int cartId, int productId);
+        Task<bool> ExistsAsync(int cartId, int productId);
+        Task<bool> ClearCartAsync(int cartId);
+        Task<decimal> GetTotalPriceAsync(int cartId);
     }
 }

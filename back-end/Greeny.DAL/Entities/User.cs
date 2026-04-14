@@ -16,7 +16,7 @@
         public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
         public ICollection<Order> Orders { get; set; } = new HashSet<Order>();
         public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
-        public string? CartId { get; set; } 
+        public int? CartId { get; set; } 
         public Cart? Cart { get; set; } = null;
 
     }

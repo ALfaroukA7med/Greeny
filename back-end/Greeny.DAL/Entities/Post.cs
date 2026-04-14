@@ -3,12 +3,12 @@ namespace Greeny.DAL.Entities
 {
     public class Post
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Content { get; set; }
 
         [Range(0,5)]
         public int Votes { get; set; }
-        public DateTime Date { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.UtcNow;
         public string? ImagePath { get; set; }
 
 

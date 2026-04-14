@@ -2,7 +2,7 @@
 {
     public class ReferencePlanet
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string CommonName { get; set; }
         public string SciName { get; set; }
         public string Family { get; set; }

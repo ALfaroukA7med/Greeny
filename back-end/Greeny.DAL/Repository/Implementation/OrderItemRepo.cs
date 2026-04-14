@@ -26,7 +26,7 @@ namespace Greeny.DAL.Repository.Implementation
             return await _context.OrderItems.ToListAsync();
         }
 
-        public async Task<OrderItem?> GetByIdAsync(string id)
+        public async Task<OrderItem?> GetByIdAsync(int id)
         {
             var result = await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == id);
             return result;
@@ -46,7 +46,7 @@ namespace Greeny.DAL.Repository.Implementation
             return true;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var result = await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == id);
             if (result == null) { return false; }
@@ -54,6 +54,47 @@ namespace Greeny.DAL.Repository.Implementation
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<OrderItem>> GetByOrderIdAsync(int orderId)
+        {
+            return await _context.OrderItems
+                .Where(i => i.OrderId == orderId)
+                .Include(i => i.Product)
+                .ToListAsync();
+        }
+
+      public async Task<decimal> GetTotalPriceByOrderIdAsync(int orderId)
+        {
+            return await _context.OrderItems
+            .Where(i => i.OrderId == orderId)
+            .SumAsync(i=> i.UnitPrice * i.Quantity);
+        }
+
+       public async Task<int> GetItemsCountByOrderIdAsync(int orderId)
+        {
+            return await _context.OrderItems.CountAsync(o => o.OrderId == orderId);
+        }
+
+       public async Task<bool> ProductExistInOrderAsync(int orderId, int productId)
+        {
+            return await _context.OrderItems
+            .AnyAsync(i => i.OrderId == orderId && i.ProductId==productId);
+        }
+         
+        public async Task<bool> RemoveProductFromOrderAsync(int orderId, int productId)
+        {
+            var item = await _context.OrderItems
+            .FirstOrDefaultAsync(i => i.OrderId == orderId && i.ProductId == productId);
+
+            if (item == null)
+                return false;
+
+            _context.OrderItems.Remove(item);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
 
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Payment
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Method { get; set; }
         public string Status { get; set; } = "Pending";
         public DateTime? PaidAt { get; set; }
@@ -13,7 +13,7 @@
         public string UserId { get; set; }
         public  User User { get; set; }
 
-        public string OrderId { get; set; }
+        public int OrderId { get; set; }
         public  Order Order { get; set; }
     }
 }

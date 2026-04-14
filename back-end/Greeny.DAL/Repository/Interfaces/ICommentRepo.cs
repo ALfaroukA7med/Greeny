@@ -5,21 +5,21 @@ namespace Greeny.DAL.Repository.Interfaces
     {
         Task<IEnumerable<Comment>> GetAllAsync();
 
-        Task<Comment?> GetByIdAsync(string id);
+        Task<Comment?> GetByIdAsync(int id);
 
         Task<bool> CreateAsync(Comment comment);
 
         Task<bool> UpdateAsync(Comment comment);
 
-        Task<bool> DeleteAsync(string id);
+        Task<bool> DeleteAsync(int id);
 
 
-        Task<IEnumerable<Comment>> GetAllByPostIdAsync(string postId);
+        Task<IEnumerable<Comment>> GetAllByPostIdAsync(int postId);
         Task<IEnumerable<Comment>> GetAllByUserIdAsync(string userId);
-        Task<IEnumerable<Comment>> GetAllRecentByPostIdAsync(string postId);
-        Task<int> CountByPostAsync(string postId);
-        Task<bool> DeleteAllByPostAsync(string postId);
-        Task<bool> ExistsAsync(string userId, string postId);
+        Task<IEnumerable<Comment>> GetAllRecentByPostIdAsync(int postId);
+        Task<int> CountByPostAsync(int postId);
+        Task<bool> DeleteAllByPostAsync(int postId);
+        Task<bool> ExistsAsync(string userId, int postId);
 
 
 

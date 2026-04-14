@@ -24,7 +24,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return await _context.Notifications.ToListAsync();
         }
 
-        public async Task<Notification?> GetByIdAsync(string id) 
+        public async Task<Notification?> GetByIdAsync(int id) 
         {
                 var result = await _context.Notifications.FirstOrDefaultAsync(n => n.Id == id);
                 return result;
@@ -42,7 +42,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return true;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(int id)
         {
                 var result = await _context.Notifications.FirstOrDefaultAsync(n => n.Id == id);
                 if (result == null) { return false; }
@@ -50,6 +50,40 @@ namespace Greeny.DAL.Repository.Implementation
                 await _context.SaveChangesAsync();
                 return true;
         }
+
+        public async Task<IEnumerable<Notification>> GetByUserIdAsync(string userId)
+        {
+            return await _context.Notifications.Where(n => n.ReceiverId == userId).Include(n=>n.Sender).ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<Notification>> GetUnreadByUserIdAsync(string userId)
+        {
+            return await _context.Notifications.Where(n => n.ReceiverId == userId && n.IsRead==false).Include(n => n.Sender).ToListAsync();
+        }
+
+        public async Task<bool> MarkAsReadAsync(int notificationId)
+        {
+            var notification = await _context.Notifications
+                .FirstOrDefaultAsync(n => n.Id == notificationId);
+
+            if (notification == null)
+                return false;
+
+            notification.IsRead = true;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<int> CountUnreadAsync(string userId)
+        {
+            return await _context.Notifications
+               .CountAsync(n => n.ReceiverId == userId && n.IsRead == false);
+        }
+
+
 
     }
 }

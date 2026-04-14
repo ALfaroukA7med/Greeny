@@ -24,7 +24,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return await _context.Comments.ToListAsync();
         }
 
-        public async Task<Comment?> GetByIdAsync(string id) 
+        public async Task<Comment?> GetByIdAsync(int id) 
         {
                 var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
                 return result;
@@ -43,7 +43,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return true;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(int id)
         {
                 var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
                 if (result == null) { return false; }
@@ -53,7 +53,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return true;
         }
 
-        public async Task<IEnumerable<Comment>> GetAllByPostIdAsync(string postId)
+        public async Task<IEnumerable<Comment>> GetAllByPostIdAsync(int postId)
         {
             return await _context.Comments
                 .Where(c => c.PostId == postId)
@@ -71,7 +71,7 @@ namespace Greeny.DAL.Repository.Implementation
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Comment>> GetAllRecentByPostIdAsync(string postId)
+        public async Task<IEnumerable<Comment>> GetAllRecentByPostIdAsync(int postId)
         {
             return await _context.Comments
                 .Where(c => c.PostId == postId)
@@ -80,13 +80,13 @@ namespace Greeny.DAL.Repository.Implementation
                 .ToListAsync();
         }
 
-        public async Task<int> CountByPostAsync(string postId)
+        public async Task<int> CountByPostAsync(int postId)
         {
             return await _context.Comments
                 .CountAsync(c => c.PostId == postId);
         }
 
-        public async Task<bool> DeleteAllByPostAsync(string postId)
+        public async Task<bool> DeleteAllByPostAsync(int postId)
         {
             var comments = await _context.Comments
                 .Where(c => c.PostId == postId)
@@ -99,7 +99,7 @@ namespace Greeny.DAL.Repository.Implementation
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> ExistsAsync(string userId, string postId)
+        public async Task<bool> ExistsAsync(string userId, int postId)
         {
             return await _context.Comments
                 .AnyAsync(c => c.UserId == userId && c.PostId == postId);

@@ -26,7 +26,7 @@ namespace Greeny.DAL.Repository.Implementation
             return await _context.Reviews.ToListAsync();
         }
 
-        public async Task<Review?> GetByIdAsync(string id)
+        public async Task<Review?> GetByIdAsync(int id)
         {
             var result = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
             return result;
@@ -46,7 +46,7 @@ namespace Greeny.DAL.Repository.Implementation
             return true;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var result = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
             if (result == null) { return false; }
@@ -56,13 +56,13 @@ namespace Greeny.DAL.Repository.Implementation
         }
 
 
-      public async Task<IEnumerable<Review>> GetAllByProductIDAsync(string productId)
+      public async Task<IEnumerable<Review>> GetAllByProductIDAsync(int productId)
         {
             var reviews = await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync();
             return reviews;
         }
 
-        public async Task<int> CountByProductIdAsync(string productId)
+        public async Task<int> CountByProductIdAsync(int productId)
         {
             var reviews = await _context.Reviews.CountAsync(r => r.ProductId == productId);
             return reviews;
@@ -74,13 +74,13 @@ namespace Greeny.DAL.Repository.Implementation
             return reviews;
         }
 
-        public async Task<bool> ExistsAsync(string userId, string productId)
+        public async Task<bool> ExistsAsync(string userId, int productId)
         {
             return await _context.Reviews.AnyAsync(r => r.UserId == userId && r.ProductId == productId);
         }
 
 
-        public async Task<double> GetAverageRatingForProductAsync(string productId)
+        public async Task<double> GetAverageRatingForProductAsync(int productId)
         {
             var reviews = _context.Reviews.Where(r => r.ProductId == productId);
 

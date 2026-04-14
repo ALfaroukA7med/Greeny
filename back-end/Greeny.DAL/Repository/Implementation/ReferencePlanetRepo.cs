@@ -26,7 +26,7 @@ namespace Greeny.DAL.Repository.Implementation
             return await _context.ReferencePlanets.ToListAsync();
         }
 
-        public async Task<ReferencePlanet?> GetByIdAsync(string id)
+        public async Task<ReferencePlanet?> GetByIdAsync(int id)
         {
             var result = await _context.ReferencePlanets.FirstOrDefaultAsync(rf => rf.Id == id);
             return result;
@@ -54,7 +54,7 @@ namespace Greeny.DAL.Repository.Implementation
             return true;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var result = await _context.ReferencePlanets.FirstOrDefaultAsync(rf => rf.Id == id);
             if (result == null) { return false; }
@@ -75,7 +75,7 @@ namespace Greeny.DAL.Repository.Implementation
             return result;
         }
 
-        public async Task<bool> ExistsByIdAsync(string id)
+        public async Task<bool> ExistsByIdAsync(int id)
         {
             var result = await _context.ReferencePlanets.FirstOrDefaultAsync(rf => rf.Id == id);
             if(result == null) { return false; }

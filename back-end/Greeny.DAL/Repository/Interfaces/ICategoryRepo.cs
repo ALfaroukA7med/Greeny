@@ -5,17 +5,17 @@ namespace Greeny.DAL.Repository.Interfaces
     {
         Task<IEnumerable<Category>> GetAllAsync();
 
-        Task<Category> GetByIdAsync(string id);
+        Task<Category> GetByIdAsync(int id);
 
         Task<bool> CreateAsync(Category category);
 
         Task<bool> UpdateAsync(Category category);
 
-        Task<bool> DeleteAsync(string id);
+        Task<bool> DeleteAsync(int id);
 
         Task<Category?> SearchByName(string name);
 
-        Task<bool> ExistsByIdAsync(string id);
+        Task<bool> ExistsByIdAsync(int id);
 
 
     }

@@ -24,7 +24,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return await _context.Categories.ToListAsync();
         }
 
-        public async Task<Category?> GetByIdAsync(string id)
+        public async Task<Category?> GetByIdAsync(int id)
         {
                 var result = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
                 return result;
@@ -48,7 +48,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return true;
         }
          
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(int id)
         {
                 var result = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
                 if (result == null) { return false; }
@@ -64,7 +64,7 @@ namespace Greeny.DAL.Repository.Implementation
               .FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
         }
 
-        public async Task<bool> ExistsByIdAsync(string id)
+        public async Task<bool> ExistsByIdAsync(int id)
         {
             var result = await _context.Categories.AnyAsync(c => c.Id == id);
             return true;

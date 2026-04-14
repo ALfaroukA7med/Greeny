@@ -5,12 +5,17 @@ namespace Greeny.DAL.Repository.Interfaces
     {
         Task<IEnumerable<Payment>> GetAllAsync();
 
-        Task<Payment> GetByIdAsync(string id);
+        Task<Payment> GetByIdAsync(int id);
 
         Task<bool> CreateAsync(Payment payment);
 
         Task<bool> UpdateAsync(Payment payment);
 
-        Task<bool> DeleteAsync(string id);
+        Task<bool> DeleteAsync(int id);
+
+        Task<IEnumerable<Payment>> GetByUserIdAsync(string userId);
+        Task<Payment> GetByOrderIdAsync(int orderId);
+        Task<bool> ExistsByOrderIdAsync(int orderId);
+        Task<IEnumerable<Payment>> GetAllByStatusAsync(string status);
     }
 }

@@ -25,7 +25,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return await _context.Products.ToListAsync();
         }
 
-        public async Task<Product?> GetByIdAsync(string id)
+        public async Task<Product?> GetByIdAsync(int id)
         {
                 var result =  await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
                 return result;
@@ -55,7 +55,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return true;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(int id)
         {
                 var result = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
                 if (result == null) { return false; }
@@ -109,13 +109,13 @@ namespace Greeny.DAL.Repository.Implementation
                 .AnyAsync(p => p.Name == name);
         }
 
-        public async Task<bool> ExistsByIdAsync(string Id)
+        public async Task<bool> ExistsByIdAsync(int Id)
         {
             return await _context.Products
                 .AnyAsync(p => p.Id == Id);
         }
 
-        public async Task<IEnumerable<Product>> GetAllByCategoryIdAsync(string categoryId)
+        public async Task<IEnumerable<Product>> GetAllByCategoryIdAsync(int categoryId)
         {
             return await _context.Products.Where(p=>p.CategoryId== categoryId).ToListAsync();
         }

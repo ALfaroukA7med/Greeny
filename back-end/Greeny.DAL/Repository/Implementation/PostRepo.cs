@@ -24,7 +24,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return await _context.Posts.ToListAsync();
         }
 
-        public async Task<Post?> GetByIdAsync(string id)
+        public async Task<Post?> GetByIdAsync(int id)
         {
             var result = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
                 return result;
@@ -52,7 +52,7 @@ namespace Greeny.DAL.Repository.Implementation
                 return true;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(int id)
         {
                 var result = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
                 if (result == null) { return false; }

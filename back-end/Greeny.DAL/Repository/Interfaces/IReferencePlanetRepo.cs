@@ -6,19 +6,19 @@ namespace Greeny.DAL.Repository.Interfaces
     {
         Task<IEnumerable<ReferencePlanet>> GetAllAsync();
 
-        Task<ReferencePlanet> GetByIdAsync(string id);
+        Task<ReferencePlanet> GetByIdAsync(int id);
 
         Task<bool> CreateAsync(ReferencePlanet referencePlanet);
 
         Task<bool> UpdateAsync(ReferencePlanet referencePlanet);
 
-        Task<bool> DeleteAsync(string id);
+        Task<bool> DeleteAsync(int id);
 
         Task<ReferencePlanet> GetBySciNameAsync(string sciName);
 
         Task<ReferencePlanet> GetByCommonNameAsync(string commonName);
 
-        Task<bool> ExistsByIdAsync(string id);
+        Task<bool> ExistsByIdAsync(int id);
 
 
 

@@ -5,13 +5,13 @@ namespace Greeny.DAL.Repository.Interfaces
     {
         Task<IEnumerable<Post>> GetAllAsync();
 
-        Task<Post> GetByIdAsync(string id);
+        Task<Post> GetByIdAsync(int id);
 
         Task<bool> CreateAsync(Post post);
 
         Task<bool> UpdateAsync(Post post);
          
-        Task<bool> DeleteAsync(string id);
+        Task<bool> DeleteAsync(int id);
 
         Task<IEnumerable<Post>> SearchAsync(string keyword);
         Task<IEnumerable<Post>> GetRecentAsync();
