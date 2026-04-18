@@ -22,7 +22,11 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-                return await _context.Products.ToListAsync();
+            return await _context.Products
+            .Where(p => !p.IsDeleted)
+            .Include(p => p.Category)
+            .Include(p => p.Reviews)
+            .ToListAsync();
         }
 
         public async Task<Product?> GetByIdAsync(int id)
@@ -42,14 +46,13 @@ namespace Greeny.DAL.Repository.Implementation
                 result.Price = newProduct.Price;
                 result.Description = newProduct.Description;
                 result.Quantity = newProduct.Quantity;
-                result.IsDeleted = newProduct.IsDeleted;
+                result.IsDeleted=newProduct.IsDeleted;
 
 
             if (!string.IsNullOrEmpty(newProduct.Image))
             {
                 result.Image = newProduct.Image;
             }
-
 
             await _context.SaveChangesAsync();
                 return true;
@@ -60,8 +63,8 @@ namespace Greeny.DAL.Repository.Implementation
                 var result = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
                 if (result == null) { return false; }
 
-                _context.Products.Remove(result);
-                await _context.SaveChangesAsync();
+            result.IsDeleted = true;
+            await _context.SaveChangesAsync();
                 return true;
         }
 

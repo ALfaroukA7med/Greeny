@@ -7,14 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ModelVM\" />
-    <Folder Include="Helper\" />
-    <Folder Include="Global\" />
-    <Folder Include="ResponseResult\" />
-    <Folder Include="Services\" />
+    <Compile Remove="AutoMapper\**" />
+    <Compile Remove="Helper\**" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="AutoMapper\**" />
+    <EmbeddedResource Remove="Helper\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="AutoMapper\**" />
+    <None Remove="Helper\**" />
+    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Admin\Helper\" />
+    <Folder Include="Auth\AutoMapper\" />
+    <Folder Include="Auth\Helper\" />
+    <Folder Include="Auth\Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />

@@ -1,4 +1,9 @@
+using Greeny.BLL.Admin.Services.Interfaces;
 using Greeny.DAL.Database;
+using Greeny.DAL.Entities;
+using Greeny.DAL.Repository.Implementation;
+using Greeny.DAL.Repository.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Greeny.PL
@@ -12,6 +17,23 @@ namespace Greeny.PL
             var config = builder.Configuration.GetConnectionString("ProjectConnection");
             builder.Services.AddDbContext<GreenyDbContext>(options =>
                 options.UseSqlServer(config));
+
+
+            builder.Services.AddIdentity<User, IdentityRole>()
+            .AddEntityFrameworkStores<GreenyDbContext>()
+            .AddDefaultTokenProviders();
+
+            // Repositories
+            builder.Services.AddScoped<IProductRepo, ProductRepo>();
+
+            // Services
+            builder.Services.AddScoped<IProductService, ProductService>();
+
+            // AutoMapper
+            builder.Services.AddAutoMapper(typeof(ProductProfile));
+
+
+
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -31,6 +53,7 @@ namespace Greeny.PL
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseAuthentication(); 
             app.UseAuthorization();
 
             app.MapStaticAssets();

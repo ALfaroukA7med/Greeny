@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Greeny.BIL\Greeny.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Product\" />
+  </ItemGroup>
+
 </Project>
