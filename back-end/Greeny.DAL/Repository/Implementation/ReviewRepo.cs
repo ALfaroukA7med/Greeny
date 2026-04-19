@@ -23,18 +23,17 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<IEnumerable<Review>> GetAllAsync()
         {
-            return await _context.Reviews.ToListAsync();
+            return await _context.Reviews.Where(r=>!r.IsDeleted).ToListAsync();
         }
 
         public async Task<Review?> GetByIdAsync(int id)
         {
-            var result = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
-            return result;
+            return await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
         }
 
         public async Task<bool> UpdateAsync(Review newReview)
         {
-            var result = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == newReview.Id);
+            var result = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == newReview.Id && !r.IsDeleted);
             if (result == null)
             {
                 return false;
@@ -48,9 +47,10 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var result = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
+            var result = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
             if (result == null) { return false; }
-            _context.Reviews.Remove(result);
+
+            result.IsDeleted = true;
             await _context.SaveChangesAsync();
             return true;
         }
@@ -58,35 +58,31 @@ namespace Greeny.DAL.Repository.Implementation
 
       public async Task<IEnumerable<Review>> GetAllByProductIDAsync(int productId)
         {
-            var reviews = await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync();
-            return reviews;
+            return await _context.Reviews.Where(r => r.ProductId == productId && !r.IsDeleted).ToListAsync();     
         }
 
         public async Task<int> CountByProductIdAsync(int productId)
         {
-            var reviews = await _context.Reviews.CountAsync(r => r.ProductId == productId);
-            return reviews;
+            return await _context.Reviews.CountAsync(r => r.ProductId == productId && !r.IsDeleted);     
         }
 
-        public async Task<List<Review>> GetByUserIdAsync(string userId)
+        public async Task<IEnumerable<Review>> GetByUserIdAsync(string userId)
         {
-            var reviews = await _context.Reviews.Where(r => r.UserId == userId).ToListAsync();
-            return reviews;
+            return await _context.Reviews.Where(r => r.UserId == userId && !r.IsDeleted).ToListAsync();
         }
 
         public async Task<bool> ExistsAsync(string userId, int productId)
         {
-            return await _context.Reviews.AnyAsync(r => r.UserId == userId && r.ProductId == productId);
+            return await _context.Reviews.AnyAsync(r => r.UserId == userId && r.ProductId == productId && !r.IsDeleted);
         }
 
 
         public async Task<double> GetAverageRatingForProductAsync(int productId)
         {
-            var reviews = _context.Reviews.Where(r => r.ProductId == productId);
-
-            if (!await reviews.AnyAsync()) { return 0; }
-
-            return await reviews.AverageAsync(r => r.Stars);
+            return await _context.Reviews
+           .Where(r => r.ProductId == productId && !r.IsDeleted)
+           .Select(r => (double?)r.Stars)
+           .AverageAsync() ?? 0;
         }
 
 

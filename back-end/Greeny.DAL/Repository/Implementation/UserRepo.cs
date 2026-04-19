@@ -22,18 +22,18 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Where(u=> !u.IsDeleted).ToListAsync();
         }
 
         public async Task<User?> GetByIdAsync(string id)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == id && !u.IsDeleted);
             return result;
         }
 
         public async Task<bool> UpdateAsync(User newUser)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == newUser.Id);
+            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == newUser.Id && !u.IsDeleted);
             if (result == null)
             {
                 return false;
@@ -41,7 +41,6 @@ namespace Greeny.DAL.Repository.Implementation
             result.FirstName = newUser.FirstName;
             result.LastName = newUser.LastName;
             result.Address = newUser.Address;
-            result.IsDeleted = newUser.IsDeleted;
 
             if (!string.IsNullOrEmpty(newUser.ProfilePicture))
             {
@@ -54,30 +53,21 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<bool> DeleteAsync(string id)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == id && !u.IsDeleted);
             if (result == null) { return false; }
             result.IsDeleted = true;
+            await _context.SaveChangesAsync();
             return true;
-        }
-
-        public async Task<bool> IsActiveAsync(string id)
-        {
-            return await _context.Users.AsNoTracking().AnyAsync(u => u.Id == id && !u.IsDeleted);
-        }
-
-        public async Task<bool> IsNoActiveAsync(string id)
-        {
-            return await _context.Users.AsNoTracking().AnyAsync(u => u.Id == id && u.IsDeleted==true);
         }
 
         public async Task<IEnumerable<User>> GetAllActiveAsync()
         {
-            return await _context.Users.Where(u=>u.IsDeleted==false).ToListAsync();
+            return await _context.Users.Where(u=> !u.IsDeleted).ToListAsync();
         }
 
-        public async Task<IEnumerable<User>> GetAllNoActiveAsync()
+        public async Task<IEnumerable<User>> GetAllDeletedAsync()
         {
-            return await _context.Users.Where(u => u.IsDeleted == true).ToListAsync();
+            return await _context.Users.Where(u => u.IsDeleted).ToListAsync();
         }
     }
 }

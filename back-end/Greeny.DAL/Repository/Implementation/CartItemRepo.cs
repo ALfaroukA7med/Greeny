@@ -23,18 +23,19 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<IEnumerable<CartItem>> GetAllAsync()
         {
-            return await _context.CartItems.ToListAsync();
+            return await _context.CartItems.Where(c=>!c.IsDeleted).ToListAsync();
         }
 
         public async Task<CartItem?> GetByIdAsync(int id)
         {
-            var result = await _context.CartItems.FirstOrDefaultAsync(c => c.Id == id);
-            return result;
+            return await _context.CartItems
+            .Include(c=>c.Product)
+            .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
         }
 
         public async Task<bool> UpdateAsync(CartItem newCartItem)
         {
-            var result = await _context.CartItems.FirstOrDefaultAsync(c => c.Id == newCartItem.Id);
+            var result = await _context.CartItems.FirstOrDefaultAsync(c => c.Id == newCartItem.Id && !c.IsDeleted);
             if (result == null)
             {
                 return false;
@@ -46,50 +47,45 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var result = await _context.CartItems.FirstOrDefaultAsync(c => c.Id == id);
+            var result = await _context.CartItems.FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
             if (result == null) { return false; }
-            _context.CartItems.Remove(result);
+
+            result.IsDeleted = true;
             await _context.SaveChangesAsync();
             return true;
         }
         public async Task<IEnumerable<CartItem>> GetByCartIdAsync(int cartId)
         {
-            return await _context.CartItems.Where(c => c.CartId == cartId).ToListAsync();
-        }
-
-       public async Task<IEnumerable<CartItem>> GetCartWithProductAsync(int cartId)
-        {
-            return await _context.CartItems.Where(c => c.CartId == cartId).Include(c=>c.Product).ToListAsync();
+            return await _context.CartItems
+            .Include(c=>c.Product)
+           .Where(c => c.CartId == cartId && !c.IsDeleted).ToListAsync();
         }
 
         public async Task<CartItem?> GetByCartAndProductAsync(int cartId, int productId)
         {
-            return await _context.CartItems.FirstOrDefaultAsync(c => c.CartId == cartId && c.ProductId == productId);
+            return await _context.CartItems
+            .FirstOrDefaultAsync(c => c.CartId == cartId && c.ProductId == productId && !c.IsDeleted);
         }
 
         public async Task<bool> ExistsAsync(int cartId, int productId)
         {
-            return await _context.CartItems.AnyAsync(c => c.CartId == cartId && c.ProductId == productId);
+            return await _context.CartItems
+            .AnyAsync(c => c.CartId == cartId && c.ProductId == productId && !c.IsDeleted);
         }
 
         public async Task<bool> ClearCartAsync(int cartId)
         {
             var result = await _context.CartItems
-           .Where(c => c.CartId == cartId)
-           .ExecuteDeleteAsync();
+           .Where(c => c.CartId == cartId && !c.IsDeleted).ToListAsync();
 
-            return result > 0;
+
+            foreach (var item in result)
+            {
+                item.IsDeleted = true;
+            }
+
+            return await _context.SaveChangesAsync()> 0;
         }
-
-
-        public async Task<decimal> GetTotalPriceAsync(int cartId)
-        {
-            return await _context.CartItems
-            .Where(c => c.CartId == cartId)
-            .Include(c => c.Product)
-           .SumAsync(c => c.Quantity * c.Product.Price); ;
-        }
-
 
     }
 }

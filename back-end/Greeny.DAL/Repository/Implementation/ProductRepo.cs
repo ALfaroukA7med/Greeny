@@ -25,19 +25,20 @@ namespace Greeny.DAL.Repository.Implementation
             return await _context.Products
             .Where(p => !p.IsDeleted)
             .Include(p => p.Category)
-            .Include(p => p.Reviews)
             .ToListAsync();
         }
 
         public async Task<Product?> GetByIdAsync(int id)
         {
-                var result =  await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-                return result;
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Reviews)
+                .FirstOrDefaultAsync(p => p.Id == id&& !p.IsDeleted);
         }
 
         public async Task<bool> UpdateAsync(Product newProduct)
         {
-                var result =await _context.Products.FirstOrDefaultAsync(p => p.Id == newProduct.Id);
+                var result =await _context.Products.FirstOrDefaultAsync(p => p.Id == newProduct.Id && !p.IsDeleted);
 
             if (result == null)
             { return false; }
@@ -46,8 +47,6 @@ namespace Greeny.DAL.Repository.Implementation
                 result.Price = newProduct.Price;
                 result.Description = newProduct.Description;
                 result.Quantity = newProduct.Quantity;
-                result.IsDeleted=newProduct.IsDeleted;
-
 
             if (!string.IsNullOrEmpty(newProduct.Image))
             {
@@ -60,11 +59,11 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<bool> DeleteAsync(int id)
         {
-                var result = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+                var result = await _context.Products.FirstOrDefaultAsync(p => p.Id == id&& !p.IsDeleted);
                 if (result == null) { return false; }
 
-            result.IsDeleted = true;
-            await _context.SaveChangesAsync();
+                result.IsDeleted = true;
+                await _context.SaveChangesAsync();
                 return true;
         }
 
@@ -72,21 +71,24 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<IEnumerable<Product>> SearchByNameAsync(string name)
         {
             return await _context.Products
-                .Where(p => p.Name.Contains(name))
+                .Where(p => EF.Functions.Like(p.Name, $"%{name}%") && !p.IsDeleted)
+                .Include(p => p.Category)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetInStockAsync()
         {
             return await _context.Products
-                .Where(p => p.Quantity > 0)
+                .Where(p => p.Quantity > 0 && !p.IsDeleted)
+                .Include(p => p.Category)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetOutStockAsync()
         {
             return await _context.Products
-                .Where(p => p.Quantity == 0)
+                .Where(p => p.Quantity == 0 && !p.IsDeleted)
+                .Include (p => p.Category)
                 .ToListAsync();
         }
 
@@ -109,18 +111,18 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<bool> ExistsByNameAsync(string name)
         {
             return await _context.Products
-                .AnyAsync(p => p.Name == name);
+                .AnyAsync(p => EF.Functions.Like(p.Name, $"%{name}%") && !p.IsDeleted);
         }
 
         public async Task<bool> ExistsByIdAsync(int Id)
         {
             return await _context.Products
-                .AnyAsync(p => p.Id == Id);
+                .AnyAsync(p => p.Id == Id && !p.IsDeleted);
         }
 
         public async Task<IEnumerable<Product>> GetAllByCategoryIdAsync(int categoryId)
         {
-            return await _context.Products.Where(p=>p.CategoryId== categoryId).ToListAsync();
+            return await _context.Products.Where(p=>p.CategoryId== categoryId && !p.IsDeleted).ToListAsync();
         }
     }
 }

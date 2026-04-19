@@ -14,7 +14,7 @@
 
         Task<IEnumerable<Review>> GetAllByProductIDAsync(int productId);
         Task<int> CountByProductIdAsync(int productId);
-        Task<List<Review>> GetByUserIdAsync(string userId);
+        Task<IEnumerable<Review>> GetByUserIdAsync(string userId);
         Task<bool> ExistsAsync(string userId, int productId);
         Task<double> GetAverageRatingForProductAsync(int productId);
     }

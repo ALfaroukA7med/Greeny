@@ -18,7 +18,7 @@ namespace Greeny.DAL.Repository.Interfaces
 
         Task<int> CountByUserIdAsync(string userId);
 
-        Task<bool> HasPostsAsync(string userId);
+        Task<bool> ExistPostsAsync(string userId);
 
         Task<bool> DeleteAllByUserIdAsync(string userId);
 

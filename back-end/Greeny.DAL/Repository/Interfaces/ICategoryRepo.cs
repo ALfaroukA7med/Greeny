@@ -13,7 +13,7 @@ namespace Greeny.DAL.Repository.Interfaces
 
         Task<bool> DeleteAsync(int id);
 
-        Task<Category?> SearchByName(string name);
+        Task<IEnumerable<Category>> SearchByNameAsync(string name);
 
         Task<bool> ExistsByIdAsync(int id);
 

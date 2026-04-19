@@ -5,6 +5,8 @@
         public int Id { get; set; }
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
 
         // Relationships
         public int ProductId { get; set; }

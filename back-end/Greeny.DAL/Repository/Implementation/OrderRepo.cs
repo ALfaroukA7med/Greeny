@@ -21,18 +21,21 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders.Where(o=>!o.IsDeleted).ToListAsync();
         }
 
         public async Task<Order?> GetByIdAsync(int id)
         {
-            var result = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
-            return result;
+            return await _context.Orders
+           .Include(o => o.User)
+           .Include(o=>o.OrderItems)
+           .ThenInclude(oi => oi.Product)
+           .FirstOrDefaultAsync(o => o.Id == id && !o.IsDeleted);
         }
 
         public async Task<bool> UpdateAsync(Order newOrder)
         {
-            var result = await _context.Orders.FirstOrDefaultAsync(o => o.Id == newOrder.Id);
+            var result = await _context.Orders.FirstOrDefaultAsync(o => o.Id == newOrder.Id && !o.IsDeleted);
             if (result == null)
             {
                 return false;
@@ -48,40 +51,38 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var result = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
+            var result = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id && !o.IsDeleted);
             if (result == null) { return false; }
-            _context.Orders.Remove(result);
+
+            result.IsDeleted = true;
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<Order?> GetOrderWithDetailsAsync(int id)
-        {
-            return await _context.Orders
-                .Include(o => o.User)
-                .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Product)
-                .FirstOrDefaultAsync(o => o.Id == id);
-        }
 
       public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(string userId)
         {
-            return await _context.Orders.Where(o => o.UserId == userId).ToListAsync();
+            return await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .Where(o => o.UserId == userId && !o.IsDeleted).ToListAsync();
         }
 
-       public async Task<IEnumerable<Order>> GetOrdersByUserIdAndStatusAsync(string status, string userId)
+       public async Task<IEnumerable<Order>> GetOrdersByUserIdAndStatusAsync(string userId, string status)
         {
-            return await _context.Orders.Where(o => o.UserId == userId &&  o.Status==status).ToListAsync();
+            return await _context.Orders
+            .Where(o => o.UserId == userId &&  o.Status==status && !o.IsDeleted).ToListAsync();
         }
 
        public async Task<IEnumerable<Order>> GetOrdersByStatusAsync(string status)
         {
-            return await _context.Orders.Where(o => o.Status == status).ToListAsync();
+            return await _context.Orders.Where(o => o.Status == status && !o.IsDeleted).ToListAsync();
         }
 
        public async Task<IEnumerable<Order>> GetRecentOrdersAsync()
         {
             return await _context.Orders
+            .Where(o=> !o.IsDeleted)
             .OrderByDescending(o => o.Date)
             .Take(10)
             .ToListAsync();
@@ -89,16 +90,15 @@ namespace Greeny.DAL.Repository.Implementation
 
        public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Orders.AnyAsync(o => o.Id == id);
+            return await _context.Orders.AnyAsync(o => o.Id == id && !o.IsDeleted);
         }
 
         public async Task<decimal> GetTotalSalesAsync()
         {
             return await _context.Orders
+           .Where(o => !o.IsDeleted && o.Status == "Paid")
            .SumAsync(o => o.TotalPrice);
         }
-
-
 
     }
 }

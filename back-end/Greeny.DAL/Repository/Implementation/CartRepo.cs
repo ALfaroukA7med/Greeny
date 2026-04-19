@@ -22,53 +22,47 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<IEnumerable<Cart>> GetAllAsync()
         {
-            return await _context.Carts.ToListAsync();
+            return await _context.Carts.Where(c=>!c.IsDeleted).ToListAsync();
         }
 
         public async Task<Cart?> GetByIdAsync(int id)
         {
-            var result = await _context.Carts.FirstOrDefaultAsync(c => c.Id == id);
-            return result;
-        }
-
-        //TODO : modifiy the cart update
-        public async Task<bool> UpdateAsync(Cart newCart)
-        {
-            var result = await _context.Carts.FirstOrDefaultAsync(c => c.Id == newCart.Id);
-            if (result == null)
-            {
-                return false;
-            }
-            await _context.SaveChangesAsync();
-            return true;
+            return await _context.Carts
+            .Include(c=>c.CartItems)
+            .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var result = await _context.Carts.FirstOrDefaultAsync(c => c.Id == id);
+            var result = await _context.Carts.FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
             if (result == null) { return false; }
-            _context.Carts.Remove(result);
+
+            result.IsDeleted = true;
             await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task<Cart?> GetByUserIdAsync(string userId)
         {
-            return await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
+            return await _context.Carts
+            .Include(c => c.CartItems)
+            .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsDeleted);
         }
 
-        public async Task<Cart?> GetCartWithItemsByUserIdAsync(string userId)
-        {
-            return await _context.Carts
-                .Where(c => c.UserId == userId)
-                .Include(c => c.CartItems)
-                .ThenInclude(ci => ci.Product)
-                .FirstOrDefaultAsync();
-        }
 
         public async Task<bool> ExistsByUserIdAsync(string userId)
         {
-            return await _context.Carts.AnyAsync(c => c.UserId == userId);
+            return await _context.Carts.AnyAsync(c => c.UserId == userId && !c.IsDeleted);
         }
+
+
+        public async Task<decimal> GetTotalPriceAsync(int cartId)
+        {
+            return await _context.CartItems
+           .Include(c => c.Product)
+           .Where(c => c.CartId == cartId && !c.IsDeleted)
+           .SumAsync(c => c.Quantity * c.Product.Price);
+        }
+
     }
 }

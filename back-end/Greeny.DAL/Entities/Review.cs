@@ -6,6 +6,7 @@
         public string? Content { get; set; } = null;
         public int Stars { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
 
         // Relationships
         public string UserId { get; set; }

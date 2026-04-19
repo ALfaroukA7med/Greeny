@@ -14,5 +14,6 @@
         public string SolidType { get; set; }
         public int WaterReq { get; set; }
         public int TempReq { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Greeny.BLL.Admin.ModelVM.ProductVM;
 using Greeny.BLL.Admin.Response;
-using Greeny.DAL.Entities;
 namespace Greeny.BLL.Admin.Services.Interfaces
 {
     public interface IProductService

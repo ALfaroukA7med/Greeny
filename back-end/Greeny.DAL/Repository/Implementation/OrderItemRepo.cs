@@ -23,18 +23,21 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<IEnumerable<OrderItem>> GetAllAsync()
         {
-            return await _context.OrderItems.ToListAsync();
+            return await _context.OrderItems.Where(o=> !o.IsDeleted).ToListAsync();
         }
 
         public async Task<OrderItem?> GetByIdAsync(int id)
         {
-            var result = await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == id);
+            var result = await _context.OrderItems
+            .Include(o => o.Product)
+            .Include(o => o.Order)
+            .FirstOrDefaultAsync(o => o.Id == id && !o.IsDeleted);
             return result;
         }
 
         public async Task<bool> UpdateAsync(OrderItem newOrderItem)
         {
-            var result = await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == newOrderItem.Id);
+            var result = await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == newOrderItem.Id && !o.IsDeleted);
             if (result == null)
             {
                 return false;
@@ -48,9 +51,10 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var result = await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == id);
+            var result = await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == id && !o.IsDeleted);
             if (result == null) { return false; }
-            _context.OrderItems.Remove(result);
+
+            result.IsDeleted = true;
             await _context.SaveChangesAsync();
             return true;
         }
@@ -58,38 +62,38 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<IEnumerable<OrderItem>> GetByOrderIdAsync(int orderId)
         {
             return await _context.OrderItems
-                .Where(i => i.OrderId == orderId)
-                .Include(i => i.Product)
+                .Where(o => o.OrderId == orderId && !o.IsDeleted)
+                .Include(o => o.Product)
                 .ToListAsync();
         }
 
       public async Task<decimal> GetTotalPriceByOrderIdAsync(int orderId)
         {
             return await _context.OrderItems
-            .Where(i => i.OrderId == orderId)
-            .SumAsync(i=> i.UnitPrice * i.Quantity);
+            .Where(o => o.OrderId == orderId && !o.IsDeleted)
+            .SumAsync(o => (decimal?)o.UnitPrice * o.Quantity) ?? 0;
         }
 
        public async Task<int> GetItemsCountByOrderIdAsync(int orderId)
         {
-            return await _context.OrderItems.CountAsync(o => o.OrderId == orderId);
+            return await _context.OrderItems.CountAsync(o => o.OrderId == orderId && !o.IsDeleted);
         }
 
-       public async Task<bool> ProductExistInOrderAsync(int orderId, int productId)
+       public async Task<bool> ProductExistsInOrderAsync(int orderId, int productId)
         {
             return await _context.OrderItems
-            .AnyAsync(i => i.OrderId == orderId && i.ProductId==productId);
+            .AnyAsync(o => o.OrderId == orderId && o.ProductId==productId && !o.IsDeleted);
         }
          
         public async Task<bool> RemoveProductFromOrderAsync(int orderId, int productId)
         {
             var item = await _context.OrderItems
-            .FirstOrDefaultAsync(i => i.OrderId == orderId && i.ProductId == productId);
+            .FirstOrDefaultAsync(o => o.OrderId == orderId && o.ProductId == productId && !o.IsDeleted);
 
             if (item == null)
                 return false;
 
-            _context.OrderItems.Remove(item);
+            item.IsDeleted = true;
             await _context.SaveChangesAsync();
 
             return true;

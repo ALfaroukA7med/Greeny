@@ -10,6 +10,7 @@ namespace Greeny.DAL.Entities
         public int Votes { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public string? ImagePath { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
 
         //Relationships

@@ -3,6 +3,7 @@
     public class Cart
     {
         public int Id { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         // Relationships
         public ICollection<CartItem> CartItems { get; set; } = new HashSet<CartItem>();

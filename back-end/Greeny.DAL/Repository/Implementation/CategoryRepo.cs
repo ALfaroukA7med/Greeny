@@ -21,13 +21,12 @@ namespace Greeny.DAL.Repository.Implementation
          
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
-                return await _context.Categories.ToListAsync();
+                return await _context.Categories.Where(c=>!c.IsDeleted).ToListAsync();
         }
 
         public async Task<Category?> GetByIdAsync(int id)
         {
-                var result = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
-                return result;
+                return await _context.Categories.FirstOrDefaultAsync(c => c.Id == id&& !c.IsDeleted);
         }
 
         public async Task<bool> UpdateAsync(Category newCategory)
@@ -50,24 +49,23 @@ namespace Greeny.DAL.Repository.Implementation
          
         public async Task<bool> DeleteAsync(int id)
         {
-                var result = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+                var result = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
                 if (result == null) { return false; }
 
-                _context.Categories.Remove(result);
+                result.IsDeleted = true;
                 await _context.SaveChangesAsync();
                 return true;
         }
 
-        public async Task<Category?> SearchByName(string name)
+        public async Task<IEnumerable<Category>> SearchByNameAsync(string name)
         {
             return await _context.Categories
-              .FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
+              .Where(c => EF.Functions.Like(c.Name, $"%{name}%") && !c.IsDeleted).ToListAsync();
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
         {
-            var result = await _context.Categories.AnyAsync(c => c.Id == id);
-            return true;
+            return await _context.Categories.AnyAsync(c => c.Id == id&& !c.IsDeleted);
         }
     }
 }

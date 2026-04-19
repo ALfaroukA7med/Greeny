@@ -7,6 +7,8 @@
         [Range(0,5)]
         public int Votes { get; set; } = 0;
         public DateTime Date { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
+
 
         //Relationships
         public string UserId { get; set; }

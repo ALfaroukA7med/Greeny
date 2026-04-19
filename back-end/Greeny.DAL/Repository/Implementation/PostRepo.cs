@@ -21,18 +21,19 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
-                return await _context.Posts.ToListAsync();
+                return await _context.Posts.Where(p => !p.IsDeleted).ToListAsync();
         }
 
         public async Task<Post?> GetByIdAsync(int id)
         {
-            var result = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
-                return result;
+            return await _context.Posts
+            .Include(p=>p.Comments)
+            .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
         }
 
         public async Task<bool> UpdateAsync(Post newPost)
         {
-            var result = await _context.Posts.FirstOrDefaultAsync(p => p.Id == newPost.Id);
+            var result = await _context.Posts.FirstOrDefaultAsync(p => p.Id == newPost.Id && !p.IsDeleted);
             if (result == null)
             {
                 return false;
@@ -46,17 +47,16 @@ namespace Greeny.DAL.Repository.Implementation
             {
                 result.ImagePath = newPost.ImagePath;
             }
-
-
             await _context.SaveChangesAsync();
                 return true;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-                var result = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+                var result = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
                 if (result == null) { return false; }
-                _context.Posts.Remove(result);
+
+                result.IsDeleted = true;
                 await _context.SaveChangesAsync();
                 return true;
         }
@@ -64,46 +64,52 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<IEnumerable<Post>> SearchAsync(string keyword)
         {
             return await _context.Posts
-                .Where(p => p.Content.Contains(keyword))
+                .Where(p => EF.Functions.Like(p.Content, $"%{keyword}%") && !p.IsDeleted)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Post>> GetRecentAsync()
         {
-           var date = DateTime.Now;
             return await _context.Posts
-                .Where(p => p.Date >= date)
-                .OrderByDescending(p => p.Date)
-                .Take(10)
-                .ToListAsync();
+           .Where(p => !p.IsDeleted)
+           .OrderByDescending(p => p.Date)
+           .Take(10)
+           .ToListAsync();
         }
 
 
         public async Task<int> CountByUserIdAsync(string userId)
         {
             return await _context.Posts
-                .CountAsync(p => p.UserId == userId);
+                .CountAsync(p => p.UserId == userId && !p.IsDeleted);
         }
 
-        public async Task<bool> HasPostsAsync(string userId)
+        public async Task<bool> ExistPostsAsync(string userId)
         {
             return await _context.Posts
-                .AnyAsync(p => p.UserId == userId);
+                .AnyAsync(p => p.UserId == userId && !p.IsDeleted);
         }
 
         public async Task<bool> DeleteAllByUserIdAsync(string userId)
         {
-            var rows = await _context.Posts
-                .Where(p => p.UserId == userId)
-                .ExecuteDeleteAsync();
+            var posts = await _context.Posts
+           .Where(p => p.UserId == userId && !p.IsDeleted)
+           .ToListAsync();
 
-            return rows > 0;
+            foreach (var post in posts)
+            {
+                post.IsDeleted = true;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
         }
 
 
         public async Task<IEnumerable<Post>> GetAllByUserIdAsync(string userId)
         {
-            return await _context.Posts.Where(p => p.UserId == userId).ToListAsync();
+            return await _context.Posts.Include(p=>p.Comments)
+           .Where(p => p.UserId == userId && !p.IsDeleted).ToListAsync();
         }
 
 

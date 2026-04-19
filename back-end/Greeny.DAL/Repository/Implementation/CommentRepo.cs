@@ -21,18 +21,21 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<IEnumerable<Comment>> GetAllAsync()
         {
-                return await _context.Comments.ToListAsync();
+                return await _context.Comments
+                .Where(c=>!c.IsDeleted).ToListAsync();
         }
 
         public async Task<Comment?> GetByIdAsync(int id) 
         {
-                var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
-                return result;
+                return await _context.Comments
+                .Include(c => c.User)
+                .Include(c=>c.Post)
+                .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
         }
 
         public async Task<bool> UpdateAsync(Comment newComment) 
         {
-                var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == newComment.Id);
+                var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == newComment.Id && !c.IsDeleted);
 
             if (result == null) { return false; }
 
@@ -45,10 +48,10 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<bool> DeleteAsync(int id)
         {
-                var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
+                var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
                 if (result == null) { return false; }
 
-                _context.Comments.Remove(result);
+                result.IsDeleted = true;
                 await _context.SaveChangesAsync();
                 return true;
         }
@@ -56,17 +59,16 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<IEnumerable<Comment>> GetAllByPostIdAsync(int postId)
         {
             return await _context.Comments
-                .Where(c => c.PostId == postId)
                 .Include(c => c.User)
-                .OrderBy(c => c.Date)
+                .Where(c => c.PostId == postId && !c.IsDeleted)
+                .OrderByDescending(n => n.Date)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Comment>> GetAllByUserIdAsync(string userId)
         {
             return await _context.Comments
-                .Where(c => c.UserId == userId)
-                .Include(c => c.Post)
+                .Where(c => c.UserId == userId && !c.IsDeleted)
                 .OrderByDescending(c => c.Date)
                 .ToListAsync();
         }
@@ -74,7 +76,8 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<IEnumerable<Comment>> GetAllRecentByPostIdAsync(int postId)
         {
             return await _context.Comments
-                .Where(c => c.PostId == postId)
+                .Include(c => c.User)
+                .Where(c => c.PostId == postId && !c.IsDeleted)
                 .OrderByDescending(c => c.Date)
                 .Take(10)
                 .ToListAsync();
@@ -83,26 +86,29 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<int> CountByPostAsync(int postId)
         {
             return await _context.Comments
-                .CountAsync(c => c.PostId == postId);
+            .CountAsync(c => c.PostId == postId && !c.IsDeleted);
         }
 
         public async Task<bool> DeleteAllByPostAsync(int postId)
         {
             var comments = await _context.Comments
-                .Where(c => c.PostId == postId)
+                .Where(c => c.PostId == postId && !c.IsDeleted)
                 .ToListAsync();
 
             if (!comments.Any())
                 return false;
 
-            _context.Comments.RemoveRange(comments);
+            foreach (var item in comments)
+            {
+                item.IsDeleted = true;
+            }
             return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> ExistsAsync(string userId, int postId)
         {
             return await _context.Comments
-                .AnyAsync(c => c.UserId == userId && c.PostId == postId);
+            .AnyAsync(c => c.UserId == userId && c.PostId == postId && !c.IsDeleted);
         }
 
     }

@@ -6,6 +6,9 @@
         public string Content { get; set; }
         public bool IsRead { get; set; } = false;
         public DateTime Date { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
+
+
         // Relationships
 
         public string ReceiverId { get; set; } 

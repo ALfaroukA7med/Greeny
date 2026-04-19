@@ -8,7 +8,9 @@
         public DateTime? PaidAt { get; set; }
         public decimal Amount { get; set; }
         public string? TransactionRef { get; set; }
-         
+        public bool IsDeleted { get; set; } = false;
+
+
         // Relationships
         public string UserId { get; set; }
         public  User User { get; set; }
