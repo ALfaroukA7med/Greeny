@@ -30,8 +30,10 @@ namespace Greeny.PL
             builder.Services.AddScoped<IProductService, ProductService>();
 
             // AutoMapper
-            builder.Services.AddAutoMapper(typeof(ProductProfile));
-
+            builder.Services.AddAutoMapper(cfg =>
+            {
+        
+            }, typeof(ProductProfile).Assembly);
 
 
 
