@@ -1,440 +1,439 @@
-﻿using AutoMapper;
-using Greeny.BLL.Admin.ModelVM.ProductVM;
-using Greeny.BLL.Admin.Response;
-using Greeny.BLL.Admin.Services.Interfaces;
-using Greeny.DAL.Entities;
-using Greeny.DAL.Repository.Interfaces;
-
-public class ProductService : IProductService
+﻿
+namespace Greeny.BLL.Admin.Services.Implementation
 {
-    private readonly IProductRepo _productRepo;
-    private readonly IMapper _mapper;
-
-    public ProductService(IProductRepo productRepo, IMapper mapper)
+    public class ProductService : IProductService
     {
-        _productRepo = productRepo;
-        _mapper = mapper;
-    }
+        private readonly IProductRepo _productRepo;
+        private readonly IMapper _mapper;
 
-    // Get All
-    public async Task<Response<IEnumerable<DetailsProductVM>>> GetAllAsync()
-    {
-        try
+        public ProductService(IProductRepo productRepo, IMapper mapper)
         {
-            var products = await _productRepo.GetAllAsync();
+            _productRepo = productRepo;
+            _mapper = mapper;
+        }
 
-            if (products == null || !products.Any())
+        // Get All
+        public async Task<Response<IEnumerable<DetailsProductVM>>> GetAllAsync()
+        {
+            try
+            {
+                var products = await _productRepo.GetAllAsync();
+
+                if (products == null || !products.Any())
+                {
+                    return new Response<IEnumerable<DetailsProductVM>>
+                    {
+                        IsSuccess = false,
+                        Message = "No Products Found"
+                    };
+                }
+
+                var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
+
+                return new Response<IEnumerable<DetailsProductVM>>
+                {
+                    IsSuccess = true,
+                    Data = data,
+                    Message = "Products Retrieved Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<IEnumerable<DetailsProductVM>>
                 {
                     IsSuccess = false,
-                    Message = "No Products Found"
+                    Message = ex.Message
                 };
             }
-
-            var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
-
-            return new Response<IEnumerable<DetailsProductVM>>
-            {
-                IsSuccess = true,
-                Data = data,
-                Message = "Products Retrieved Successfully"
-            };
         }
-        catch (Exception ex)
-        {
-            return new Response<IEnumerable<DetailsProductVM>>
-            {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
 
-    // Get By Id
-    public async Task<Response<DetailsProductVM>> GetByIdAsync(int id)
-    {
-        try { 
-         var product = await _productRepo.GetByIdAsync(id);
-        if(product == null)
+        // Get By Id
+        public async Task<Response<DetailsProductVM>> GetByIdAsync(int id)
         {
-            return new Response<DetailsProductVM>
+            try
             {
-                IsSuccess = false,
-                Message = "Not Found"
-            };
-        }
-            var data = _mapper.Map<DetailsProductVM>(product);
-            return new Response<DetailsProductVM>
-            {
-                IsSuccess = true,
-                Data = data,
-                Message = "Product Retrieved Successfully"
-            };
-         
-        }catch(Exception ex)
-        {
-            return new Response<DetailsProductVM>
-            {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
+                var product = await _productRepo.GetByIdAsync(id);
+                if (product == null)
+                {
+                    return new Response<DetailsProductVM>
+                    {
+                        IsSuccess = false,
+                        Message = "Not Found"
+                    };
+                }
+                var data = _mapper.Map<DetailsProductVM>(product);
+                return new Response<DetailsProductVM>
+                {
+                    IsSuccess = true,
+                    Data = data,
+                    Message = "Product Retrieved Successfully"
+                };
 
-    // Create
-    public async Task<Response<string>> CreateAsync(CreateProductVM vm)
-    {
-        try
+            }
+            catch (Exception ex)
+            {
+                return new Response<DetailsProductVM>
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        // Create
+        public async Task<Response<string>> CreateAsync(CreateProductVM vm)
         {
-            if (vm == null)
+            try
+            {
+                if (vm == null)
+                {
+                    return new Response<string>
+                    {
+                        IsSuccess = false,
+                        Message = "Invalid Data"
+                    };
+                }
+
+                var product = _mapper.Map<Product>(vm);
+
+                await _productRepo.CreateAsync(product);
+
+                return new Response<string>
+                {
+                    IsSuccess = true,
+                    Message = "Product Created Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<string>
                 {
                     IsSuccess = false,
-                    Message = "Invalid Data"
+                    Message = ex.Message
                 };
             }
-
-            var product = _mapper.Map<Product>(vm);
-
-            await _productRepo.CreateAsync(product);
-
-            return new Response<string>
-            {
-                IsSuccess = true,
-                Message = "Product Created Successfully"
-            };
         }
-        catch (Exception)
+
+        // Update
+        public async Task<Response<string>> UpdateAsync(UpdateProductVM vm)
         {
-            return new Response<string>
+            try
             {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
+                var product = await _productRepo.GetByIdAsync(vm.Id);
 
-    // Update
-    public async Task<Response<string>> UpdateAsync(UpdateProductVM vm)
-    {
-        try
-        {
-            var product = await _productRepo.GetByIdAsync(vm.Id);
+                if (product == null)
+                {
+                    return new Response<string>
+                    {
+                        IsSuccess = false,
+                        Message = "Product Not Found"
+                    };
+                }
 
-            if (product == null)
+                _mapper.Map(vm, product);
+                await _productRepo.UpdateAsync(product);
+
+                return new Response<string>
+                {
+                    IsSuccess = true,
+                    Message = "Product Updated Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<string>
                 {
                     IsSuccess = false,
-                    Message = "Product Not Found"
+                    Message = ex.Message
                 };
             }
-
-            _mapper.Map(vm, product);
-            await _productRepo.UpdateAsync(product);
-
-            return new Response<string>
-            {
-                IsSuccess = true,
-                Message = "Product Updated Successfully"
-            };
-        }       
-        catch (Exception)
-        {
-            return new Response<string>
-            {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
         }
-    }
 
-    // Delete (Soft Delete)
-    public async Task<Response<string>> DeleteAsync(int id)
-    {
-        try
+        // Delete (Soft Delete)
+        public async Task<Response<string>> DeleteAsync(int id)
         {
-            var product = await _productRepo.GetByIdAsync(id);
+            try
+            {
+                var product = await _productRepo.GetByIdAsync(id);
 
-            if (product == null || product.IsDeleted)
+                if (product == null || product.IsDeleted)
+                {
+                    return new Response<string>
+                    {
+                        IsSuccess = false,
+                        Message = "Product Not Found"
+                    };
+                }
+
+                await _productRepo.DeleteAsync(id);
+
+                return new Response<string>
+                {
+                    IsSuccess = true,
+                    Message = "Product Deleted Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<string>
                 {
                     IsSuccess = false,
-                    Message = "Product Not Found"
+                    Message = ex.Message
                 };
             }
-
-            await _productRepo.DeleteAsync(id);
-
-            return new Response<string>
-            {
-                IsSuccess = true,
-                Message = "Product Deleted Successfully"
-            };
         }
-        catch (Exception)
+
+        public async Task<Response<IEnumerable<DetailsProductVM>>> SearchByNameAsync(string name)
         {
-            return new Response<string>
+            try
             {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
+                var products = await _productRepo.SearchByNameAsync(name);
 
-    public async Task<Response<IEnumerable<DetailsProductVM>>> SearchByNameAsync(string name)
-    {
-        try
-        {
-            var products = await _productRepo.SearchByNameAsync(name);
+                if (products == null || !products.Any())
+                {
+                    return new Response<IEnumerable<DetailsProductVM>>
+                    {
+                        IsSuccess = false,
+                        Message = "No Products Found"
+                    };
+                }
 
-            if (products == null || !products.Any())
+                var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
+
+                return new Response<IEnumerable<DetailsProductVM>>
+                {
+                    IsSuccess = true,
+                    Data = data,
+                    Message = "Products Retrieved Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<IEnumerable<DetailsProductVM>>
                 {
                     IsSuccess = false,
-                    Message = "No Products Found"
+                    Message = ex.Message
                 };
             }
-
-            var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
-
-            return new Response<IEnumerable<DetailsProductVM>>
-            {
-                IsSuccess = true,
-                Data = data,
-                Message = "Products Retrieved Successfully"
-            };
         }
-        catch (Exception ex)
+
+        public async Task<Response<IEnumerable<DetailsProductVM>>> GetInStockAsync()
         {
-            return new Response<IEnumerable<DetailsProductVM>>
+            try
             {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
+                var products = await _productRepo.GetInStockAsync();
 
-    public async Task<Response<IEnumerable<DetailsProductVM>>> GetInStockAsync()
-    {
-        try
-        {
-            var products = await _productRepo.GetInStockAsync();
+                if (products == null || !products.Any())
+                {
+                    return new Response<IEnumerable<DetailsProductVM>>
+                    {
+                        IsSuccess = false,
+                        Message = "No Products Found"
+                    };
+                }
 
-            if (products == null || !products.Any())
+                var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
+
+                return new Response<IEnumerable<DetailsProductVM>>
+                {
+                    IsSuccess = true,
+                    Data = data,
+                    Message = "Products Retrieved Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<IEnumerable<DetailsProductVM>>
                 {
                     IsSuccess = false,
-                    Message = "No Products Found"
+                    Message = ex.Message
                 };
             }
-
-            var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
-
-            return new Response<IEnumerable<DetailsProductVM>>
-            {
-                IsSuccess = true,
-                Data = data,
-                Message = "Products Retrieved Successfully"
-            };
         }
-        catch (Exception ex)
+
+        public async Task<Response<IEnumerable<DetailsProductVM>>> GetOutStockAsync()
         {
-            return new Response<IEnumerable<DetailsProductVM>>
+            try
             {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
+                var products = await _productRepo.GetOutStockAsync();
 
-   public async Task<Response<IEnumerable<DetailsProductVM>>> GetOutStockAsync()
-    {
-        try
-        {
-            var products = await _productRepo.GetOutStockAsync();
+                if (products == null || !products.Any())
+                {
+                    return new Response<IEnumerable<DetailsProductVM>>
+                    {
+                        IsSuccess = false,
+                        Message = "No Products Found"
+                    };
+                }
 
-            if (products == null || !products.Any())
+                var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
+
+                return new Response<IEnumerable<DetailsProductVM>>
+                {
+                    IsSuccess = true,
+                    Data = data,
+                    Message = "Products Retrieved Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<IEnumerable<DetailsProductVM>>
                 {
                     IsSuccess = false,
-                    Message = "No Products Found"
+                    Message = ex.Message
                 };
             }
-
-            var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
-
-            return new Response<IEnumerable<DetailsProductVM>>
-            {
-                IsSuccess = true,
-                Data = data,
-                Message = "Products Retrieved Successfully"
-            };
         }
-        catch (Exception ex)
+
+        public async Task<Response<IEnumerable<DetailsProductVM>>> GetMostExpensiveAsync()
         {
-            return new Response<IEnumerable<DetailsProductVM>>
+            try
             {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
+                var products = await _productRepo.GetMostExpensiveAsync();
 
-    public async Task<Response<IEnumerable<DetailsProductVM>>> GetMostExpensiveAsync()
-    {
-        try
-        {
-            var products = await _productRepo.GetMostExpensiveAsync();
+                if (products == null || !products.Any())
+                {
+                    return new Response<IEnumerable<DetailsProductVM>>
+                    {
+                        IsSuccess = false,
+                        Message = "No Products Found"
+                    };
+                }
 
-            if (products == null || !products.Any())
+                var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
+
+                return new Response<IEnumerable<DetailsProductVM>>
+                {
+                    IsSuccess = true,
+                    Data = data,
+                    Message = "Products Retrieved Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<IEnumerable<DetailsProductVM>>
                 {
                     IsSuccess = false,
-                    Message = "No Products Found"
+                    Message = ex.Message
                 };
             }
-
-            var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
-
-            return new Response<IEnumerable<DetailsProductVM>>
-            {
-                IsSuccess = true,
-                Data = data,
-                Message = "Products Retrieved Successfully"
-            };
         }
-        catch (Exception ex)
+
+
+        public async Task<Response<IEnumerable<DetailsProductVM>>> GetLestExpensiveAsync()
         {
-            return new Response<IEnumerable<DetailsProductVM>>
+            try
             {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
+                var products = await _productRepo.GetLestExpensiveAsync();
 
+                if (products == null || !products.Any())
+                {
+                    return new Response<IEnumerable<DetailsProductVM>>
+                    {
+                        IsSuccess = false,
+                        Message = "No Products Found"
+                    };
+                }
 
-    public async Task<Response<IEnumerable<DetailsProductVM>>> GetLestExpensiveAsync()
-    {
-        try
-        {
-            var products = await _productRepo.GetLestExpensiveAsync();
+                var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
 
-            if (products == null || !products.Any())
+                return new Response<IEnumerable<DetailsProductVM>>
+                {
+                    IsSuccess = true,
+                    Data = data,
+                    Message = "Products Retrieved Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<IEnumerable<DetailsProductVM>>
                 {
                     IsSuccess = false,
-                    Message = "No Products Found"
+                    Message = ex.Message
                 };
             }
-
-            var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
-
-            return new Response<IEnumerable<DetailsProductVM>>
-            {
-                IsSuccess = true,
-                Data = data,
-                Message = "Products Retrieved Successfully"
-            };
         }
-        catch (Exception ex)
+
+
+        public async Task<Response<IEnumerable<DetailsProductVM>>> GetAllByCategoryIdAsync(int categoryId)
         {
-            return new Response<IEnumerable<DetailsProductVM>>
+            try
             {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
+                var products = await _productRepo.GetAllByCategoryIdAsync(categoryId);
 
+                if (products == null || !products.Any())
+                {
+                    return new Response<IEnumerable<DetailsProductVM>>
+                    {
+                        IsSuccess = false,
+                        Message = "No Products Found"
+                    };
+                }
 
-    public async Task<Response<IEnumerable<DetailsProductVM>>> GetAllByCategoryIdAsync(int categoryId)
-    {
-        try
-        {
-            var products = await _productRepo.GetAllByCategoryIdAsync(categoryId);
+                var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
 
-            if (products == null || !products.Any())
+                return new Response<IEnumerable<DetailsProductVM>>
+                {
+                    IsSuccess = true,
+                    Data = data,
+                    Message = "Products Retrieved Successfully"
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response<IEnumerable<DetailsProductVM>>
                 {
                     IsSuccess = false,
-                    Message = "No Products Found"
+                    Message = ex.Message
                 };
             }
-
-            var data = _mapper.Map<IEnumerable<DetailsProductVM>>(products);
-
-            return new Response<IEnumerable<DetailsProductVM>>
-            {
-                IsSuccess = true,
-                Data = data,
-                Message = "Products Retrieved Successfully"
-            };
         }
-        catch (Exception ex)
+
+        public async Task<Response<bool>> ExistsByNameAsync(string name)
         {
-            return new Response<IEnumerable<DetailsProductVM>>
+            try
             {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
+                var exists = await _productRepo.ExistsByNameAsync(name);
+
+                return new Response<bool>
+                {
+                    IsSuccess = true,
+                    Data = exists,
+                    Message = exists ? "Product Exists" : "Product Not Found"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response<bool>
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
         }
+
+        public async Task<Response<bool>> ExistsByIdAsync(int id)
+        {
+            try
+            {
+                var exists = await _productRepo.ExistsByIdAsync(id);
+
+                return new Response<bool>
+                {
+                    IsSuccess = true,
+                    Data = exists,
+                    Message = exists ? "Product Exists" : "Product Not Found"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response<bool>
+                {
+                    IsSuccess = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
     }
-
-    public async Task<Response<bool>> ExistsByNameAsync(string name)
-    {
-        try
-        {
-            var exists = await _productRepo.ExistsByNameAsync(name);
-
-            return new Response<bool>
-            {
-                IsSuccess = true,
-                Data = exists,
-                Message = exists ? "Product Exists" : "Product Not Found"
-            };
-        }
-        catch (Exception)
-        {
-            return new Response<bool>
-            {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
-
-    public async Task<Response<bool>> ExistsByIdAsync(int id)
-    {
-        try
-        {
-            var exists = await _productRepo.ExistsByIdAsync(id);
-
-            return new Response<bool>
-            {
-                IsSuccess = true,
-                Data = exists,
-                Message = exists ? "Product Exists" : "Product Not Found"
-            };
-        }
-        catch (Exception)
-        {
-            return new Response<bool>
-            {
-                IsSuccess = false,
-                Message = "Something went wrong, please try again later"
-            };
-        }
-    }
-
 }

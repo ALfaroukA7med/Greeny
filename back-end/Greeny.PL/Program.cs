@@ -5,6 +5,8 @@ using Greeny.DAL.Repository.Implementation;
 using Greeny.DAL.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Greeny.BLL.Admin.Services.Implementation;
+
 
 namespace Greeny.PL
 {
@@ -25,16 +27,23 @@ namespace Greeny.PL
 
             // Repositories
             builder.Services.AddScoped<IProductRepo, ProductRepo>();
+            builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 
             // Services
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
-            // AutoMapper
+
+            //AutoMapper
             builder.Services.AddAutoMapper(cfg =>
             {
-        
+
             }, typeof(ProductProfile).Assembly);
 
+            builder.Services.AddAutoMapper(cfg =>
+            {
+
+            }, typeof(CategoryProfile).Assembly);
 
 
             // Add services to the container.
