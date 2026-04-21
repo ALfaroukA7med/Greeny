@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Greeny.BLL.Admin.ModelVM.Category;
-using Greeny.DAL.Entities;
+﻿
 
 public class CategoryProfile : Profile
 {

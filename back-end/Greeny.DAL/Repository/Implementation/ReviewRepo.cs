@@ -56,7 +56,7 @@ namespace Greeny.DAL.Repository.Implementation
         }
 
 
-      public async Task<IEnumerable<Review>> GetAllByProductIDAsync(int productId)
+      public async Task<IEnumerable<Review>> GetAllByProductIdAsync(int productId)
         {
             return await _context.Reviews.Where(r => r.ProductId == productId && !r.IsDeleted).ToListAsync();     
         }
