@@ -1,5 +1,4 @@
 ﻿
-
 namespace Greeny.BLL.Admin.Services.Implementation
 {
     public class CategoryService : ICategoryService

@@ -12,7 +12,7 @@
 
         Task<bool> DeleteAsync(int id);
 
-        Task<IEnumerable<Review>> GetAllByProductIDAsync(int productId);
+        Task<IEnumerable<Review>> GetAllByProductIdAsync(int productId);
         Task<int> CountByProductIdAsync(int productId);
         Task<IEnumerable<Review>> GetByUserIdAsync(string userId);
         Task<bool> ExistsAsync(string userId, int productId);

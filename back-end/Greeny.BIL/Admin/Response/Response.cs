@@ -5,11 +5,11 @@ namespace Greeny.BLL.Admin.Response
     {
         public bool IsSuccess { get; set; }
 
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
-        public T Data { get; set; }
+        public T? Data { get; set; }
 
-        public static Response<T> Success(T data, string message = null)
+        public static Response<T> Success(T data, string? message = null)
         {
             return new Response<T>
             {
