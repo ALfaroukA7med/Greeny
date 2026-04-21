@@ -1,14 +1,14 @@
-﻿namespace Greeny.Models
+﻿namespace Greeny.DAL.Entities
 {
     public class Cart
     {
         public int Id { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         // Relationships
-        public ICollection<CartItem> CartItems { get; set; } = null;
+        public ICollection<CartItem> CartItems { get; set; } = new HashSet<CartItem>();
 
         public string UserId { get; set; }
         public User User { get; set; }
-
     }
 }

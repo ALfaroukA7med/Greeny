@@ -12,7 +12,21 @@
                 .IsRequired()
                 .HasMaxLength(500);
 
-            // TODO: Configure relationships with User entity for Sender and Receiver
+            builder.Property(n => n.Date)
+                .IsRequired()
+                .HasDefaultValueSql("GETDATE()");
+
+            // Receiver relationship (required)
+            builder.HasOne(n => n.Receiver)
+                .WithMany(u => u.Notifications) 
+                .HasForeignKey(n => n.ReceiverId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Sender relationship (optional)
+            builder.HasOne(n => n.Sender)
+                .WithMany() 
+                .HasForeignKey(n => n.SenderId)
+                .OnDelete(DeleteBehavior.NoAction); // ضروري جداً لتجنب Multiple Cascade Paths
         }
     }
 }

@@ -13,37 +13,40 @@
                    .HasMaxLength(255);
 
             builder.Property(p => p.Description)
-                .IsRequired()
-                .HasMaxLength(255);
+                   .IsRequired()
+                   .HasMaxLength(2000); 
 
             builder.Property(p => p.Quantity)
-                .IsRequired();
+                   .IsRequired();
 
-       
             builder.Property(p => p.Price)
-               .IsRequired();
+                   .IsRequired()
+                   .HasColumnType("decimal(18,2)");
 
-            //Category relation
+            // Category Relationship
             builder.HasOne(p => p.Category)
-               .WithMany(c => c.Products)
-               .HasForeignKey(p => p.CategoryId);
+                   .WithMany(c => c.Products)
+                   .HasForeignKey(p => p.CategoryId)
+                   .OnDelete(DeleteBehavior.Restrict);
 
-            //Review relation
+            // Reviews Relationship
             builder.HasMany(p => p.Reviews)
-               .WithOne(r => r.Product)
-               .HasForeignKey(r => r.ProductId);
-
-            //OrderItem relation
-            builder.HasOne(p => p.OrderItem)
-               .WithOne(oi => oi.Product)
-               .HasForeignKey<Product>(p => p.OrderItemId);
-
-            //CartItem relation
-            builder.HasOne(p => p.CartItem)
-               .WithOne(ci => ci.Product)
-               .HasForeignKey<Product>(p => p.CartItemId);
+                   .WithOne(r => r.Product)
+                   .HasForeignKey(r => r.ProductId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
 
+            // OrderItems Relationship
+            builder.HasMany(p => p.OrderItems)
+                   .WithOne(oi => oi.Product)
+                   .HasForeignKey(oi => oi.ProductId)
+                   .OnDelete(DeleteBehavior.NoAction);
+
+            // CartItems Relationship
+            builder.HasMany(p => p.CartItems)
+                   .WithOne(ci => ci.Product)
+                   .HasForeignKey(ci => ci.ProductId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

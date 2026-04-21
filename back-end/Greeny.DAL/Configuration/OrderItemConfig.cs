@@ -1,8 +1,4 @@
-﻿using Greeny.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Greeny.Data.Configurations
+﻿namespace Greeny.Data.Configurations
 {
     public class OrderItemConfig : IEntityTypeConfiguration<OrderItem>
     {
@@ -10,10 +6,31 @@ namespace Greeny.Data.Configurations
         {
             builder.ToTable("OrderItems");
 
-            builder.HasKey(OI => OI.Id);
+            builder.HasKey(oi => oi.Id);
 
-            builder.Property(OI => OI.Quantity)
+            builder.Property(oi => oi.Quantity)
                 .IsRequired();
+
+            
+            builder.Property(oi => oi.UnitPrice)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)");
+
+            
+
+            // Order Relationship
+            builder.HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade); // إذا حُذف الطلب، تُحذف بنوده تلقائياً
+
+            // Product Relationship
+            builder.HasOne(oi => oi.Product)
+                .WithMany(p => p.OrderItems)
+                .HasForeignKey(oi => oi.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
 
         }
     }

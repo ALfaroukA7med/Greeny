@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-namespace Greeny.Models
+﻿namespace Greeny.DAL.Entities
 {
     public class CartItem
     {
         public int Id { get; set; }
+        public int Quantity { get; set; } = 0;
+        public bool IsDeleted { get; set; } = false;
 
-        public int Quantity { get; set; }
 
-        public float TotalPrice { get; set; }
 
         //Relationships
         public int CartId { get; set; }
@@ -16,6 +14,5 @@ namespace Greeny.Models
 
         public int ProductId { get; set; }
         public Product Product { get; set; }
-
     }
 }

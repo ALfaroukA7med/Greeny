@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="Greeny.BIL/Greeny.BIL.csproj" />
+  <Project Path="Greeny.BIL/Greeny.BLL.csproj" />
   <Project Path="Greeny.DAL/Greeny.DAL.csproj" />
   <Project Path="Greeny.PL/Greeny.PL.csproj" />
 </Solution>

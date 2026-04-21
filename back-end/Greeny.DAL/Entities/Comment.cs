@@ -1,29 +1,19 @@
-﻿using Greeny.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Greeny.Models
+﻿namespace Greeny.DAL.Entities
 {
     public class Comment
     {
         public int Id { get; set; }
-
         public string Content { get; set; }
-
+        [Range(0,5)]
         public int Votes { get; set; } = 0;
+        public DateTime Date { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
 
-        public DateTime Date {  get; set; } = DateTime.Now;
 
         //Relationships
-
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
-        public int BlogId { get; set; }
-        public Blog Blog { get; set; }
-
-
+        public int PostId { get; set; } 
+        public Post Post { get; set; }
     }
 }

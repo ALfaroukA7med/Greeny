@@ -2,16 +2,7 @@
 {
     public class User : IdentityUser
     {
-        public User() { }
-
-        public User(string FName, string LName, string address, string? profilePicture = null)
-        {
-            FirstName = FName;
-            LastName = LName;
-            Address = address;
-            ProfilePicture = profilePicture;
-        }
-
+        // Additional properties
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? ProfilePicture { get; set; } = null;
@@ -19,26 +10,14 @@
         public bool IsDeleted { get; set; } = false;
 
         // Relationships
-        public ICollection<Comment> Comments { get; set; } = null;
-        public ICollection<Blog> Blogs { get; set; } = null;
-        public ICollection<Notification> Notifications { get; set; } = null;
-        public ICollection<Review> Reviews { get; set; } = null;
-        public ICollection<Order> Orders { get; set; } = null;
-        public ICollection<Payment> Payments { get; set; } = null;
-        public int CartId { get; set; }
-        public Cart Cart { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
+        public ICollection<Post> Posts { get; set; } =  new HashSet<Post>();
+        public ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
+        public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
+        public ICollection<Order> Orders { get; set; } = new HashSet<Order>();
+        public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
+        public int? CartId { get; set; } 
+        public Cart? Cart { get; set; } = null;
 
-        //Methods
-        public void Delete()
-        {
-            IsDeleted = true;
-        }
-        public void Edit(string FName, string LName, string address, string? profilePicture = null)
-        {
-            FirstName = FName;
-            LastName = LName;
-            Address = address;
-            ProfilePicture = profilePicture;
-        }
     }
 }

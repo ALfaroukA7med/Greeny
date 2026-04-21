@@ -13,25 +13,32 @@
                 .HasMaxLength(50);
 
             builder.Property(p => p.Status)
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValue("Pending"); 
 
             builder.Property(p => p.PaidAt)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.Property(p => p.Amount)
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
+            
             builder.Property(p => p.TransactionRef)
-                .IsRequired()
-                .HasMaxLength(100);
+                .IsRequired(false)
+                .HasMaxLength(255);
 
-            // Oreder relationship
+            // Orders relationship - One-to-One
             builder.HasOne(p => p.Order)
                 .WithOne(o => o.Payment)
                 .HasForeignKey<Payment>(p => p.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Users relationship - One-to-Many
+            builder.HasOne(p => p.User)
+                .WithMany(u => u.Payments)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.NoAction); 
         }
     }
 }

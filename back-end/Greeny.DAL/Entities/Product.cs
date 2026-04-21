@@ -1,24 +1,23 @@
-﻿namespace Greeny.Models
+﻿namespace Greeny.DAL.Entities
 {
     public class Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Image { get; set; } = null;
+        public string? Image { get; set; } = null;
         public int Quantity { get; set; }
-        public float Price { get; set; }
+        public decimal Price { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
 
         // Relationships
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public ICollection<Review> Reviews { get; set; } = null;
+        public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
 
-        public int OrderItemId { get; set; }
-        public OrderItem OrderItem { get; set; }
-
-        public int CartItemId { get; set; }
-        public CartItem CartItem { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
+        public ICollection<CartItem> CartItems { get; set; } = new HashSet<CartItem>();
     }
 }

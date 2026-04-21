@@ -6,17 +6,33 @@
         {
             builder.ToTable("Reviews");
 
-            // TODO: Uinque ID
             builder.HasKey(r => r.Id);
 
-            // TODO: Add Range
             builder.Property(r => r.Stars)
                 .IsRequired()
-                .HasDefaultValue(0);
+                .HasDefaultValue(1);
 
             builder.Property(r => r.Content)
                 .IsRequired()
-                .HasMaxLength(255);
+                .HasMaxLength(1000);
+
+            builder.Property(r => r.Date)
+                .IsRequired()
+                .HasDefaultValueSql("GETDATE()");
+
+            // Relationships
+
+            // Review Relationships
+            builder.HasOne(r => r.User)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Product Relationships
+            builder.HasOne(r => r.Product)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(r => r.ProductId)
+                .OnDelete(DeleteBehavior.Cascade); 
         }
     }
 }
