@@ -46,19 +46,19 @@ document.addEventListener("DOMContentLoaded", () => {
 const cards = document.querySelectorAll(".product-title");
 cards.forEach((card) => {
   card.addEventListener("click", function () {
-    window.open("/html/product.html", self);
+    window.open("product.html", self);
   });
 });
 const comUsers = document.querySelectorAll(".comm-user-info");
 comUsers.forEach((user) => {
   user.addEventListener("click", function () {
-    window.open("/html/profile.html", self);
+    window.open("profile.html", self);
   });
 });
 const avatars = document.querySelectorAll(".comm-avatar");
 avatars.forEach((avatar) => {
   avatar.addEventListener("click", function () {
-    window.open("/html/profile.html", self);
+    window.open("profile.html", self);
   });
 });
 
