@@ -14,57 +14,37 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(OrderItem orderItem)
+        public async Task CreateAsync(OrderItem orderItem)
         {
             await _context.OrderItems.AddAsync(orderItem);
             await _context.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<IEnumerable<OrderItem>> GetAllAsync()
+
+        public IQueryable<OrderItem?> GetByIdAsync(int id)
         {
-            return await _context.OrderItems.Where(o=> !o.IsDeleted).ToListAsync();
+            return _context.OrderItems.AsNoTracking()
+            .Where(o => o.Id == id && !o.IsDeleted);
+            //.Include(o => o.Product)
+            //.Include(o => o.Order)
         }
 
-        public async Task<OrderItem?> GetByIdAsync(int id)
+        public async Task UpdateAsync(OrderItem newOrderItem)
         {
-            var result = await _context.OrderItems
-            .Include(o => o.Product)
-            .Include(o => o.Order)
-            .FirstOrDefaultAsync(o => o.Id == id && !o.IsDeleted);
-            return result;
+            await _context.OrderItems
+                .Where(o => o.Id == newOrderItem.Id)
+                .ExecuteUpdateAsync(setter => setter
+                .SetProperty(p => p.UnitPrice, newOrderItem.UnitPrice)
+                .SetProperty(p => p.Quantity, newOrderItem.Quantity)
+                );
         }
 
-        public async Task<bool> UpdateAsync(OrderItem newOrderItem)
+        public IQueryable<OrderItem> GetByOrderIdAsync(int orderId)
         {
-            var result = await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == newOrderItem.Id && !o.IsDeleted);
-            if (result == null)
-            {
-                return false;
-            }
-            result.Quantity = newOrderItem.Quantity;
-            result.UnitPrice = newOrderItem.UnitPrice;
-
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var result = await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == id && !o.IsDeleted);
-            if (result == null) { return false; }
-
-            result.IsDeleted = true;
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<IEnumerable<OrderItem>> GetByOrderIdAsync(int orderId)
-        {
-            return await _context.OrderItems
+            return _context.OrderItems
                 .Where(o => o.OrderId == orderId && !o.IsDeleted)
-                .Include(o => o.Product)
-                .ToListAsync();
+                .AsNoTracking();
+                //.Include(o => o.Product)
         }
 
       public async Task<decimal> GetTotalPriceByOrderIdAsync(int orderId)
@@ -76,7 +56,8 @@ namespace Greeny.DAL.Repository.Implementation
 
        public async Task<int> GetItemsCountByOrderIdAsync(int orderId)
         {
-            return await _context.OrderItems.CountAsync(o => o.OrderId == orderId && !o.IsDeleted);
+            return await _context.OrderItems
+                .CountAsync(o => o.OrderId == orderId && !o.IsDeleted);
         }
 
        public async Task<bool> ProductExistsInOrderAsync(int orderId, int productId)
@@ -87,16 +68,13 @@ namespace Greeny.DAL.Repository.Implementation
          
         public async Task<bool> RemoveProductFromOrderAsync(int orderId, int productId)
         {
-            var item = await _context.OrderItems
-            .FirstOrDefaultAsync(o => o.OrderId == orderId && o.ProductId == productId && !o.IsDeleted);
+            var rowaffected = await _context.OrderItems
+            .Where(o => o.OrderId == orderId && o.ProductId == productId && !o.IsDeleted)
+            .ExecuteUpdateAsync(setter => setter
+            .SetProperty(p => p.IsDeleted, true)
+            );
 
-            if (item == null)
-                return false;
-
-            item.IsDeleted = true;
-            await _context.SaveChangesAsync();
-
-            return true;
+            return rowaffected > 0;
         }
 
 

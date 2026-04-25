@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public string Content { get; set; }
-        [Range(0,5)]
         public int Votes { get; set; } = 0;
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; } = false;
