@@ -12,11 +12,10 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(Post post)
+        public async Task CreateAsync(Post post)
         {
                 await _context.Posts.AddAsync(post);
                 await _context.SaveChangesAsync();
-                return true;     
         }
 
         public async Task<IEnumerable<Post>> GetAllAsync()

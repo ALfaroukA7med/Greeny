@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Greeny.BLL.Admin.ModelVM.Comment
+{
+    public class CommentCreateVM
+    {
+        //[Required(ErrorMessage = "Please write something before posting.")]
+        //[StringLength(1000, ErrorMessage = "Comments cannot exceed 1000 characters.")]
+        public string Content { get; set; }
+
+        [Required]
+        public int PostId { get; set; }
+
+    }
+}

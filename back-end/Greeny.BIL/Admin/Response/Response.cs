@@ -1,31 +1,31 @@
 ﻿
+using Greeny.BLL.Abstraction;
+
 namespace Greeny.BLL.Admin.Response
 {
     public class Response<T>
     {
         public bool IsSuccess { get; set; }
 
-        public string? Message { get; set; }
+        public Error? Error { get; set; }
 
         public T? Data { get; set; }
 
-        public static Response<T> Success(T data, string? message = null)
+        public static Response<T> Success(T data)
         {
             return new Response<T>
             {
                 IsSuccess = true,
-                Message = message,
                 Data = data
             };
         }
 
-        public static Response<T> Fail(string message)
+        public static Response<T> Fail(Error errorMessage)
         {
             return new Response<T>
             {
                 IsSuccess = false,
-                Message = message,
-                Data = default
+                Error = errorMessage,
             };
         }
     }
