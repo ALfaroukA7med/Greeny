@@ -56,7 +56,7 @@ namespace Greeny.BLL.Admin.Services.Implementation
                 return new Response<string>
                 {
                     IsSuccess = true,
-                    Message = "Product Created Successfully"
+                    Message = "Review Created Successfully"
                 };
             }
             catch (Exception ex)
