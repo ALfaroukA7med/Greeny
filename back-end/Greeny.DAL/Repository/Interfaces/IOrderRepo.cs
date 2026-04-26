@@ -4,9 +4,9 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface IOrderRepo
     {
-        IQueryable<Order> GetAllAsync();
+        IQueryable<Order> GetAll();
 
-        IQueryable<Order> GetByIdAsync(int id);
+        IQueryable<Order> GetById(int id);
 
         Task CreateAsync(Order order);
 
@@ -14,10 +14,10 @@ namespace Greeny.DAL.Repository.Interfaces
 
         Task DeleteAsync(int id);
 
-        IQueryable<Order> GetOrdersByUserIdAsync(string userId);
-        IQueryable<Order> GetOrdersByUserIdAndStatusAsync(string userId , string status);
-        IQueryable<Order> GetOrdersByStatusAsync(string status);
-        IQueryable<Order> GetRecentOrdersAsync();
+        IQueryable<Order> GetOrdersByUserId(string userId);
+        IQueryable<Order> GetOrdersByUserIdAndStatus(string userId , string status);
+        IQueryable<Order> GetOrdersByStatus(string status);
+        IQueryable<Order> GetRecentOrders();
         Task<bool> ExistsAsync(int id);
         Task<decimal> GetTotalSalesAsync();
     }

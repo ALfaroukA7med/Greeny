@@ -1,3 +1,5 @@
+
+
 namespace Greeny.DAL.Enums
 {
     public enum ErrorType

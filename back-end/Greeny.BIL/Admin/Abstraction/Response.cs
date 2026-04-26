@@ -1,6 +1,6 @@
-﻿
-using Greeny.BLL.Abstraction;
+﻿using static Greeny.BLL.Admin.Response.Errors;
 
+﻿
 namespace Greeny.BLL.Admin.Response
 {
     public class Response<T>
@@ -11,6 +11,7 @@ namespace Greeny.BLL.Admin.Response
 
         public T? Data { get; set; }
 
+        private Response() { }
         public static Response<T> Success(T data)
         {
             return new Response<T>

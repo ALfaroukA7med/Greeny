@@ -4,15 +4,15 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface IReferencePlanetRepo
     {
-        Task<IEnumerable<ReferencePlanet>> GetAllAsync();
+        IQueryable<ReferencePlanet> GetAll();
 
         Task<ReferencePlanet> GetByIdAsync(int id);
 
-        Task<bool> CreateAsync(ReferencePlanet referencePlanet);
+        Task CreateAsync(ReferencePlanet referencePlanet);
 
-        Task<bool> UpdateAsync(ReferencePlanet referencePlanet);
+        Task UpdateAsync(ReferencePlanet referencePlanet);
 
-        Task<bool> DeleteAsync(int id);
+        Task DeleteAsync(int id);
 
         Task<ReferencePlanet> GetBySciNameAsync(string sciName);
 

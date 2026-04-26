@@ -21,7 +21,7 @@ namespace Greeny.DAL.Repository.Implementation
         }
 
 
-        public IQueryable<OrderItem?> GetByIdAsync(int id)
+        public IQueryable<OrderItem?> GetById(int id)
         {
             return _context.OrderItems.AsNoTracking()
             .Where(o => o.Id == id && !o.IsDeleted);
@@ -39,7 +39,7 @@ namespace Greeny.DAL.Repository.Implementation
                 );
         }
 
-        public IQueryable<OrderItem> GetByOrderIdAsync(int orderId)
+        public IQueryable<OrderItem> GetByOrderId(int orderId)
         {
             return _context.OrderItems
                 .Where(o => o.OrderId == orderId && !o.IsDeleted)

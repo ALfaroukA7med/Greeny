@@ -6,7 +6,7 @@ namespace Greeny.DAL.Repository.Interfaces
     {
         //IQueryable<CartItem> GetAllAsync();
 
-        IQueryable<CartItem> GetByIdAsync(int id);
+        IQueryable<CartItem> GetById(int id);
 
         Task CreateAsync(CartItem cartItem);
 
@@ -14,8 +14,8 @@ namespace Greeny.DAL.Repository.Interfaces
 
         Task DeleteAsync(int id);
 
-        IQueryable<CartItem> GetByCartIdAsync(int cartId);
-        IQueryable<CartItem> GetByCartAndProductAsync(int cartId, int productId); // "Numsber" has put this product on wishlist!
+        IQueryable<CartItem> GetByCartId(int cartId);
+        IQueryable<CartItem> GetByCartAndProduct(int cartId, int productId); // "Numsber" has put this product on wishlist!
         Task<bool> ExistsAsync(int cartId, int productId);
         Task<bool> ClearCartAsync(int cartId);
     }

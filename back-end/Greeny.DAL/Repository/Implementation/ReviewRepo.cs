@@ -14,16 +14,15 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(Review review)
+        public async Task CreateAsync(Review review)
         {
             await _context.Reviews.AddAsync(review);
             await _context.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<IEnumerable<Review>> GetAllAsync()
+        public IQueryable<Review> GetAll()
         {
-            return await _context.Reviews.Where(r=>!r.IsDeleted).ToListAsync();
+            return _context.Reviews.Where(r=>!r.IsDeleted).AsNoTracking();
         }
 
         public async Task<Review?> GetByIdAsync(int id)
@@ -31,34 +30,26 @@ namespace Greeny.DAL.Repository.Implementation
             return await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
         }
 
-        public async Task<bool> UpdateAsync(Review newReview)
+        public async Task UpdateAsync(Review newReview)
         {
-            var result = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == newReview.Id && !r.IsDeleted);
-            if (result == null)
-            {
-                return false;
-            }
-            result.Content = newReview.Content;
-            result.Stars = newReview.Stars;
-            result.Date = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return true;
+                 await _context.Reviews.Where(r => r.Id == newReview.Id && !r.IsDeleted)
+                .ExecuteUpdateAsync(setter=>setter
+                .SetProperty(r=>r.Content, newReview.Content)
+                .SetProperty(r => r.Stars, newReview.Stars)
+                .SetProperty(r => r.Date, DateTime.Now));
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var result = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
-            if (result == null) { return false; }
-
-            result.IsDeleted = true;
-            await _context.SaveChangesAsync();
-            return true;
+            await _context.Reviews.Where(r => r.Id == id && !r.IsDeleted)
+                 .ExecuteUpdateAsync(setter => setter
+                 .SetProperty(r => r.IsDeleted, true));
         }
 
 
-      public async Task<IEnumerable<Review>> GetAllByProductIdAsync(int productId)
+      public IQueryable<Review> GetAllByProductId(int productId)
         {
-            return await _context.Reviews.Where(r => r.ProductId == productId && !r.IsDeleted).ToListAsync();     
+            return _context.Reviews.Where(r => r.ProductId == productId && !r.IsDeleted).AsNoTracking();     
         }
 
         public async Task<int> CountByProductIdAsync(int productId)
@@ -66,9 +57,9 @@ namespace Greeny.DAL.Repository.Implementation
             return await _context.Reviews.CountAsync(r => r.ProductId == productId && !r.IsDeleted);     
         }
 
-        public async Task<IEnumerable<Review>> GetByUserIdAsync(string userId)
+        public IQueryable<Review> GetByUserId(string userId)
         {
-            return await _context.Reviews.Where(r => r.UserId == userId && !r.IsDeleted).ToListAsync();
+            return _context.Reviews.Where(r => r.UserId == userId && !r.IsDeleted).AsNoTracking();
         }
 
         public async Task<bool> ExistsAsync(string userId, int productId)

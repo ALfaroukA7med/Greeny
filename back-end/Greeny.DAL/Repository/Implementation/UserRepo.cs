@@ -13,61 +13,46 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(User user)
+        public async Task CreateAsync(User user)
         {
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public IQueryable<User> GetAll()
         {
-            return await _context.Users.Where(u=> !u.IsDeleted).ToListAsync();
+            return _context.Users.Where(u=> !u.IsDeleted).AsNoTracking();
         }
 
         public async Task<User?> GetByIdAsync(string id)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == id && !u.IsDeleted);
-            return result;
+            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id && !u.IsDeleted);
         }
 
-        public async Task<bool> UpdateAsync(User newUser)
+        public async Task UpdateAsync(User newUser)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == newUser.Id && !u.IsDeleted);
-            if (result == null)
-            {
-                return false;
-            }
-            result.FirstName = newUser.FirstName;
-            result.LastName = newUser.LastName;
-            result.Address = newUser.Address;
-
-            if (!string.IsNullOrEmpty(newUser.ProfilePicture))
-            {
-                result.ProfilePicture = newUser.ProfilePicture;
-            }
-
-            await _context.SaveChangesAsync();
-            return true;
+             await _context.Users.Where(u => u.Id == newUser.Id && !u.IsDeleted).ExecuteUpdateAsync(setter => setter
+            .SetProperty(u => u.FirstName , newUser.FirstName)
+            .SetProperty(u => u.LastName , newUser.LastName)
+            .SetProperty(u => u.Address , newUser.Address)
+            .SetProperty(u => u.ProfilePicture , newUser.ProfilePicture)
+            );
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task DeleteAsync(string id)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(u => u.Id == id && !u.IsDeleted);
-            if (result == null) { return false; }
-            result.IsDeleted = true;
-            await _context.SaveChangesAsync();
-            return true;
+            var result = await _context.Users.Where(u => u.Id == id && !u.IsDeleted)
+                 .ExecuteUpdateAsync(setter => setter.SetProperty(u => u.IsDeleted, true));
         }
 
-        public async Task<IEnumerable<User>> GetAllActiveAsync()
+        public IQueryable<User> GetAllActive()
         {
-            return await _context.Users.Where(u=> !u.IsDeleted).ToListAsync();
+            return _context.Users.Where(u=> !u.IsDeleted).AsNoTracking();
         }
 
-        public async Task<IEnumerable<User>> GetAllDeletedAsync()
+        public IQueryable<User> GetAllDeleted()
         {
-            return await _context.Users.Where(u => u.IsDeleted).ToListAsync();
+            return _context.Users.Where(u => u.IsDeleted).AsNoTracking();
         }
     }
 }

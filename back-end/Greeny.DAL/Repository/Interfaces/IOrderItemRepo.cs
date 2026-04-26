@@ -6,7 +6,7 @@ namespace Greeny.DAL.Repository.Interfaces
     {
         //IQueryable<OrderItem> GetAllAsync();
 
-        IQueryable<OrderItem> GetByIdAsync(int id);
+        IQueryable<OrderItem> GetById(int id);
 
         Task CreateAsync(OrderItem orderItem);
 
@@ -16,7 +16,7 @@ namespace Greeny.DAL.Repository.Interfaces
 
 
 
-        IQueryable<OrderItem> GetByOrderIdAsync(int orderId);
+        IQueryable<OrderItem> GetByOrderId(int orderId);
         Task<decimal> GetTotalPriceByOrderIdAsync(int orderId);
         Task<int> GetItemsCountByOrderIdAsync(int orderId);
         Task<bool> ProductExistsInOrderAsync(int orderId, int productId);

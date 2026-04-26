@@ -1,7 +1,5 @@
 ﻿using Greeny.DAL.Database;
 using Greeny.DAL.Repository.Interfaces;
-using System.Reflection.Metadata;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Greeny.DAL.Repository.Implementation
 {
     public class CommentRepo : ICommentRepo
@@ -21,7 +19,7 @@ namespace Greeny.DAL.Repository.Implementation
         }
 
 
-        public IQueryable<Comment?> GetByIdAsync(int id)
+        public IQueryable<Comment?> GetById(int id)
         {
             // GetCommentPerUser
             // GetPostsPerUser
@@ -40,7 +38,7 @@ namespace Greeny.DAL.Repository.Implementation
                 );
         }
 
-        public IQueryable<Comment> GetAllByPostIdAsync(int postId)
+        public IQueryable<Comment> GetAllByPostId(int postId)
         {
             return _context.Comments
                 .AsNoTracking()
@@ -56,7 +54,7 @@ namespace Greeny.DAL.Repository.Implementation
 
         }
 
-        public IQueryable<Comment> GetAllByUserIdAsync(string userId)
+        public IQueryable<Comment> GetAllByUserId(string userId)
         {
             return _context.Comments
                 .AsNoTracking()

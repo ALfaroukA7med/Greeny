@@ -3,9 +3,9 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface ICategoryRepo
     {
-        IQueryable<Category> GetAllAsync();
+        IQueryable<Category> GetAll();
 
-        IQueryable<Category> GetByIdAsync(int id);
+        IQueryable<Category> GetById(int id);
 
         Task CreateAsync(Category category);
 
@@ -13,9 +13,9 @@ namespace Greeny.DAL.Repository.Interfaces
 
         Task DeleteAsync(int id);
 
-        //IQueryable<Category> SearchByNameAsync(string name);
+        IQueryable<Category> SearchByName(string name);
 
-        //Task<bool> ExistsByIdAsync(int id);
+        Task<bool> ExistsByIdAsync(int id);
 
 
     }

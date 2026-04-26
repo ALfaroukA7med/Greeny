@@ -1,8 +1,6 @@
 ﻿using Greeny.BLL.Admin.ModelVM.Comment;
 using Greeny.BLL.Admin.ModelVM.Post;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace Greeny.BLL.Admin.Services.Interfaces
 {
@@ -11,6 +9,7 @@ namespace Greeny.BLL.Admin.Services.Interfaces
         Task<Response<IEnumerable<PostCreateVM>>> GetAllAsync();
         Task<Response<PostListVM>> GetByIdAsync(int id);
         Task<Response<bool>> CreateAsync(PostCreateVM post);
+
         //Task<Response<string>> UpdateAsync(PostCreateVM post);
         Task<Response<bool>> DeleteAsync(int id);
     }

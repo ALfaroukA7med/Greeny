@@ -13,99 +13,79 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(Product product)
+        public async Task CreateAsync(Product product)
         {
               await _context.Products.AddAsync(product);
                 await _context.SaveChangesAsync();
-                return true;
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public IQueryable<Product> GetAll()
         {
-            return await _context.Products
+            return _context.Products
             .Where(p => !p.IsDeleted)
-            .Include(p => p.Category)
-            .ToListAsync();
+            .AsNoTracking();
         }
 
         public async Task<Product?> GetByIdAsync(int id)
         {
             return await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Reviews)
                 .FirstOrDefaultAsync(p => p.Id == id&& !p.IsDeleted);
         }
 
-        public async Task<bool> UpdateAsync(Product newProduct)
+        public async Task UpdateAsync(Product newProduct)
         {
-                var result =await _context.Products.FirstOrDefaultAsync(p => p.Id == newProduct.Id && !p.IsDeleted);
-
-            if (result == null)
-            { return false; }
-
-                result.Name = newProduct.Name;
-                result.Price = newProduct.Price;
-                result.Description = newProduct.Description;
-                result.Quantity = newProduct.Quantity;
-
-            if (!string.IsNullOrEmpty(newProduct.Image))
-            {
-                result.Image = newProduct.Image;
-            }
-
-            await _context.SaveChangesAsync();
-                return true;
+            await _context.Products.Where(p => p.Id == newProduct.Id && !p.IsDeleted)
+               .ExecuteUpdateAsync(setter => setter
+               .SetProperty(p=> p.Name, newProduct.Name)
+               .SetProperty(p => p.Price, newProduct.Price)
+               .SetProperty(p => p.Description, newProduct.Description)
+               .SetProperty(p => p.Image, newProduct.Image)
+               .SetProperty(p => p.Quantity, newProduct.Quantity));
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-                var result = await _context.Products.FirstOrDefaultAsync(p => p.Id == id&& !p.IsDeleted);
-                if (result == null) { return false; }
-
-                result.IsDeleted = true;
-                await _context.SaveChangesAsync();
-                return true;
+            await _context.Products.Where(p => p.Id == id && !p.IsDeleted)
+          .ExecuteUpdateAsync(setter => setter
+          .SetProperty(p => p.IsDeleted, true));
         }
 
 
-        public async Task<IEnumerable<Product>> SearchByNameAsync(string name)
+        public IQueryable<Product> SearchByName(string name)
         {
-            return await _context.Products
+            return _context.Products
                 .Where(p => EF.Functions.Like(p.Name, $"%{name}%") && !p.IsDeleted)
-                .Include(p => p.Category)
-                .ToListAsync();
+                .AsNoTracking();
         }
 
-        public async Task<IEnumerable<Product>> GetInStockAsync()
+        public IQueryable<Product> GetInStock()
         {
-            return await _context.Products
+            return _context.Products
                 .Where(p => p.Quantity > 0 && !p.IsDeleted)
-                .Include(p => p.Category)
-                .ToListAsync();
+                .AsNoTracking();
         }
 
-        public async Task<IEnumerable<Product>> GetOutStockAsync()
+        public IQueryable<Product> GetOutStock()
         {
-            return await _context.Products
+            return _context.Products
                 .Where(p => p.Quantity == 0 && !p.IsDeleted)
-                .Include (p => p.Category)
-                .ToListAsync();
+                .AsNoTracking();
         }
 
-        public async Task<IEnumerable<Product>> GetMostExpensiveAsync()
+        public IQueryable<Product> GetMostExpensive()
         {
-            return await _context.Products
+            return _context.Products
                 .OrderByDescending(p => p.Price)
                 .Take(10)
-                .ToListAsync();
+                .AsNoTracking();
         }
 
-        public async Task<IEnumerable<Product>> GetLestExpensiveAsync()
+        public IQueryable<Product> GetLestExpensive()
         {
-            return await _context.Products
+            return _context.Products
                 .OrderBy(p => p.Price)
                 .Take(10)
-                .ToListAsync();
+                .AsNoTracking();
         }
 
         public async Task<bool> ExistsByNameAsync(string name)
@@ -120,9 +100,9 @@ namespace Greeny.DAL.Repository.Implementation
                 .AnyAsync(p => p.Id == Id && !p.IsDeleted);
         }
 
-        public async Task<IEnumerable<Product>> GetAllByCategoryIdAsync(int categoryId)
+        public IQueryable<Product> GetAllByCategoryId(int categoryId)
         {
-            return await _context.Products.Where(p=>p.CategoryId== categoryId && !p.IsDeleted).ToListAsync();
+            return _context.Products.Where(p=>p.CategoryId== categoryId && !p.IsDeleted).AsNoTracking();
         }
     }
 }

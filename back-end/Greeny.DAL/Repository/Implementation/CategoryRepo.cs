@@ -18,14 +18,14 @@ namespace Greeny.DAL.Repository.Implementation
                 await _context.SaveChangesAsync();
         }
          
-        public IQueryable<Category> GetAllAsync()
+        public IQueryable<Category> GetAll()
         {
                 return _context.Categories
                 .Where(c=>!c.IsDeleted)
                 .AsNoTracking();
         }
 
-        public IQueryable<Category?> GetByIdAsync(int id)
+        public IQueryable<Category?> GetById(int id)
         {
                 return _context.Categories
                 .Where(c => c.Id == id&& !c.IsDeleted)
@@ -52,7 +52,7 @@ namespace Greeny.DAL.Repository.Implementation
             );
         }
 
-        public IQueryable<Category> SearchByNameAsync(string name)
+        public IQueryable<Category> SearchByName(string name)
         {
             return _context.Categories
               .Where(c => EF.Functions.Like(c.Name, $"%{name}%") && !c.IsDeleted)

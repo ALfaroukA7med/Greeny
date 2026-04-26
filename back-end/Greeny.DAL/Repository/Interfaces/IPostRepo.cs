@@ -3,7 +3,7 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface IPostRepo
     {
-        Task<IEnumerable<Post>> GetAllAsync();
+        IQueryable<Post> GetAll();
 
         Task<Post> GetByIdAsync(int id);
 
@@ -13,16 +13,16 @@ namespace Greeny.DAL.Repository.Interfaces
          
         Task DeleteAsync(int id);
 
-        Task<IEnumerable<Post>> SearchAsync(string keyword);
-        Task<IEnumerable<Post>> GetRecentAsync();
+        IQueryable<Post> SearchByKeyword(string keyword);
+        IQueryable<Post> GetRecent();
 
         Task<int> CountByUserIdAsync(string userId);
 
         Task<bool> ExistPostsAsync(string userId);
 
-        Task<bool> DeleteAllByUserIdAsync(string userId);
+        Task DeleteAllByUserIdAsync(string userId);
 
-        Task<IEnumerable<Post>> GetAllByUserIdAsync(string userId);
+        IQueryable<Post> GetAllByUserId(string userId);
 
 
     }

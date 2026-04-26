@@ -18,14 +18,14 @@ namespace Greeny.DAL.Repository.Implementation
                 await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Notification> GetAllAsync()
+        public IQueryable<Notification> GetAll()
         {
                 return _context.Notifications
                 .Where(n=>!n.IsDeleted)
                 .AsNoTracking();
         }
 
-        public IQueryable<Notification?> GetByIdAsync(int id)
+        public IQueryable<Notification?> GetById(int id)
         {
             return _context.Notifications
             .Where(n => n.Id == id)
@@ -42,7 +42,7 @@ namespace Greeny.DAL.Repository.Implementation
         //}
 
 
-        public IQueryable<Notification> GetByUserIdAsync(string userId)
+        public IQueryable<Notification> GetByUserId(string userId)
         {
             return _context.Notifications
             .Where(n => n.ReceiverId == userId)
@@ -50,7 +50,7 @@ namespace Greeny.DAL.Repository.Implementation
         }
 
 
-        public IQueryable<Notification> GetUnreadByUserIdAsync(string userId)
+        public IQueryable<Notification> GetUnreadByUserId(string userId)
         {
             return _context.Notifications
             .Where(n => n.ReceiverId == userId && !n.IsRead)

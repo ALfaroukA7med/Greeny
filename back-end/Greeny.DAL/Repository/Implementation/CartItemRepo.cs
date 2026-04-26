@@ -28,7 +28,7 @@ namespace Greeny.DAL.Repository.Implementation
         //        .AsNoTracking();
         //}
 
-        public IQueryable<CartItem> GetByIdAsync(int id)
+        public IQueryable<CartItem> GetById(int id)
         {
             return _context.CartItems
                 .Where(c => c.Id == id)
@@ -52,14 +52,14 @@ namespace Greeny.DAL.Repository.Implementation
                 .SetProperty(r => r.IsDeleted, true)
                 );
         }
-        public IQueryable<CartItem> GetByCartIdAsync(int cartId)
+        public IQueryable<CartItem> GetByCartId(int cartId)
         {
             return _context.CartItems
             .Where(c => c.CartId == cartId && !c.IsDeleted)
             .AsNoTracking();
         }
 
-        public IQueryable<CartItem> GetByCartAndProductAsync(int cartId, int productId)
+        public IQueryable<CartItem> GetByCartAndProduct(int cartId, int productId)
         {
             return _context.CartItems
             .Where(c => c.CartId == cartId && c.ProductId == productId && !c.IsDeleted)

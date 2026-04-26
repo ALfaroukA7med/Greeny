@@ -19,14 +19,14 @@ namespace Greeny.DAL.Repository.Implementation
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Order> GetAllAsync()
+        public IQueryable<Order> GetAll()
         {
             return _context.Orders
                 .Where(o=>!o.IsDeleted)
                 .AsNoTracking();
         }
 
-        public IQueryable<Order?> GetByIdAsync(int id)
+        public IQueryable<Order?> GetById(int id)
         {
             return _context.Orders
                 .AsNoTracking()
@@ -46,14 +46,14 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task DeleteAsync(int id)
         {
             await _context.Orders
-                .Where(o => newOrder.Id == o.Id && !o.IsDeleted)
+                .Where(o => id == o.Id && !o.IsDeleted)
                 .ExecuteUpdateAsync(setter => setter
                 .SetProperty(p => p.IsDeleted, true)
                 );
         }
 
 
-      public IQueryable<Order> GetOrdersByUserIdAsync(string userId)
+      public IQueryable<Order> GetOrdersByUserId(string userId)
         {
             return _context.Orders
                 //.Include(o => o.OrderItems)
@@ -62,21 +62,21 @@ namespace Greeny.DAL.Repository.Implementation
                 .AsNoTracking();
         }
 
-       public IQueryable<Order> GetOrdersByUserIdAndStatusAsync(string userId, string status)
+       public IQueryable<Order> GetOrdersByUserIdAndStatus(string userId, string status)
         {
             return _context.Orders
             .Where(o => o.UserId == userId &&  o.Status==status && !o.IsDeleted)
             .AsNoTracking();
         }
 
-       public IQueryable<Order> GetOrdersByStatusAsync(string status)
+       public IQueryable<Order> GetOrdersByStatus(string status)
         {
             return _context.Orders
                 .Where(o => o.Status == status && !o.IsDeleted)
                 .AsNoTracking();
         }
 
-       public IQueryable<Order> GetRecentOrdersAsync()
+       public IQueryable<Order> GetRecentOrders()
         {
             return _context.Orders
             .Where(o=> !o.IsDeleted)
