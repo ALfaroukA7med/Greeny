@@ -1,91 +1,112 @@
-﻿using Greeny.BLL.Admin.ModelVM.User;
+﻿using Greeny.BLL.Admin.Errors;
+using Greeny.BLL.Admin.ModelVM.User;
 using Microsoft.AspNetCore.Identity;
 
 namespace Greeny.BLL.Admin.Services.Implementation
 {
-    //public class UserService : IUserService
-    //{
+    public class UserService : IUserService
+    {
 
-    //        private readonly UserManager<User> _userManager;
-    //        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-    //        public UserService( UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
-    //        {
-    //            _userManager = userManager;
-    //            _roleManager = roleManager;
-    //        }
+        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
 
-    //    public async Task<Response<bool>> DeleteAsync(string id)
-    //    {
+        public async Task<Response<bool>> DeleteAsync(string id)
+        {
 
-    //        var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
 
-    //        if (user == null)
-    //        {
-    //            return new Response<bool>
-    //            {
-    //                IsSuccess = false,
-    //                Message = "User not found"
-    //            };
-    //        }
+            if (user == null)
+            {
+                return Response<bool>.Fail(UserError.NotFound);
+            }
 
-    //        user.IsDeleted = true;
+            user.IsDeleted = true;
 
-    //        await _userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
 
-    //        return new Response<bool>
-    //        {
-    //            IsSuccess = true,
-    //            Data = true,
-    //            Message = "User deleted"
-    //        };
+            return Response<bool>.Success(true);
+        }
 
-    //    }
+        public async Task<Response<IEnumerable<DetailsUserVM>>> GetAllActiveAsync()
+        {
+            var users = _userManager.Users
+                .Where(u => !u.IsDeleted)
+                .ToList();
 
-    //    public async Task<Response<IEnumerable<DetailsUserVM>>> GetAllActiveAsync()
-    //    {
-    //        var users = _userManager.Users
-    //            .Where(u => !u.IsDeleted)
-    //            .ToList();
+            var data = new List<DetailsUserVM>();
 
-    //        var data = new List<DetailsUserVM>();
+            foreach (var user in users)
+            {
+                data.Add(new DetailsUserVM
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FullName = user.FirstName + " " + user.LastName,
+                    Address = user.Address,
+                    PhoneNumber = user.PhoneNumber,
+                    ProfilePicture = user.ProfilePicture,
+                });
+            }
 
-    //        foreach (var user in users)
-    //        {
-    //            data.Add(new DetailsUserVM
-    //            {
-    //                Id = user.Id,
-    //                Email = user.Email,
-    //                FullName = user.FirstName +" "+ user.LastName,
-    //                Address = user.Address,
-    //                PhoneNumber = user.PhoneNumber,
-    //                ProfilePicture = user.ProfilePicture,
-    //            });
-    //        }
-
-    //        return new Response<IEnumerable<DetailsUserVM>>
-    //        {
-    //            IsSuccess = true,
-    //            Data = data,
-    //            Message = "Users retrieved"
-    //        };
-    //    }
+            return Response<IEnumerable<DetailsUserVM>>.Success(data);
+        }
 
 
+        public async Task<Response<IEnumerable<DetailsUserVM>>> GetAllDeletedAsync()
+        {
+            var users = _userManager.Users
+                .Where(u => u.IsDeleted)
+                .ToList();
 
-    //    Task<Response<IEnumerable<DetailsUserVM>>> GetAllDeletedAsync()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
+            var data = new List<DetailsUserVM>();
 
-    //    Task<Response<DetailsUserVM>> GetByIdAsync(string id)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
+            foreach (var user in users)
+            {
+                data.Add(new DetailsUserVM
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FullName = user.FirstName + " " + user.LastName,
+                    Address = user.Address,
+                    PhoneNumber = user.PhoneNumber,
+                    ProfilePicture = user.ProfilePicture,
+                });
+            }
 
-    //    Task<Response<bool>> UpdateAsync(UpdateUserVM vm)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+            return Response<IEnumerable<DetailsUserVM>>.Success(data);
+        }
+
+        public async Task<Response<DetailsUserVM>> GetByIdAsync(string id)
+        {
+            var user = _userManager.Users
+                .FirstOrDefault(u =>u.Id==id && !u.IsDeleted);
+            if (user == null)
+            {
+                return Response<DetailsUserVM>.Fail(UserError.NotFound);
+            }
+
+            var data = new DetailsUserVM{ 
+                    Id = user.Id,
+                    Email = user.Email,
+                    FullName = user.FirstName + " " + user.LastName,
+                    Address = user.Address,
+                    PhoneNumber = user.PhoneNumber,
+                    ProfilePicture = user.ProfilePicture,
+                };
+
+
+            return Response<DetailsUserVM>.Success(data);
+        }
+
+        //public async Task<Response<bool>> UpdateAsync(UpdateUserVM vm)
+        //{
+
+        //}
+    }
 }

@@ -79,22 +79,6 @@ namespace Greeny.DAL.Repository.Implementation
                 .CountAsync();
         }
 
-        //public async Task DeleteAllByPostAsync(int postId)
-        //{
-        //    var comments = await _context.Comments
-        //        .Where(c => c.PostId == postId && !c.IsDeleted)
-        //        .ToListAsync();
-
-        //    if (!comments.Any())
-        //        return false;
-
-        //    foreach (var item in comments)
-        //    {
-        //        item.IsDeleted = true;
-        //    }
-        //    return await _context.SaveChangesAsync() > 0;
-        //}
-
         public async Task<bool> ExistsAsync(string userId, int postId)
         {
             return await _context.Comments

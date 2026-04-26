@@ -32,16 +32,6 @@ namespace Greeny.DAL.Repository.Implementation
             .AsNoTracking();
         }
 
-        //public async Task UpdateAsync(Notification newNotification)
-        //{
-        //    await _context.Notifications
-        //        .Where(n => n.Id == newNotification.Id)
-        //        .ExecuteUpdateAsync(setter => setter
-        //        .SetProperty(p => p.IsRead, I)
-        //        );
-        //}
-
-
         public IQueryable<Notification> GetByUserId(string userId)
         {
             return _context.Notifications

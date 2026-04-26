@@ -3,8 +3,6 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface ICommentRepo
     {
-        //IQueryable<Comment> GetAllAsync();
-
         IQueryable<Comment?> GetById(int id);
 
         Task CreateAsync(Comment comment);
@@ -12,8 +10,6 @@ namespace Greeny.DAL.Repository.Interfaces
         //Task UpdateAsync(Comment comment);
 
         Task DeleteAsync(int id);
-
-
         IQueryable<Comment> GetAllByPostId(int postId);
         IQueryable<Comment> GetAllByUserId(string userId);
         //IQueryable<Comment> GetAllRecentByPostIdAsync(int postId);

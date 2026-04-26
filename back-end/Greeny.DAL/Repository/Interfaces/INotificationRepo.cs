@@ -7,10 +7,6 @@ namespace Greeny.DAL.Repository.Interfaces
 
         Task CreateAsync(Notification notification);
 
-        //Task UpdateAsync(Notification notification);
-
-        //Task DeleteAsync(int id);
-
         IQueryable<Notification> GetByUserId(string userId);
 
         //IQueryable<Notification>> GetUnreadByUserIdAsync(string userId);

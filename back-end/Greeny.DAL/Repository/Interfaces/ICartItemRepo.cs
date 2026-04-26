@@ -4,7 +4,7 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface ICartItemRepo
     {
-        //IQueryable<CartItem> GetAllAsync();
+
 
         IQueryable<CartItem> GetById(int id);
 
