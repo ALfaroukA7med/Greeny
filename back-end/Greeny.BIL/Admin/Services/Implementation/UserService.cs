@@ -104,9 +104,24 @@ namespace Greeny.BLL.Admin.Services.Implementation
             return Response<DetailsUserVM>.Success(data);
         }
 
-        //public async Task<Response<bool>> UpdateAsync(UpdateUserVM vm)
-        //{
+        public async Task<Response<bool>> UpdateAsync(UpdateUserVM vm)
+        {
+            var user = await _userManager.FindByIdAsync(vm.Id);
 
-        //}
+            if (user == null || user.IsDeleted)
+            {
+                return Response<bool>.Fail(UserError.NotFound);
+            }
+
+            user.FirstName = vm.FirstName;
+            user.LastName = vm.LastName;
+            user.PhoneNumber = vm.PhoneNumber;
+            user.Address = vm.Address;
+            user.ProfilePicture = vm.ProfilePicture;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            return Response<bool>.Success(true);
+        }
     }
 }

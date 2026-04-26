@@ -7,11 +7,11 @@ namespace Greeny.BLL.Admin.Services.Interfaces
 
         Task<Response<DetailsCategoryVM>> GetByIdAsync(int id);
 
-        Task<Response<string>> CreateAsync(CreateCategoryVM vm);
+        Task<Response<bool>> CreateAsync(CreateCategoryVM vm);
 
-        Task<Response<string>> UpdateAsync(UpdateCategoryVM vm);
+        Task<Response<bool>> UpdateAsync(UpdateCategoryVM vm);
 
-        Task<Response<string>> DeleteAsync(int id);
+        Task<Response<bool>> DeleteAsync(int id);
 
         Task<Response<IEnumerable<DetailsCategoryVM>>> SearchByNameAsync(string name);
 

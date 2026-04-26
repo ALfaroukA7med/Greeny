@@ -15,33 +15,33 @@ namespace Greeny.BLL.Admin.Services.Implementation
             _mapper = mapper;
         }
 
-        public async Task<Response<string>> CreateAsync(CreateCategoryVM vm)
+        public async Task<Response<bool>> CreateAsync(CreateCategoryVM vm)
         {
                 if (vm == null)
                 {
-                    return Response<string>.Fail(CategoryError.InvalidData);
+                    return Response<bool>.Fail(CategoryError.InvalidData);
                 }
 
                 var category = _mapper.Map<Category>(vm);
 
                 await _categoryRepo.CreateAsync(category);
 
-            return Response<string>.Success("Created Successfully");
+            return Response<bool>.Success(true);
         }
 
-        public async Task<Response<string>> DeleteAsync(int id)
+        public async Task<Response<bool>> DeleteAsync(int id)
         {
                 var Query = _categoryRepo.GetById(id);
                 var category = await Query.FirstOrDefaultAsync();
 
                 if (category == null || category.IsDeleted)
                 {
-                return Response<string>.Fail(CategoryError.NotFound);
+                return Response<bool>.Fail(CategoryError.NotFound);
                 }
 
                 await _categoryRepo.DeleteAsync(id);
 
-            return Response<string>.Success("Deleted Successfully");
+            return Response<bool>.Success(true);
         }
 
         public async Task<Response<bool>> ExistsByIdAsync(int id)
@@ -93,7 +93,7 @@ namespace Greeny.BLL.Admin.Services.Implementation
             return Response<IEnumerable<DetailsCategoryVM>>.Success(data);
         }
 
-        public async Task<Response<string>> UpdateAsync(UpdateCategoryVM vm)
+        public async Task<Response<bool>> UpdateAsync(UpdateCategoryVM vm)
         {
 
             var Query = _categoryRepo.GetById(vm.Id);
@@ -101,13 +101,14 @@ namespace Greeny.BLL.Admin.Services.Implementation
 
             if (category == null || category.IsDeleted)
             {
-                return Response<string>.Fail(CategoryError.NotFound);
+                return Response<bool>.Fail(CategoryError.NotFound);
             }
 
             _mapper.Map(vm, category);
              await _categoryRepo.UpdateAsync(category);
 
-            return Response<string>.Success("Updated Successfully");
+            return Response<bool>.Success(true);
         }
+
     }
 }

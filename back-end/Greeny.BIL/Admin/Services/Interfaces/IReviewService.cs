@@ -5,11 +5,11 @@ namespace Greeny.BLL.Admin.Services.Interfaces
     {
         Task<Response<DetailsReviewVM>> GetByIdAsync(int id);
 
-        Task<Response<string>> CreateAsync(CreateReviewVM vm);
+        Task<Response<bool>> CreateAsync(CreateReviewVM vm);
 
-        Task<Response<string>> UpdateAsync(UpdateReviewVM vm);
+        Task<Response<bool>> UpdateAsync(UpdateReviewVM vm);
 
-        Task<Response<string>> DeleteAsync(int id);
+        Task<Response<bool>> DeleteAsync(int id);
 
         Task<Response<IEnumerable<DetailsReviewVM>>> GetAllByProductIdAsync(int productId);
         Task<Response<int>> CountByProductIdAsync(int productId);

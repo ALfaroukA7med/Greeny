@@ -4,6 +4,9 @@ namespace Greeny.BLL.Admin.ModelVM.User
     public class UpdateUserVM
     {
         [Required]
+        public string Id { get; set; }
+
+        [Required]
         [MaxLength(50)]
         public string FirstName { get; set; }
 

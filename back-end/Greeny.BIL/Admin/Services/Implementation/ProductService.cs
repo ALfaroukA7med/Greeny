@@ -44,49 +44,49 @@ namespace Greeny.BLL.Admin.Services.Implementation
         }
 
         // Create
-        public async Task<Response<string>> CreateAsync(CreateProductVM vm)
+        public async Task<Response<bool>> CreateAsync(CreateProductVM vm)
         {
                 if (vm == null)
                 {
-                    return Response<string>.Fail(ProductError.InvalidData);
+                    return Response<bool>.Fail(ProductError.InvalidData);
                 }
 
                 var product = _mapper.Map<Product>(vm);
 
                 await _productRepo.CreateAsync(product);
 
-                return Response<string>.Success("Create Successfully");
+                return Response<bool>.Success(true);
         }
 
         // Update
-        public async Task<Response<string>> UpdateAsync(UpdateProductVM vm)
+        public async Task<Response<bool>> UpdateAsync(UpdateProductVM vm)
         {
                 var product = await _productRepo.GetByIdAsync(vm.Id);
 
                 if (product == null)
                 {
-                return Response<string>.Fail(ProductError.InvalidData);
+                return Response<bool>.Fail(ProductError.InvalidData);
                 }
 
                 _mapper.Map(vm, product);
                 await _productRepo.UpdateAsync(product);
 
-            return Response<string>.Success("Update Successfully");
+            return Response<bool>.Success(true);
         }
 
         // Delete (Soft Delete)
-        public async Task<Response<string>> DeleteAsync(int id)
+        public async Task<Response<bool>> DeleteAsync(int id)
         {
                 var product = await _productRepo.GetByIdAsync(id);
 
                 if (product == null || product.IsDeleted)
                 {
-                return Response<string>.Fail(ProductError.NotFound);
+                return Response<bool>.Fail(ProductError.NotFound);
                 }
 
                 await _productRepo.DeleteAsync(id);
 
-            return Response<string>.Success("Deleted Successfully");
+            return Response<bool>.Success(true);
         }
 
         public async Task<Response<IEnumerable<DetailsProductVM>>> SearchByNameAsync(string name)
