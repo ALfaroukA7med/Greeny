@@ -22,33 +22,33 @@ namespace Greeny.BLL.Admin.Services.Implementation
                 return Response<int>.Success(result);
         }
 
-        public async Task<Response<string>> CreateAsync(CreateReviewVM vm)
+        public async Task<Response<bool>> CreateAsync(CreateReviewVM vm)
         {
                 if (vm == null)
                 {
-                    return Response<string>.Fail(ReviewError.InvalidData);
+                    return Response<bool>.Fail(ReviewError.InvalidData);
                 }
 
                 var review = _mapper.Map<Review>(vm);
 
                 await _reviewRepo.CreateAsync(review);
 
-            return Response<string>.Success("Create Successfully");
+            return Response<bool>.Success(true);
                
         }
 
-        public async Task<Response<string>> DeleteAsync(int id)
+        public async Task<Response<bool>> DeleteAsync(int id)
         {
                 var review = await _reviewRepo.GetByIdAsync(id);
 
                 if (review == null)
                 {
-                return Response<string>.Fail(ReviewError.InvalidData);
+                return Response<bool>.Fail(ReviewError.InvalidData);
                 }
 
                 await _reviewRepo.DeleteAsync(id);
 
-            return Response<string>.Success("Deleted Successfully");
+            return Response<bool>.Success(true);
         }
 
         public async Task<Response<bool>> ExistsAsync(string userId, int productId)
@@ -103,19 +103,19 @@ namespace Greeny.BLL.Admin.Services.Implementation
                 return Response<IEnumerable<DetailsReviewVM>>.Success(data);
         }
 
-        public async Task<Response<string>> UpdateAsync(UpdateReviewVM vm)
+        public async Task<Response<bool>> UpdateAsync(UpdateReviewVM vm)
         {
                 var review = await _reviewRepo.GetByIdAsync(vm.Id);
 
                 if (review == null)
                 {
-                    return Response<string>.Fail(ReviewError.NotFound);
+                    return Response<bool>.Fail(ReviewError.NotFound);
                 }
 
                 _mapper.Map(vm, review);
                 await _reviewRepo.UpdateAsync(review);
 
-            return Response<string>.Success("Updated Successfully");
+            return Response<bool>.Success(true);
         }
 
     }
