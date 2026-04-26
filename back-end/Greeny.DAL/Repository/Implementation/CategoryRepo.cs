@@ -25,7 +25,7 @@ namespace Greeny.DAL.Repository.Implementation
                 .AsNoTracking();
         }
 
-        public IQueryable<Category?> GetById(int id)
+        public IQueryable<Category> GetById(int id)
         {
                 return _context.Categories
                 .Where(c => c.Id == id&& !c.IsDeleted)

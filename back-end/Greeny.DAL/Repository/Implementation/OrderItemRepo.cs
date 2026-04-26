@@ -21,7 +21,7 @@ namespace Greeny.DAL.Repository.Implementation
         }
 
 
-        public IQueryable<OrderItem?> GetById(int id)
+        public IQueryable<OrderItem> GetById(int id)
         {
             return _context.OrderItems.AsNoTracking()
             .Where(o => o.Id == id && !o.IsDeleted);

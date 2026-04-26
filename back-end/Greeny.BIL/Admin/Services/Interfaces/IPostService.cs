@@ -6,9 +6,9 @@ namespace Greeny.BLL.Admin.Services.Interfaces
 {
     public interface IPostService
     {
-        Task<Response<IEnumerable<PostCreateVM>>> GetAllAsync();
-        Task<Response<PostListVM>> GetByIdAsync(int id);
-        Task<Response<bool>> CreateAsync(PostCreateVM post);
+        Task<Response<IEnumerable<PostListVM>>> GetAllAsync();
+        Task<Response<PostDetailsVM>> GetByIdAsync(int id);
+        Task<Response<bool>> AddAsync(PostListVM post);
 
         //Task<Response<string>> UpdateAsync(PostCreateVM post);
         Task<Response<bool>> DeleteAsync(int id);

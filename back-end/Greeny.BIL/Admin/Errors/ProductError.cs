@@ -12,6 +12,6 @@ namespace Greeny.BLL.Admin.Erorrs
             = new Error("Product.NotFound", "Product not found", ErrorType.NotFound);
 
         public static Error InvalidData
-   = new Error("Product.InvalidData", "Invalid Product data", ErrorType.BadRequest);
+            = new Error("Product.InvalidData", "Invalid Product data", ErrorType.BadRequest);
     }
 }
