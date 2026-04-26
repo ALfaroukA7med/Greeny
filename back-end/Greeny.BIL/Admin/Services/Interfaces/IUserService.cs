@@ -11,7 +11,7 @@ namespace Greeny.BLL.Admin.Services.Interfaces
 
         Task<Response<DetailsUserVM>> GetByIdAsync(string id);
 
-        Task<Response<bool>> UpdateAsync(UpdateUserVM vm);
+        //Task<Response<bool>> UpdateAsync(UpdateUserVM vm);
 
         Task<Response<bool>> DeleteAsync(string id);
 

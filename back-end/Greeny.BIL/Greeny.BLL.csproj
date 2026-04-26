@@ -17,9 +17,6 @@
 
   <ItemGroup>
     <Folder Include="Admin\Helper\" />
-    <Folder Include="Auth\AutoMapper\" />
-    <Folder Include="Auth\Helper\" />
-    <Folder Include="Auth\Services\" />
   </ItemGroup>
 
   <ItemGroup>

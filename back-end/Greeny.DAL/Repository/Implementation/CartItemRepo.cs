@@ -14,19 +14,13 @@ namespace Greeny.DAL.Repository.Implementation
         {
             _context = context;
         }
+        
 
         public async Task CreateAsync(CartItem cartItem)
         {
             await _context.CartItems.AddAsync(cartItem);
             await _context.SaveChangesAsync();
         }
-
-        //public IQueryable<CartItem> GetAllAsync()
-        //{
-        //    return _context.CartItems
-        //        .Where(c=>!c.IsDeleted)
-        //        .AsNoTracking();
-        //}
 
         public IQueryable<CartItem> GetById(int id)
         {
