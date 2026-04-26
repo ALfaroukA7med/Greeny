@@ -25,7 +25,7 @@ namespace Greeny.DAL.Repository.Implementation
                 .AsNoTracking();
         }
 
-        public IQueryable<Notification?> GetById(int id)
+        public IQueryable<Notification> GetById(int id)
         {
             return _context.Notifications
             .Where(n => n.Id == id)

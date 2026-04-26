@@ -23,10 +23,10 @@ namespace Greeny.DAL.Repository.Implementation
                 return _context.Posts.Where(p => !p.IsDeleted).AsNoTracking();
         }
 
-        public async Task<Post?> GetByIdAsync(int id)
+        public IQueryable<Post> GetByIdAsync(int id)
         {
-            return await _context.Posts
-            .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+            return _context.Posts
+            .Where(p => p.Id == id && !p.IsDeleted);
         }
 
         public async Task UpdateAsync(Post newPost)
@@ -46,11 +46,11 @@ namespace Greeny.DAL.Repository.Implementation
           .SetProperty(p => p.IsDeleted, true));
         }
 
-        public  IQueryable<Post> SearchByKeyword(string keyword)
-        {
-            return  _context.Posts
-                .Where(p => EF.Functions.Like(p.Content, $"%{keyword}%") && !p.IsDeleted);
-        }
+        //public  IQueryable<Post> SearchByKeyword(string keyword)
+        //{
+        //    return  _context.Posts
+        //        .Where(p => EF.Functions.Like(p.Content, $"%{keyword}%") && !p.IsDeleted);
+        //}
 
         public IQueryable<Post> GetRecent()
         {
@@ -68,25 +68,25 @@ namespace Greeny.DAL.Repository.Implementation
                 .CountAsync(p => p.UserId == userId && !p.IsDeleted);
         }
 
-        public async Task<bool> ExistPostsAsync(string userId)
-        {
-            return await _context.Posts
-                .AnyAsync(p => p.UserId == userId && !p.IsDeleted);
-        }
+        //public async Task<bool> ExistPostsAsync(string userId)
+        //{
+        //    return await _context.Posts
+        //        .AnyAsync(p => p.UserId == userId && !p.IsDeleted);
+        //}
 
-        public async Task DeleteAllByUserIdAsync(string userId)
-        {
-            var posts = await _context.Posts
-           .Where(p => p.UserId == userId && !p.IsDeleted)
-           .ToListAsync();
+        //public async Task DeleteAllByUserIdAsync(string userId)
+        //{
+        //    var posts = await _context.Posts
+        //   .Where(p => p.UserId == userId && !p.IsDeleted)
+        //   .ToListAsync();
 
-            foreach (var post in posts)
-            {
-                post.IsDeleted = true;
-            }
+        //    foreach (var post in posts)
+        //    {
+        //        post.IsDeleted = true;
+        //    }
 
-            await _context.SaveChangesAsync();
-        }
+        //    await _context.SaveChangesAsync();
+        //}
 
 
         public IQueryable<Post> GetAllByUserId(string userId)
