@@ -1,4 +1,5 @@
 ﻿using Greeny.DAL.Database;
+using Greeny.DAL.Enums;
 using Greeny.DAL.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore.Query;
 
@@ -19,14 +20,14 @@ namespace Greeny.DAL.Repository.Implementation
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Order> GetAll()
+        public IQueryable<Order> GetAllAsync()
         {
             return _context.Orders
                 .Where(o=>!o.IsDeleted)
                 .AsNoTracking();
         }
 
-        public IQueryable<Order?> GetById(int id)
+        public IQueryable<Order> GetByIdAsync(int id)
         {
             return _context.Orders
                 .AsNoTracking()
@@ -53,7 +54,7 @@ namespace Greeny.DAL.Repository.Implementation
         }
 
 
-      public IQueryable<Order> GetOrdersByUserId(string userId)
+      public IQueryable<Order> GetOrdersByUserIdAsync(string userId)
         {
             return _context.Orders
                 //.Include(o => o.OrderItems)
@@ -62,21 +63,21 @@ namespace Greeny.DAL.Repository.Implementation
                 .AsNoTracking();
         }
 
-       public IQueryable<Order> GetOrdersByUserIdAndStatus(string userId, string status)
+       public IQueryable<Order> GetOrdersByUserIdAndStatusAsync(string userId, Status status)
         {
             return _context.Orders
             .Where(o => o.UserId == userId &&  o.Status==status && !o.IsDeleted)
             .AsNoTracking();
         }
 
-       public IQueryable<Order> GetOrdersByStatus(string status)
+       public IQueryable<Order> GetOrdersByStatusAsync(Status status)
         {
             return _context.Orders
                 .Where(o => o.Status == status && !o.IsDeleted)
                 .AsNoTracking();
         }
 
-       public IQueryable<Order> GetRecentOrders()
+       public IQueryable<Order> GetRecentOrdersAsync()
         {
             return _context.Orders
             .Where(o=> !o.IsDeleted)
@@ -94,7 +95,7 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<decimal> GetTotalSalesAsync()
         {
             return await _context.Orders
-           .Where(o => !o.IsDeleted && o.Status == "Paid")
+           .Where(o => !o.IsDeleted && o.Status == Status.Confirmed)
            .SumAsync(o => o.TotalPrice);
         }
 

@@ -26,7 +26,7 @@ namespace Greeny.DAL.Repository.Implementation
                 .AsNoTracking();
         }
 
-        public IQueryable<Cart?> GetById(int id)
+        public IQueryable<Cart> GetById(int id)
         {
             return _context.Carts
             .Where(c => c.Id == id && !c.IsDeleted)
@@ -46,7 +46,7 @@ namespace Greeny.DAL.Repository.Implementation
                 );
         }
 
-        public IQueryable<Cart?> GetByUserId(string userId)
+        public IQueryable<Cart> GetByUserId(string userId)
         {
             return _context.Carts
             //.Include(c => c.CartItems)

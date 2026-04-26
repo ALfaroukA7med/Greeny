@@ -25,7 +25,7 @@ namespace Greeny.DAL.Repository.Implementation
             return _context.Payments.Where(p=>!p.IsDeleted).AsNoTracking();
         }
 
-        public async Task<Payment?> GetByIdAsync(int id)
+        public async Task<Payment> GetByIdAsync(int id)
         {
             return await _context.Payments.Include(p=>p.Order).FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
         }

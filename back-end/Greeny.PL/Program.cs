@@ -16,6 +16,13 @@ namespace Greeny.PL
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // don't remove this.
+            builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
             var config = builder.Configuration.GetConnectionString("ProjectConnection");
             builder.Services.AddDbContext<GreenyDbContext>(options =>
                 options.UseSqlServer(config));

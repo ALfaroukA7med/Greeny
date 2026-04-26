@@ -4,3 +4,6 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using System.ComponentModel.DataAnnotations;
+global using Greeny.DAL.Database;
+global using Greeny.DAL.Enums;
+global using Greeny.DAL.Repository.Interfaces;
