@@ -4,18 +4,18 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface IUserRepo
     {
-        Task<IEnumerable<User>> GetAllAsync();
+        IQueryable<User> GetAll();
 
         Task<User> GetByIdAsync(string id);
 
-        Task<bool> CreateAsync(User user);
+        Task CreateAsync(User user);
 
-        Task<bool> UpdateAsync(User user);
+        Task UpdateAsync(User user);
 
-        Task<bool> DeleteAsync(string id);
+        Task DeleteAsync(string id);
 
-        Task<IEnumerable<User>> GetAllActiveAsync();
-        Task<IEnumerable<User>> GetAllDeletedAsync();
+        IQueryable<User> GetAllActive();
+        IQueryable<User> GetAllDeleted();
 
     }
 }

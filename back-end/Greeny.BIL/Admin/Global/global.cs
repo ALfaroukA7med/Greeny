@@ -7,4 +7,6 @@ global using Greeny.DAL.Entities;
 global using Greeny.DAL.Repository.Interfaces;
 global using Greeny.BLL.Admin.ModelVM.Category;
 global using Greeny.BLL.Admin.ModelVM.Review;
+global using Microsoft.EntityFrameworkCore;
+global using Greeny.BLL.Admin.Erorrs;
 
