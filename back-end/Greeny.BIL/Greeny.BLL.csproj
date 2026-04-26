@@ -9,13 +9,10 @@
   <ItemGroup>
     <Compile Remove="AutoMapper\**" />
     <Compile Remove="Helper\**" />
-    <Compile Remove="Services\**" />
     <EmbeddedResource Remove="AutoMapper\**" />
     <EmbeddedResource Remove="Helper\**" />
-    <EmbeddedResource Remove="Services\**" />
     <None Remove="AutoMapper\**" />
     <None Remove="Helper\**" />
-    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>

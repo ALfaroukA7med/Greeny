@@ -3,19 +3,18 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface INotificationRepo
     {
-        Task<IEnumerable<Notification>> GetAllAsync();
+        IQueryable<Notification> GetById(int id);
 
-        Task<Notification> GetByIdAsync(int id);
+        Task CreateAsync(Notification notification);
 
-        Task<bool> CreateAsync(Notification notification);
+        //Task UpdateAsync(Notification notification);
 
-        Task<bool> UpdateAsync(Notification notification);
+        //Task DeleteAsync(int id);
 
-        Task<bool> DeleteAsync(int id);
+        IQueryable<Notification> GetByUserId(string userId);
 
-        Task<IEnumerable<Notification>> GetByUserIdAsync(string userId);
-        Task<IEnumerable<Notification>> GetUnreadByUserIdAsync(string userId);
+        //IQueryable<Notification>> GetUnreadByUserIdAsync(string userId);
         Task<bool> MarkAsReadAsync(int notificationId);
-        Task<int> CountUnreadAsync(string userId);
+        Task<bool> UnreadExists(string userId);
     }
 }

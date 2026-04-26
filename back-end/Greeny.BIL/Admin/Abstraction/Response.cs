@@ -1,5 +1,6 @@
 ﻿using static Greeny.BLL.Admin.Response.Errors;
 
+﻿
 namespace Greeny.BLL.Admin.Response
 {
     public class Response<T>
@@ -25,7 +26,7 @@ namespace Greeny.BLL.Admin.Response
             return new Response<T>
             {
                 IsSuccess = false,
-                Error = errorMessage
+                Error = errorMessage,
             };
         }
     }

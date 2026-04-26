@@ -7,6 +7,7 @@ namespace Greeny.DAL.Entities
         public string Content { get; set; }
 
         [Range(0,1)]
+
         public int Votes { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public string? ImagePath { get; set; }

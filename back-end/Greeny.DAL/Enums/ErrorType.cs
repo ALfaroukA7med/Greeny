@@ -1,6 +1,6 @@
-﻿
 
-namespace Greeny.BLL.Admin.Erorrs
+
+namespace Greeny.DAL.Enums
 {
     public enum ErrorType
     {

@@ -1,4 +1,6 @@
 ﻿
+using Greeny.BLL.Admin.Errors;
+
 namespace Greeny.BLL.Admin.Services.Implementation
 {
     public class CategoryService : ICategoryService
@@ -15,225 +17,97 @@ namespace Greeny.BLL.Admin.Services.Implementation
 
         public async Task<Response<string>> CreateAsync(CreateCategoryVM vm)
         {
-            try
-            {
                 if (vm == null)
                 {
-                    return new Response<string>
-                    {
-                        IsSuccess = false,
-                        Message = "Invalid Data"
-                    };
+                    return Response<string>.Fail(CategoryError.InvalidData);
                 }
 
                 var category = _mapper.Map<Category>(vm);
 
                 await _categoryRepo.CreateAsync(category);
 
-                return new Response<string>
-                {
-                    IsSuccess = true,
-                    Message = "Category Created Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<string>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<string>.Success("Created Successfully");
         }
 
         public async Task<Response<string>> DeleteAsync(int id)
         {
-            try
-            {
-                var category = await _categoryRepo.GetByIdAsync(id);
+                var Query = _categoryRepo.GetById(id);
+                var category = await Query.FirstOrDefaultAsync();
 
                 if (category == null || category.IsDeleted)
                 {
-                    return new Response<string>
-                    {
-                        IsSuccess = false,
-                        Message = "Category Not Found"
-                    };
+                return Response<string>.Fail(CategoryError.NotFound);
                 }
 
                 await _categoryRepo.DeleteAsync(id);
 
-                return new Response<string>
-                {
-                    IsSuccess = true,
-                    Message = "Category Deleted Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<string>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<string>.Success("Deleted Successfully");
         }
 
         public async Task<Response<bool>> ExistsByIdAsync(int id)
         {
-            try
-            {
                 var exists = await _categoryRepo.ExistsByIdAsync(id);
 
-                return new Response<bool>
-                {
-                    IsSuccess = true,
-                    Data = exists,
-                    Message = exists ? "Category Exists" : "Category Not Exists"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                return Response<bool>.Success(exists);
         }
 
         public async Task<Response<IEnumerable<DetailsCategoryVM>>> GetAllAsync()
         {
-            try
-            {
-                var categories = await _categoryRepo.GetAllAsync();
+                var Query = _categoryRepo.GetAll();
+                var categories = await Query.ToListAsync();
 
                 if (categories == null || !categories.Any())
                 {
-                    return new Response<IEnumerable<DetailsCategoryVM>>
-                    {
-                        IsSuccess = false,
-                        Message = "No categories Found"
-                    };
+                    return Response<IEnumerable<DetailsCategoryVM>>.Fail(CategoryError.NotFound);
                 }
 
                 var data = _mapper.Map<IEnumerable<DetailsCategoryVM>>(categories);
 
-                return new Response<IEnumerable<DetailsCategoryVM>>
-                {
-                    IsSuccess = true,
-                    Data = data,
-                    Message = "categories Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<IEnumerable<DetailsCategoryVM>>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                return Response<IEnumerable<DetailsCategoryVM>>.Success(data);
         }
 
         public async Task<Response<DetailsCategoryVM>> GetByIdAsync(int id)
         {
-            try
-            {
-                var category = await _categoryRepo.GetByIdAsync(id);
+                var Query= _categoryRepo.GetById(id);
+                var category = await Query.FirstOrDefaultAsync();
                 if (category == null)
                 {
-                    return new Response<DetailsCategoryVM>
-                    {
-                        IsSuccess = false,
-                        Message = "category Not Found"
-                    };
+                    return Response<DetailsCategoryVM>.Fail(CategoryError.NotFound);
                 }
                 var data = _mapper.Map<DetailsCategoryVM>(category);
-                return new Response<DetailsCategoryVM>
-                {
-                    IsSuccess = true,
-                    Data = data,
-                    Message = "category Retrieved Successfully"
-                };
-
-            }
-            catch (Exception ex)
-            {
-                return new Response<DetailsCategoryVM>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                return Response<DetailsCategoryVM>.Success(data);
         }
 
         public async Task<Response<IEnumerable<DetailsCategoryVM>>> SearchByNameAsync(string name)
         {
-            try
-            {
-                var categories = await _categoryRepo.SearchByNameAsync(name);
+                var Query = _categoryRepo.SearchByName(name);
+            var categories = await Query.ToListAsync();
 
                 if (categories == null || !categories.Any())
                 {
-                    return new Response<IEnumerable<DetailsCategoryVM>>
-                    {
-                        IsSuccess = false,
-                        Message = "No categories Found"
-                    };
+                return Response<IEnumerable<DetailsCategoryVM>>.Fail(CategoryError.NotFound);
                 }
 
                 var data = _mapper.Map<IEnumerable<DetailsCategoryVM>>(categories);
 
-                return new Response<IEnumerable<DetailsCategoryVM>>
-                {
-                    IsSuccess = true,
-                    Data = data,
-                    Message = "categories Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<IEnumerable<DetailsCategoryVM>>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<IEnumerable<DetailsCategoryVM>>.Success(data);
         }
 
         public async Task<Response<string>> UpdateAsync(UpdateCategoryVM vm)
         {
-            try
+
+            var Query = _categoryRepo.GetById(vm.Id);
+            var category = await Query.FirstOrDefaultAsync();
+
+            if (category == null || category.IsDeleted)
             {
-                var category = await _categoryRepo.GetByIdAsync(vm.Id);
-
-                if (category == null)
-                {
-                    return new Response<string>
-                    {
-                        IsSuccess = false,
-                        Message = "category Not Found"
-                    };
-                }
-
-                _mapper.Map(vm, category);
-                await _categoryRepo.UpdateAsync(category);
-
-                return new Response<string>
-                {
-                    IsSuccess = true,
-                    Message = "category Updated Successfully"
-                };
+                return Response<string>.Fail(CategoryError.NotFound);
             }
-            catch (Exception ex)
-            {
-                return new Response<string>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+
+            _mapper.Map(vm, category);
+             await _categoryRepo.UpdateAsync(category);
+
+            return Response<string>.Success("Updated Successfully");
         }
     }
 }

@@ -12,60 +12,58 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(Category category)
+        public async Task CreateAsync(Category category)
         {
                 await _context.Categories.AddAsync(category);
                 await _context.SaveChangesAsync();
-                return true;
         }
          
-        public async Task<IEnumerable<Category>> GetAllAsync()
+        public IQueryable<Category> GetAll()
         {
-                return await _context.Categories.Where(c=>!c.IsDeleted).ToListAsync();
+                return _context.Categories
+                .Where(c=>!c.IsDeleted)
+                .AsNoTracking();
         }
 
-        public async Task<Category?> GetByIdAsync(int id)
+        public IQueryable<Category?> GetById(int id)
         {
-                return await _context.Categories.FirstOrDefaultAsync(c => c.Id == id&& !c.IsDeleted);
+                return _context.Categories
+                .Where(c => c.Id == id&& !c.IsDeleted)
+                .AsNoTracking();
         }
 
-        public async Task<bool> UpdateAsync(Category newCategory)
+        public async Task UpdateAsync(Category newCategory)
         {
-            var result = await _context.Categories.FirstOrDefaultAsync(c => c.Id == newCategory.Id);
-
-            if (result == null) {return false;}
-
-                result.Name = newCategory.Name;
-                result.Description = newCategory.Description;
-
-            if (!string.IsNullOrEmpty(newCategory.Icon))
-            {
-                result.Icon = newCategory.Icon;
-            }
-
-            await _context.SaveChangesAsync();
-                return true;
+            await _context.Categories
+                .Where(c => !c.IsDeleted)
+                .ExecuteUpdateAsync(setter => setter
+                .SetProperty(p => p.Icon, newCategory.Icon)
+                .SetProperty(p => p.Name, newCategory.Name)
+                .SetProperty(p => p.Description, newCategory.Description)
+                );
         }
          
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-                var result = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
-                if (result == null) { return false; }
-
-                result.IsDeleted = true;
-                await _context.SaveChangesAsync();
-                return true;
+            await _context.Categories
+            .Where(c => !c.IsDeleted)
+            .ExecuteUpdateAsync(setter => setter
+            .SetProperty(p => p.IsDeleted, true)
+            );
         }
 
-        public async Task<IEnumerable<Category>> SearchByNameAsync(string name)
+        public IQueryable<Category> SearchByName(string name)
         {
-            return await _context.Categories
-              .Where(c => EF.Functions.Like(c.Name, $"%{name}%") && !c.IsDeleted).ToListAsync();
+            return _context.Categories
+              .Where(c => EF.Functions.Like(c.Name, $"%{name}%") && !c.IsDeleted)
+              .AsNoTracking();
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
         {
-            return await _context.Categories.AnyAsync(c => c.Id == id&& !c.IsDeleted);
+            return await _context.Categories
+                .Where(c => c.Id == id && !c.IsDeleted)
+                .AnyAsync();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Greeny.BLL.Admin.Erorrs;
+﻿using Greeny.DAL.Enums;
 using static Greeny.BLL.Admin.Response.Errors;
 
 namespace Greeny.BLL.Admin.Errors

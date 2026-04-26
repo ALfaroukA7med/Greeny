@@ -1,5 +1,5 @@
-﻿using Greeny.DAL.Repository.Interfaces;
-using Greeny.DAL.Database;
+﻿using Greeny.DAL.Database;
+using Greeny.DAL.Repository.Interfaces;
 namespace Greeny.DAL.Repository.Implementation
 {
     public class CommentRepo : ICommentRepo
@@ -12,98 +12,88 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(Comment comment)
+        public async Task CreateAsync(Comment comment)
         {
                 await _context.Comments.AddAsync(comment);
                 await _context.SaveChangesAsync();
-                return true;
         }
 
-        public async Task<IEnumerable<Comment>> GetAllAsync()
+
+        public IQueryable<Comment?> GetById(int id)
         {
-                return await _context.Comments
-                .Where(c=>!c.IsDeleted).ToListAsync();
+            // GetCommentPerUser
+            // GetPostsPerUser
+            return _context.Comments
+            .Where(c => c.Id == id && !c.IsDeleted)
+            .AsNoTracking();
         }
 
-        public async Task<Comment?> GetByIdAsync(int id) 
+
+        public async Task DeleteAsync(int id)
         {
-                return await _context.Comments
-                .Include(c => c.User)
-                .Include(c=>c.Post)
-                .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
+            await _context.Comments
+                .Where(c => c.Id == id)
+                .ExecuteUpdateAsync(setter => setter
+                .SetProperty(p => p.IsDeleted, true)
+                );
         }
 
-        public async Task<bool> UpdateAsync(Comment newComment) 
+        public IQueryable<Comment> GetAllByPostId(int postId)
         {
-                var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == newComment.Id && !c.IsDeleted);
-
-            if (result == null) { return false; }
-
-                result.Content = newComment.Content;
-                result.Votes = newComment.Votes;
-                result.Date = DateTime.Now;
-                await _context.SaveChangesAsync();
-                return true;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-                var result = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
-                if (result == null) { return false; }
-
-                result.IsDeleted = true;
-                await _context.SaveChangesAsync();
-                return true;
-        }
-
-        public async Task<IEnumerable<Comment>> GetAllByPostIdAsync(int postId)
-        {
-            return await _context.Comments
-                .Include(c => c.User)
+            return _context.Comments
+                .AsNoTracking()
                 .Where(c => c.PostId == postId && !c.IsDeleted)
-                .OrderByDescending(n => n.Date)
-                .ToListAsync();
+                .OrderByDescending(n => n.Date);
+            /* .Select(c => new CommentViewModel { // 4. Only pull the columns you NEED
+                Content = c.Content,
+                Date = c.Date,
+                AuthorName = c.User.UserName
+            })
+            That's optimal, we may need it.
+            */
+
         }
 
-        public async Task<IEnumerable<Comment>> GetAllByUserIdAsync(string userId)
+        public IQueryable<Comment> GetAllByUserId(string userId)
         {
-            return await _context.Comments
+            return _context.Comments
+                .AsNoTracking()
                 .Where(c => c.UserId == userId && !c.IsDeleted)
-                .OrderByDescending(c => c.Date)
-                .ToListAsync();
+                .OrderByDescending(c => c.Date);
         }
 
-        public async Task<IEnumerable<Comment>> GetAllRecentByPostIdAsync(int postId)
-        {
-            return await _context.Comments
-                .Include(c => c.User)
-                .Where(c => c.PostId == postId && !c.IsDeleted)
-                .OrderByDescending(c => c.Date)
-                .Take(10)
-                .ToListAsync();
-        }
+        //public async Task<IEnumerable<Comment>> GetAllRecentByPostIdAsync(int postId)
+        //{
+        //    return await _context.Comments
+        //        .Include(c => c.User)
+        //        .Where(c => c.PostId == postId && !c.IsDeleted)
+        //        .OrderByDescending(c => c.Date)
+        //        .Take(10)
+        //        .ToListAsync();
+        //}
 
         public async Task<int> CountByPostAsync(int postId)
         {
             return await _context.Comments
-            .CountAsync(c => c.PostId == postId && !c.IsDeleted);
-        }
-
-        public async Task<bool> DeleteAllByPostAsync(int postId)
-        {
-            var comments = await _context.Comments
                 .Where(c => c.PostId == postId && !c.IsDeleted)
-                .ToListAsync();
-
-            if (!comments.Any())
-                return false;
-
-            foreach (var item in comments)
-            {
-                item.IsDeleted = true;
-            }
-            return await _context.SaveChangesAsync() > 0;
+                .CountAsync();
         }
+
+        //public async Task DeleteAllByPostAsync(int postId)
+        //{
+        //    var comments = await _context.Comments
+        //        .Where(c => c.PostId == postId && !c.IsDeleted)
+        //        .ToListAsync();
+
+        //    if (!comments.Any())
+        //        return false;
+
+        //    foreach (var item in comments)
+        //    {
+        //        item.IsDeleted = true;
+        //    }
+        //    return await _context.SaveChangesAsync() > 0;
+        //}
 
         public async Task<bool> ExistsAsync(string userId, int postId)
         {
