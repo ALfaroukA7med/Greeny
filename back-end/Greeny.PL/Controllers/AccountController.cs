@@ -9,10 +9,13 @@ namespace Greeny.PL.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly EmailService _emailService;
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
+            EmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
 
          
@@ -39,6 +42,7 @@ namespace Greeny.PL.Controllers
                     ModelState.AddModelError("Email", "Email is already in use");
                     return View("Register", vm);
                 }
+                //_emailService.SendEmailAsync(vm.Email, "Confirme Your Email", body);
 
                 User user = new User
                 {
