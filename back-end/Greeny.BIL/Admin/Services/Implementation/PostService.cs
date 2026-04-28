@@ -7,7 +7,7 @@ using System.Reflection.Metadata;
 
 namespace Greeny.BLL.Admin.Services.Implementation
 {
-   public class PostService : IPostService // : IPostService
+   public class PostService : IPostService 
     {
         private readonly IPostRepo _postrepo;
         private readonly ICommentRepo _commentrepo;

@@ -43,11 +43,15 @@ namespace Greeny.PL
             builder.Services.AddScoped<IProductRepo, ProductRepo>();
             builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
             builder.Services.AddScoped<IReviewRepo,ReviewRepo>();
+            builder.Services.AddScoped<IReferencePlanetRepo, ReferencePlanetRepo>();
+
 
             // Services
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IReferencePlanetService, ReferencePlanetService>();
+
 
 
             //AutoMapper
@@ -66,6 +70,10 @@ namespace Greeny.PL
 
             }, typeof(ReviewProfile).Assembly);
 
+            builder.Services.AddAutoMapper(cfg =>
+            {
+
+            }, typeof(RefPlanet).Assembly);
 
 
             // Add services to the container.
