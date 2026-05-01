@@ -4,11 +4,8 @@ namespace Greeny.BLL.Admin.Services.Interfaces
     public interface IReviewService
     {
         Task<Response<DetailsReviewVM>> GetByIdAsync(int id);
-
         Task<Response<bool>> CreateAsync(CreateReviewVM vm);
-
         Task<Response<bool>> UpdateAsync(UpdateReviewVM vm);
-
         Task<Response<bool>> DeleteAsync(int id);
 
         Task<Response<IEnumerable<DetailsReviewVM>>> GetAllByProductIdAsync(int productId);

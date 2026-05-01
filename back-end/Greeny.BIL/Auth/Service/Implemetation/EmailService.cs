@@ -3,46 +3,38 @@ using Greeny.BLL.Auth.Service.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-
+//using System.Net.Mail;
 public class EmailService : IEmailService
 {
-    //private readonly IWebHostEnvironment _hostingEnvironment;
 
-    //public EmailService(IWebHostEnvironment hostingEnvironment)
-    //{
-    //    _hostingEnvironment = hostingEnvironment;
-    //}
 
-    //public async Task<string> GetEmailTemplateAsync()
-    //{
-    //    var path = Path.Combine(_hostingEnvironment.WebRootPath, "templates", "email_confirmation.html");
-    //    var template = await File.ReadAllTextAsync(path);
-    //    return template;
-    //}
-    public async Task SendEmailAsync(string to, string subject, string body)
+    public async Task<bool> SendEmailAsync(string to, string subject, string body)
     {
-        var email = new MimeMessage();
-
-        email.From.Add(MailboxAddress.Parse("ahmed.mohamed.alslahy@gmail.com"));
-        email.To.Add(MailboxAddress.Parse(to));
-        email.Subject = subject;
-
-        // لو HTML
-        email.Body = new TextPart("html")
+        using (var Client = new SmtpClient())
         {
-            Text = body
-        };
+            await Client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            await Client.AuthenticateAsync("ahmed.mohamed.alslahy@gmail.com", "hvzz igxd shat przk");
 
-        using var smtp = new SmtpClient();
+            var bodyBuilder = new BodyBuilder
+            {
+                HtmlBody = body,
+            };
 
-        await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            var message = new MimeMessage
+            {
+                Body = bodyBuilder.ToMessageBody()
+            };
+            message.From.Add(MailboxAddress.Parse("ahmed.mohamed.alslahy@gmail.com"));
+            message.To.Add(MailboxAddress.Parse(to));
+            message.Subject = subject;
+            await Client.SendAsync(message);
+            await Client.DisconnectAsync(true);
 
-        await smtp.AuthenticateAsync("ahmed.mohamed.alslahy@gmail.com", "hvzz igxd shat przk");
 
-        await smtp.SendAsync(email);
-
-        await smtp.DisconnectAsync(true);
+        }
+        return true;
     }
+
+
+
 }
