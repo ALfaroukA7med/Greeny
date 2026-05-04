@@ -2,7 +2,7 @@
 using Greeny.BLL.Admin.Services.Interfaces;
 using Greeny.BLL.Admin.ModelVM.Review;
 
-namespace Greeny.Web.Controllers
+namespace Greeny.PL.Controllers
 {
     public class ReviewController : Controller
     {
@@ -104,7 +104,7 @@ namespace Greeny.Web.Controllers
         }
 
         // DELETE
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id, int productId)
         {
             var result = await _reviewService.DeleteAsync(id);
