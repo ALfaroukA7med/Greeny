@@ -3,7 +3,7 @@ using Greeny.BLL.Admin.ModelVM.ProductVM;
 using Greeny.BLL.Admin.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Greeny.Web.Controllers
+namespace Greeny.PL.Controllers
 {
     public class ProductController : Controller
     {
@@ -109,7 +109,7 @@ namespace Greeny.Web.Controllers
         }
 
         // DELETE
-        [HttpPost]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {

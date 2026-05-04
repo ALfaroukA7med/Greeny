@@ -2,7 +2,7 @@
 using Greeny.BLL.Admin.Services.Interfaces;
 using Greeny.BLL.Admin.ModelVM.Category;
 
-namespace Greeny.Web.Controllers
+namespace Greeny.PL.Controllers
 {
     public class CategoryController : Controller
     {
@@ -100,7 +100,7 @@ namespace Greeny.Web.Controllers
         }
 
         // DELETE
-        [HttpPost]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
