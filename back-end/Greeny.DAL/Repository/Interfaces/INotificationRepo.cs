@@ -12,5 +12,6 @@ namespace Greeny.DAL.Repository.Interfaces
         //IQueryable<Notification>> GetUnreadByUserIdAsync(string userId);
         Task<bool> MarkAsReadAsync(int notificationId);
         Task<bool> UnreadExists(string userId);
+        Task GetByIdAsync(int notificationId);
     }
 }

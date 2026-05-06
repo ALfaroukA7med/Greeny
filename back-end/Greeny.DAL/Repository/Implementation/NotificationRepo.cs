@@ -32,6 +32,11 @@ namespace Greeny.DAL.Repository.Implementation
             .AsNoTracking();
         }
 
+        public Task GetByIdAsync(int notificationId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Notification> GetByUserId(string userId)
         {
             return _context.Notifications

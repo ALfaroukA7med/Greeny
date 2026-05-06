@@ -7,16 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Admin\Helper\**" />
     <Compile Remove="AutoMapper\**" />
     <Compile Remove="Helper\**" />
+    <EmbeddedResource Remove="Admin\Helper\**" />
     <EmbeddedResource Remove="AutoMapper\**" />
     <EmbeddedResource Remove="Helper\**" />
+    <None Remove="Admin\Helper\**" />
     <None Remove="AutoMapper\**" />
     <None Remove="Helper\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Admin\Helper\" />
   </ItemGroup>
 
   <ItemGroup>
