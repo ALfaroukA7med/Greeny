@@ -1,0 +1,134 @@
+﻿using Greeny.BLL.Admin.Errors;
+using Greeny.BLL.Admin.ModelVM.Payment;
+using Greeny.BLL.Extension;
+using Greeny.DAL.Entities;
+using Greeny.DAL.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace Greeny.BLL.Admin.Services.Implementation
+{
+    public class PaymentService : IPaymentService
+    {
+        private readonly IPaymentRepo _repo;
+
+        public PaymentService(IPaymentRepo repo)
+        {
+            _repo = repo;
+        }
+
+        public async Task<Response<bool>> CreateAsync(PaymentCreateVM vm)
+        {
+            var entity = new Payment
+            {
+                OrderId = vm.OrderId,
+                TransactionRef = vm.TransactionRef,
+                Method = vm.Method,
+                Amount = vm.Amount,
+                Status = "Pending",
+                PaidAt = null
+            };
+
+            await _repo.CreateAsync(entity);
+
+            return Response<bool>.Success(true);
+        }
+
+        public async Task<Response<bool>> UpdateAsync(PaymentUpdateVM vm)
+        {
+            var entity = new Payment
+            {
+                Id = vm.Id,
+                TransactionRef = vm.TransactionRef,
+                Method = vm.Method,
+                Amount = vm.Amount,
+                Status = vm.Status
+            };
+
+            await _repo.UpdateAsync(entity);
+
+            return Response<bool>.Success(true);
+        }
+
+        public async Task<Response<bool>> DeleteAsync(int id)
+        {
+            await _repo.DeleteAsync(id);
+
+            return Response<bool>.Success(true);
+        }
+
+        public async Task<Response<PaymentVM>> GetByIdAsync(int id)
+        {
+            var payment = await _repo.GetByIdAsync(id);
+
+            if (payment == null)
+                return Response<PaymentVM>.Fail(PaymentError.NotFound);
+
+            var vm = new PaymentVM
+            {
+                Id = payment.Id,
+                OrderId = payment.OrderId,
+                TransactionRef = (payment.TransactionRef != null) ? payment.TransactionRef : string.Empty,
+                Method = payment.Method,
+                Amount = payment.Amount,
+                Status = payment.Status,
+                PaidAt = payment.PaidAt
+            };
+
+            return Response<PaymentVM>.Success(vm);
+        }
+
+        public async Task<Response<IEnumerable<PaymentVM>>> GetAllAsync()
+        {
+            var payments = await _repo.GetAll()
+                .Select(p => new PaymentVM
+                {
+                    Id = p.Id,
+                    OrderId = p.OrderId,
+                    TransactionRef = (p.TransactionRef != null) ? p.TransactionRef : string.Empty,
+                    Method = p.Method,
+                    Amount = p.Amount,
+                    Status = p.Status,
+                    PaidAt = p.PaidAt
+                })
+                .ToListAsync();
+
+            return Response<IEnumerable<PaymentVM>>.Success(payments);
+        }
+
+        public async Task<Response<IEnumerable<PaymentVM>>> GetByUserIdAsync(string userId)
+        {
+            var payments = await _repo.GetByUserId(userId)
+                .Select(p => new PaymentVM
+                {
+                    Id = p.Id,
+                    OrderId = p.OrderId,
+                    TransactionRef = (p.TransactionRef != null) ? p.TransactionRef : string.Empty,
+                    Method = p.Method,
+                    Amount = p.Amount,
+                    Status = p.Status,
+                    PaidAt = p.PaidAt
+                })
+                .ToListAsync();
+
+            return Response<IEnumerable<PaymentVM>>.Success(payments);
+        }
+
+        public async Task<Response<IEnumerable<PaymentVM>>> GetByStatusAsync(string status)
+        {
+            var payments = await _repo.GetAllByStatus(status)
+                .Select(p => new PaymentVM
+                {
+                    Id = p.Id,
+                    OrderId = p.OrderId,
+                    TransactionRef = (p.TransactionRef != null) ? p.TransactionRef : string.Empty,
+                    Method = p.Method,
+                    Amount = p.Amount,
+                    Status = p.Status,
+                    PaidAt = p.PaidAt
+                })
+                .ToListAsync();
+
+            return Response<IEnumerable<PaymentVM>>.Success(payments);
+        }
+    }
+}

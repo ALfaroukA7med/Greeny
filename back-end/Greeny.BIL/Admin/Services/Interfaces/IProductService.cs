@@ -9,8 +9,6 @@ namespace Greeny.BLL.Admin.Services.Interfaces
         Task<Response<bool>> CreateAsync(CreateProductVM vm);
         Task<Response<bool>> UpdateAsync(UpdateProductVM vm);
         Task<Response<bool>> DeleteAsync(int id);
-
-
         Task<Response<IEnumerable<DetailsProductVM>>> SearchByNameAsync(string name);
         Task<Response<IEnumerable<DetailsProductVM>>> GetInStockAsync();
         Task<Response<IEnumerable<DetailsProductVM>>> GetOutStockAsync();

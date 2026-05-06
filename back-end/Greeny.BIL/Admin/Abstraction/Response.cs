@@ -1,6 +1,6 @@
 ﻿using static Greeny.BLL.Admin.Response.Errors;
 
-﻿
+
 namespace Greeny.BLL.Admin.Response
 {
     public class Response<T>

@@ -40,6 +40,8 @@ namespace Greeny.BLL.Admin.Services.Implementation
 
             if (c == null) return Response<bool>.Fail(CommentError.NotFound);
 
+            await _commentrepo.DeleteAsync(id);
+
             return Response<bool>.Success(true);
         }
 

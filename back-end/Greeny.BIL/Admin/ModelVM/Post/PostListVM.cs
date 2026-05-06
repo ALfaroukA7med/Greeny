@@ -1,5 +1,4 @@
-﻿
-namespace Greeny.BLL.Admin.ModelVM.Post
+﻿namespace Greeny.BLL.Admin.ModelVM.Post
 {
     public class PostListVM
     {
