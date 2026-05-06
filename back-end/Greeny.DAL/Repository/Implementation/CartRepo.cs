@@ -30,10 +30,10 @@ namespace Greeny.DAL.Repository.Implementation
         {
             return _context.Carts
             .Where(c => c.Id == id && !c.IsDeleted)
+            .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .ThenInclude(p => p.Category)
             .AsNoTracking();
-
-
-            //.Include(c=>c.CartItems) 
         }
 
         public async Task DeleteAsync(int id)

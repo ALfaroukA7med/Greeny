@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Views\Templates\EmailConfirme.html" />
+    <Content Remove="wwwroot\Templates\ForgetPassword.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Templates\ForgetPassword.html" />
+    <None Include="wwwroot\Templates\EmailConfirme.html" />
   </ItemGroup>
 
   <ItemGroup>
