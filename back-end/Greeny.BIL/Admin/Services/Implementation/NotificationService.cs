@@ -44,8 +44,6 @@ namespace Greeny.BLL.Admin.Services.Implementation
                 })
                 .ToListAsync();
                
-
-
             return Response<IEnumerable<DetailsNotificationVM>>.Success(Notifications);
         }
 
