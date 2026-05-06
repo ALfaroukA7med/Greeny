@@ -13,7 +13,7 @@ public class EmailService : IEmailService
         using (var Client = new SmtpClient())
         {
             await Client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            await Client.AuthenticateAsync("ahmed.mohamed.alslahy@gmail.com", "hvzz igxd shat przk");
+            await Client.AuthenticateAsync("greenycompany38@gmail.com", "nlfl dhzr dvmt qydq");
 
             var bodyBuilder = new BodyBuilder
             {
@@ -24,7 +24,7 @@ public class EmailService : IEmailService
             {
                 Body = bodyBuilder.ToMessageBody()
             };
-            message.From.Add(MailboxAddress.Parse("ahmed.mohamed.alslahy@gmail.com"));
+            message.From.Add(MailboxAddress.Parse("greenycompany38@gmail.com"));
             message.To.Add(MailboxAddress.Parse(to));
             message.Subject = subject;
             await Client.SendAsync(message);

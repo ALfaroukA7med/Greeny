@@ -7,6 +7,7 @@
         public string LastName { get; set; }
         public string? ProfilePicture { get; set; } = null;
         public string? Address { get; set; } = null;
+        public string OTP { get; set; }
         public bool IsDeleted { get; set; } = false;
 
         // Relationships

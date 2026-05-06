@@ -6,6 +6,7 @@ using Greeny.DAL.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Greeny.BLL.Admin.Services.Implementation;
+using Greeny.BLL.Auth.Service.Interfaces;
 
 
 namespace Greeny.PL
@@ -51,6 +52,7 @@ namespace Greeny.PL
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
             builder.Services.AddScoped<IReferencePlanetService, ReferencePlanetService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 
