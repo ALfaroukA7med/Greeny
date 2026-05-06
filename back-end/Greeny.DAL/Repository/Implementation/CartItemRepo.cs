@@ -22,11 +22,10 @@ namespace Greeny.DAL.Repository.Implementation
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<CartItem> GetById(int id)
+        public async Task<CartItem?> GetById(int id)
         {
-            return _context.CartItems
-                .Where(c => c.Id == id)
-                .AsNoTracking();
+            return await _context.CartItems
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task UpdateAsync(CartItem newCartItem)
@@ -50,6 +49,8 @@ namespace Greeny.DAL.Repository.Implementation
         {
             return _context.CartItems
             .Where(c => c.CartId == cartId && !c.IsDeleted)
+            .Include(p=>p.Product)
+            .ThenInclude(pi=>pi.Category)
             .AsNoTracking();
         }
 

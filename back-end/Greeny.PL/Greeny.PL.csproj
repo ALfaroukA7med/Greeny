@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Templates\EmailConfirme.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Greeny.BIL\Greeny.BLL.csproj" />
   </ItemGroup>
 
