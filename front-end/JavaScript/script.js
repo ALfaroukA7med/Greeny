@@ -62,11 +62,11 @@ avatars.forEach((avatar) => {
   });
 });
 
-let comments = document.querySelectorAll(".fa-comment");
-comments.forEach((comment) => {
-  comment.addEventListener("click", function () {
-      const cardBody = this.closest(".comm-card-body");
-      let commentsSection = cardBody.querySelector(".comm-comments-section");
-      commentsSection.classList.toggle('show');
-  });
-});
+// let comments = document.querySelectorAll(".fa-comment");
+// comments.forEach((comment) => {
+//   comment.addEventListener("click", function () {
+//       const cardBody = this.closest(".comm-card-body");
+//       let commentsSection = cardBody.querySelector(".comm-comments-section");
+//       commentsSection.classList.toggle('show');
+//   });
+// });
