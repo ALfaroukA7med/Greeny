@@ -191,7 +191,7 @@ namespace Greeny.PL.Controllers
                 var htmlBody = await System.IO.File.ReadAllTextAsync(path);
                 htmlBody = htmlBody.Replace("{{Name}}", user.FirstName);
                 htmlBody = htmlBody.Replace("{{OTP}}", otp);
-                await _emailService.SendEmailAsync(vm.Email, "Confirme Email", htmlBody);
+                await _emailService.SendEmailAsync(vm.Email, "Reset Password", htmlBody);
 
                 return RedirectToAction("AddNewPassword");
             }

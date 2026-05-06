@@ -41,5 +41,6 @@ namespace Greeny.BLL.Admin.Services.Implementation
             };
             return Response<CartDetailsVM>.Success(Result);
         }
+
     }
 }
