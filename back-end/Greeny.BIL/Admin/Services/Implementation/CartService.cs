@@ -1,6 +1,7 @@
 ﻿
 
 using Greeny.BLL.Admin.ModelVM.Cart;
+using Greeny.BLL.Admin.ModelVM.CartItem;
 
 namespace Greeny.BLL.Admin.Services.Implementation
 {
@@ -21,16 +22,16 @@ namespace Greeny.BLL.Admin.Services.Implementation
             {
                 return Response<CartDetailsVM>.Fail(Errors.CartError.NotFound);
             }
-            
-            var itemsVM = items.Select(item => new CartItemVM
+
+            var itemsVM = items.SelectMany(cart => cart.CartItems.Select(ci => new DetailsCartItemVM
             {
-                ProductName = item.Product.Name, 
-                CategoryName = item.Product.Category?.Name,
-                ImageUrl = item.Product.ImageUrl,
-                Price = item.Product.Price,
-                Quantity = item.Quantity
-            });
-            
+                ProductName = ci.Product.Name,
+                CategoryName = ci.Product.Category.Name,
+                ImageUrl = ci.Product.Image,
+                Price = ci.Product.Price,
+                Quantity = ci.Quantity
+            }));
+
             var totalPrice = itemsVM.Sum(item => item.Price * item.Quantity);
             
             CartDetailsVM Result = new CartDetailsVM
