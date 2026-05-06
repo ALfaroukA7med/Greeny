@@ -1,4 +1,6 @@
 ﻿
+using Greeny.BLL.Admin.Errors;
+
 namespace Greeny.BLL.Admin.Services.Implementation
 {
     public class ReviewService : IReviewService
@@ -15,269 +17,106 @@ namespace Greeny.BLL.Admin.Services.Implementation
 
         public async Task<Response<int>> CountByProductIdAsync(int productId)
         {
-            try
-            {
                 int result = await _reviewRepo.CountByProductIdAsync(productId);
 
-                return new Response<int>
-                {
-                    IsSuccess = true,
-                    Data = result,
-                    Message = "Count retrieved successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<int>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                return Response<int>.Success(result);
         }
 
-        public async Task<Response<string>> CreateAsync(CreateReviewVM vm)
+        public async Task<Response<bool>> CreateAsync(CreateReviewVM vm)
         {
-            try
-            {
                 if (vm == null)
                 {
-                    return new Response<string>
-                    {
-                        IsSuccess = false,
-                        Message = "Invalid Data"
-                    };
+                    return Response<bool>.Fail(ReviewError.InvalidData);
                 }
 
                 var review = _mapper.Map<Review>(vm);
 
                 await _reviewRepo.CreateAsync(review);
 
-                return new Response<string>
-                {
-                    IsSuccess = true,
-                    Message = "Review Created Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<string>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<bool>.Success(true);
+               
         }
 
-        public async Task<Response<string>> DeleteAsync(int id)
+        public async Task<Response<bool>> DeleteAsync(int id)
         {
-            try
-            {
                 var review = await _reviewRepo.GetByIdAsync(id);
 
-                if (review == null || review.IsDeleted)
+                if (review == null)
                 {
-                    return new Response<string>
-                    {
-                        IsSuccess = false,
-                        Message = "review Not Found"
-                    };
+                return Response<bool>.Fail(ReviewError.InvalidData);
                 }
 
                 await _reviewRepo.DeleteAsync(id);
 
-                return new Response<string>
-                {
-                    IsSuccess = true,
-                    Message = "review Deleted Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<string>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<bool>.Success(true);
         }
 
         public async Task<Response<bool>> ExistsAsync(string userId, int productId)
         {
-            try
-            {
                 var exists = await _reviewRepo.ExistsAsync(userId, productId);
 
-                return new Response<bool>
-                {
-                    IsSuccess = true,
-                    Data = exists,
-                    Message = exists ? "Review Exists" : "Review Not Found"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                return Response<bool>.Success(exists);
         }
 
         public async Task<Response<IEnumerable<DetailsReviewVM>>> GetAllByProductIdAsync(int productId)
         {
-            try
-            {
-                var reviews = await _reviewRepo.GetAllByProductIdAsync(productId);
+            var Query = _reviewRepo.GetAllByProductId(productId);
+                var reviews = await Query.ToArrayAsync();
 
                 if (reviews == null || !reviews.Any())
                 {
-                    return new Response<IEnumerable<DetailsReviewVM>>
-                    {
-                        IsSuccess = false,
-                        Message = "No reviews Found"
-                    };
+                return Response<IEnumerable<DetailsReviewVM>>.Fail(ReviewError.NotFound);
                 }
 
                 var data = _mapper.Map<IEnumerable<DetailsReviewVM>>(reviews);
 
-                return new Response<IEnumerable<DetailsReviewVM>>
-                {
-                    IsSuccess = true,
-                    Data = data,
-                    Message = "reviews Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<IEnumerable<DetailsReviewVM>>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                return Response<IEnumerable<DetailsReviewVM>>.Success(data);
         }
 
         public async Task<Response<double>> GetAverageRatingForProductAsync(int productId)
         {
-            try
-            {
-                double result = await _reviewRepo.GetAverageRatingForProductAsync(productId);
+               double result = await _reviewRepo.GetAverageRatingForProductAsync(productId);
 
-                return new Response<double>
-                {
-                    IsSuccess = true,
-                    Data = result,
-                    Message =  "Average Rating Retrive"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<double>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                return Response<double>.Success(result);
         }
 
         public async Task<Response<DetailsReviewVM>> GetByIdAsync(int id)
         {
-            try
-            {
                 var review = await _reviewRepo.GetByIdAsync(id);
                 if (review == null)
                 {
-                    return new Response<DetailsReviewVM>
-                    {
-                        IsSuccess = false,
-                        Message = "Not Found"
-                    };
+                    return Response<DetailsReviewVM>.Fail(ReviewError.NotFound);
                 }
                 var data = _mapper.Map<DetailsReviewVM>(review);
-                return new Response<DetailsReviewVM>
-                {
-                    IsSuccess = true,
-                    Data = data,
-                    Message = "review Retrieved Successfully"
-                };
-
-            }
-            catch (Exception ex)
-            {
-                return new Response<DetailsReviewVM>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                return Response<DetailsReviewVM>.Success(data);
         }
 
         public async Task<Response<IEnumerable<DetailsReviewVM>>> GetByUserIdAsync(string userId)
         {
-            try
-            {
-                var reviews = await _reviewRepo.GetByUserIdAsync(userId);
+                var Query = _reviewRepo.GetByUserId(userId);
+            var reviews = await Query.ToArrayAsync();
                 if (reviews == null || !reviews.Any())
                 {
-                    return new Response<IEnumerable<DetailsReviewVM>>
-                    {
-                        IsSuccess = false,
-                        Message = "Not Found"
-                    };
+                    return Response<IEnumerable<DetailsReviewVM>>.Fail(ReviewError.NotFound);
                 }
                 var data = _mapper.Map<IEnumerable<DetailsReviewVM>>(reviews);
-                return new Response<IEnumerable<DetailsReviewVM>>
-                {
-                    IsSuccess = true,
-                    Data = data,
-                    Message = "review Retrieved Successfully"
-                };
-
-            }
-            catch (Exception ex)
-            {
-                return new Response<IEnumerable<DetailsReviewVM>>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                return Response<IEnumerable<DetailsReviewVM>>.Success(data);
         }
 
-        public async Task<Response<string>> UpdateAsync(UpdateReviewVM vm)
+        public async Task<Response<bool>> UpdateAsync(UpdateReviewVM vm)
         {
-            try
-            {
                 var review = await _reviewRepo.GetByIdAsync(vm.Id);
 
                 if (review == null)
                 {
-                    return new Response<string>
-                    {
-                        IsSuccess = false,
-                        Message = "review Not Found"
-                    };
+                    return Response<bool>.Fail(ReviewError.NotFound);
                 }
 
                 _mapper.Map(vm, review);
                 await _reviewRepo.UpdateAsync(review);
 
-                return new Response<string>
-                {
-                    IsSuccess = true,
-                    Message = "review Updated Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<string>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<bool>.Success(true);
         }
+
     }
 }

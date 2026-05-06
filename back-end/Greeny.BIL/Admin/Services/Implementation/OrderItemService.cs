@@ -1,294 +1,115 @@
-﻿using AutoMapper;
-using Greeny.BLL.Admin.Response;
-using Greeny.DAL.Database;
+﻿using Greeny.BLL.Admin.Errors;
+using Greeny.BLL.Admin.ModelVM.OrderItem;
+using Greeny.BLL.Extension;
+using Greeny.DAL.Entities;
 using Greeny.DAL.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Greeny.BLL.Admin.Services.Implementation
 {
     public class OrderItemService : IOrderItemService
     {
         private readonly IOrderItemRepo _repo;
-        private readonly IMapper _mapper;
 
-        public OrderItemService(IOrderItemRepo repo, IMapper mapper)
+        public OrderItemService(IOrderItemRepo repo)
         {
             _repo = repo;
-            _mapper = mapper;
         }
 
-        public async Task<Response<bool>> CreateAsync(OrderItem orderItem)
+        public async Task<Response<bool>> CreateAsync(OrderItemCreateVM vm)
         {
-            try
+            var entity = new OrderItem
             {
-                if (orderItem == null)
-                {
-                    return new Response<bool>
-                    {
-                        IsSuccess = false,
-                        Message = "Invalid Data"
-                    };
-                }
+                OrderId = vm.OrderId,
+                ProductId = vm.ProductId,
+                Quantity = vm.Quantity,
+                UnitPrice = vm.UnitPrice
+            };
 
-                var result = await _repo.CreateAsync(orderItem);
+            await _repo.CreateAsync(entity);
 
-                if (!result)
-                {
-                    return new Response<bool>
-                    {
-                        IsSuccess = false,
-                        Message = "Create Failed"
-                    };
-                }
-
-                return new Response<bool>
-                {
-                    IsSuccess = true,
-                    Message = "Created Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<bool>.Success(true);
         }
 
-        public async Task<Response<IEnumerable<OrderItem>>> GetAllAsync()
+        public async Task<Response<bool>> UpdateAsync(OrderItemUpdateVM vm)
         {
-            try
+            var entity = new OrderItem
             {
-                var items = await _repo.GetAllAsync();
+                Id = vm.Id,
+                Quantity = vm.Quantity,
+                UnitPrice = vm.UnitPrice
+            };
 
-                if (items == null || !items.Any())
-                {
-                    return new Response<IEnumerable<OrderItem>>
-                    {
-                        IsSuccess = false,
-                        Message = "No Data Found"
-                    };
-                }
+            await _repo.UpdateAsync(entity);
 
-                return new Response<IEnumerable<OrderItem>>
-                {
-                    IsSuccess = true,
-                    Data = items,
-                    Message = "Data Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<IEnumerable<OrderItem>>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
-        }
-
-        public async Task<Response<OrderItem?>> GetByIdAsync(int id)
-        {
-            try
-            {
-                var item = await _repo.GetByIdAsync(id);
-
-                if (item == null)
-                {
-                    return new Response<OrderItem?>
-                    {
-                        IsSuccess = false,
-                        Message = "Not Found"
-                    };
-                }
-
-                return new Response<OrderItem?>
-                {
-                    IsSuccess = true,
-                    Data = item,
-                    Message = "Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<OrderItem?>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
-        }
-
-        public async Task<Response<bool>> UpdateAsync(OrderItem newOrderItem)
-        {
-            try
-            {
-                var result = await _repo.UpdateAsync(newOrderItem);
-
-                if (!result)
-                {
-                    return new Response<bool>
-                    {
-                        IsSuccess = false,
-                        Message = "Update Failed",
-                        Data = false
-                    };
-                }
-
-                return new Response<bool>
-                {
-                    IsSuccess = true,
-                    Data = true,
-                    Message = "Updated Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
-        }
-
-        public async Task<Response<bool>> DeleteAsync(int id)
-        {
-            try
-            {
-                var result = await _repo.DeleteAsync(id);
-
-                return new Response<bool>
-                {
-                    IsSuccess = result,
-                    Data = result,
-                    Message = result ? "Deleted Successfully" : "Delete Failed"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
-        }
-
-        public async Task<Response<IEnumerable<OrderItem>>> GetByOrderIdAsync(int orderId)
-        {
-            try
-            {
-                var items = await _repo.GetByOrderIdAsync(orderId);
-
-                return new Response<IEnumerable<OrderItem>>
-                {
-                    IsSuccess = true,
-                    Data = items,
-                    Message = "Data Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<IEnumerable<OrderItem>>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
-        }
-
-        public async Task<Response<decimal>> GetTotalPriceByOrderIdAsync(int orderId)
-        {
-            try
-            {
-                var total = await _repo.GetTotalPriceByOrderIdAsync(orderId);
-
-                return new Response<decimal>
-                {
-                    IsSuccess = true,
-                    Data = total,
-                    Message = "Total Price Calculated"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<decimal>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
-        }
-
-        public async Task<Response<int>> GetItemsCountByOrderIdAsync(int orderId)
-        {
-            try
-            {
-                var count = await _repo.GetItemsCountByOrderIdAsync(orderId);
-
-                return new Response<int>
-                {
-                    IsSuccess = true,
-                    Data = count,
-                    Message = "Count Retrieved"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<int>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
-        }
-
-        public async Task<Response<bool>> ProductExistsInOrderAsync(int orderId, int productId)
-        {
-            try
-            {
-                var exists = await _repo.ProductExistsInOrderAsync(orderId, productId);
-
-                return new Response<bool>
-                {
-                    IsSuccess = true,
-                    Data = exists,
-                    Message = exists ? "Exists" : "Not Found"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<bool>.Success(true);
         }
 
         public async Task<Response<bool>> RemoveProductFromOrderAsync(int orderId, int productId)
         {
-            try
-            {
-                var result = await _repo.RemoveProductFromOrderAsync(orderId, productId);
+            var result = await _repo.RemoveProductFromOrderAsync(orderId, productId);
 
-                return new Response<bool>
-                {
-                    IsSuccess = result,
-                    Data = result,
-                    Message = result ? "Removed Successfully" : "Remove Failed"
-                };
-            }
-            catch (Exception ex)
+            if (!result)
+                return Response<bool>.Fail(OrderItemError.NotFound);
+
+            return Response<bool>.Success(true);
+        }
+
+        public async Task<Response<OrderItemVM>> GetByIdAsync(int id)
+        {
+            var item = await _repo.GetById(id)
+                .FirstOrDefaultAsync();
+
+            if (item == null)
+                return Response<OrderItemVM>.Fail(OrderItemError.NotFound);
+
+            var vm = new OrderItemVM
             {
-                return new Response<bool>
+                Id = item.Id,
+                OrderId = item.OrderId,
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                UnitPrice = item.UnitPrice
+            };
+
+            return Response<OrderItemVM>.Success(vm);
+        }
+
+        public async Task<Response<IEnumerable<OrderItemVM>>> GetByOrderIdAsync(int orderId)
+        {
+            var items = await _repo.GetByOrderId(orderId)
+                .Select(i => new OrderItemVM
                 {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                    Id = i.Id,
+                    OrderId = i.OrderId,
+                    ProductId = i.ProductId,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice
+                })
+                .ToListAsync();
+
+            return Response<IEnumerable<OrderItemVM>>.Success(items);
+        }
+
+        public async Task<Response<decimal>> GetTotalPriceByOrderIdAsync(int orderId)
+        {
+            var total = await _repo.GetTotalPriceByOrderIdAsync(orderId);
+
+            return Response<decimal>.Success(total);
+        }
+
+        public async Task<Response<int>> GetItemsCountByOrderIdAsync(int orderId)
+        {
+            var count = await _repo.GetItemsCountByOrderIdAsync(orderId);
+
+            return Response<int>.Success(count);
+        }
+
+        public async Task<Response<bool>> ProductExistsInOrderAsync(int orderId, int productId)
+        {
+            var exists = await _repo.ProductExistsInOrderAsync(orderId, productId);
+
+            return Response<bool>.Success(exists);
         }
     }
 }

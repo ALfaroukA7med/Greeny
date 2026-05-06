@@ -1,18 +1,20 @@
-﻿using Greeny.DAL.Database;
+﻿using Greeny.BLL.Admin.ModelVM.OrderItem;
+using Greeny.BLL.Extension;
 
-namespace Greeny.DAL.Repository.Interfaces
+namespace Greeny.BLL.Admin.Services.Interfaces
 {
     public interface IOrderItemService
     {
-        Task<Response<bool>>CreateAsync(OrderItem orderItem);
-        Task<Response<IEnumerable<OrderItem>>> GetAllAsync();
-        Task<Response<OrderItem?>> GetByIdAsync(int id);
-        Task<Response<bool>> UpdateAsync(OrderItem newOrderItem);
-        Task<Response<bool>> DeleteAsync(int id);
-        Task<Response<IEnumerable<OrderItem>>> GetByOrderIdAsync(int orderId);
-        Task<Response<decimal>>GetTotalPriceByOrderIdAsync(int orderId);
-        Task<Response<int>> GetItemsCountByOrderIdAsync(int orderId);
-        Task<Response<bool>> ProductExistsInOrderAsync(int orderId, int productId);
+        Task<Response<bool>> CreateAsync(OrderItemCreateVM vm);
+        Task<Response<bool>> UpdateAsync(OrderItemUpdateVM vm);
         Task<Response<bool>> RemoveProductFromOrderAsync(int orderId, int productId);
+
+        Task<Response<OrderItemVM>> GetByIdAsync(int id);
+        Task<Response<IEnumerable<OrderItemVM>>> GetByOrderIdAsync(int orderId);
+
+        Task<Response<decimal>> GetTotalPriceByOrderIdAsync(int orderId);
+        Task<Response<int>> GetItemsCountByOrderIdAsync(int orderId);
+
+        Task<Response<bool>> ProductExistsInOrderAsync(int orderId, int productId);
     }
 }

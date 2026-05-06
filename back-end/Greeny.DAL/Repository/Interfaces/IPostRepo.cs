@@ -3,26 +3,26 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface IPostRepo
     {
-        Task<IEnumerable<Post>> GetAllAsync();
+        IQueryable<Post> GetAll();
 
-        Task<Post> GetByIdAsync(int id);
+        IQueryable<Post> GetByIdAsync(int id);
 
-        Task<bool> CreateAsync(Post post);
+        Task CreateAsync(Post post);
 
-        Task<bool> UpdateAsync(Post post);
+        //Task UpdateAsync(Post post);
          
-        Task<bool> DeleteAsync(int id);
+        Task DeleteAsync(int id);
 
-        Task<IEnumerable<Post>> SearchAsync(string keyword);
-        Task<IEnumerable<Post>> GetRecentAsync();
+        //IQueryable<Post> SearchByKeyword(string keyword);
+        IQueryable<Post> GetRecent();
 
         Task<int> CountByUserIdAsync(string userId);
 
-        Task<bool> ExistPostsAsync(string userId);
+        //Task<bool> ExistPostsAsync(string userId);
 
-        Task<bool> DeleteAllByUserIdAsync(string userId);
+        //Task<bool> DeleteAllByUserIdAsync(string userId);
 
-        Task<IEnumerable<Post>> GetAllByUserIdAsync(string userId);
+        IQueryable<Post> GetAllByUserId(string userId);
 
 
     }

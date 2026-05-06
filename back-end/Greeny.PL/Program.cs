@@ -16,6 +16,13 @@ namespace Greeny.PL
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // don't remove this.
+            builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
             var config = builder.Configuration.GetConnectionString("ProjectConnection");
             builder.Services.AddDbContext<GreenyDbContext>(options =>
                 options.UseSqlServer(config));
@@ -35,10 +42,16 @@ namespace Greeny.PL
             // Repositories
             builder.Services.AddScoped<IProductRepo, ProductRepo>();
             builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
+            builder.Services.AddScoped<IReviewRepo,ReviewRepo>();
+            builder.Services.AddScoped<IReferencePlanetRepo, ReferencePlanetRepo>();
+
 
             // Services
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IReferencePlanetService, ReferencePlanetService>();
+
 
 
             //AutoMapper
@@ -51,6 +64,16 @@ namespace Greeny.PL
             {
 
             }, typeof(CategoryProfile).Assembly);
+
+            builder.Services.AddAutoMapper(cfg =>
+            {
+
+            }, typeof(ReviewProfile).Assembly);
+
+            builder.Services.AddAutoMapper(cfg =>
+            {
+
+            }, typeof(RefPlanet).Assembly);
 
 
             // Add services to the container.

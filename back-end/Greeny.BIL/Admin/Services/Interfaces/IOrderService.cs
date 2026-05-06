@@ -1,19 +1,22 @@
-﻿using Greeny.DAL.Database;
+﻿using Greeny.BLL.Admin.ModelVM.Order;
+using Greeny.DAL.Enums;
 
-namespace Greeny.DAL.Repository.Interfaces
+namespace Greeny.BLL.Admin.Services.Interfaces
 {
     public interface IOrderService
     {
-        Task<Response<bool>> CreateAsync(Order order);
-        Task<Response<IEnumerable<Order>>> GetAllAsync();
-        Task<Response<Order?>> GetByIdAsync(int id);
-        Task<Response<bool>> UpdateAsync(Order newOrder);
+        Task<Response<IEnumerable<OrderListVM>>> GetAllAsync();
+        Task<Response<OrderListVM>> GetByIdAsync(int id);
+
+        Task<Response<IEnumerable<OrderListVM>>> GetByUserIdAsync(string userId);
+        Task<Response<IEnumerable<OrderListVM>>> GetByStatusAsync(Status status);
+        Task<Response<IEnumerable<OrderListVM>>> GetByUserIdAndStatusAsync(string userId, Status status);
+
+        Task<Response<bool>> CreateAsync(OrderCreateVM order);
+        Task<Response<bool>> UpdateAsync(OrderUpdateVM order);
         Task<Response<bool>> DeleteAsync(int id);
-        Task<Response<IEnumerable<Order>>> GetOrdersByUserIdAsync(string userId);
-        Task<Response<IEnumerable<Order>>> GetOrdersByUserIdAndStatusAsync(string userId, string status);
-        Task<Response<IEnumerable<Order>>> GetOrdersByStatusAsync(string status);
-        Task<Response<IEnumerable<Order>>> GetRecentOrdersAsync();
-        Task<Response<bool>> ExistsAsync(int id);
+
+        Task<Response<IEnumerable<OrderListVM>>> GetRecentOrdersAsync();
         Task<Response<decimal>> GetTotalSalesAsync();
     }
 }

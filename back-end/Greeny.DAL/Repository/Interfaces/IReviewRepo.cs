@@ -2,19 +2,19 @@
 {
     public interface IReviewRepo
     {
-        Task<IEnumerable<Review>> GetAllAsync();
+        IQueryable<Review> GetAll();
 
         Task<Review> GetByIdAsync(int id);
 
-        Task<bool> CreateAsync(Review review);
+        Task CreateAsync(Review review);
 
-        Task<bool> UpdateAsync(Review review);
+        Task UpdateAsync(Review review);
 
-        Task<bool> DeleteAsync(int id);
+        Task DeleteAsync(int id);
 
-        Task<IEnumerable<Review>> GetAllByProductIdAsync(int productId);
+        IQueryable<Review> GetAllByProductId(int productId);
         Task<int> CountByProductIdAsync(int productId);
-        Task<IEnumerable<Review>> GetByUserIdAsync(string userId);
+        IQueryable<Review> GetByUserId(string userId);
         Task<bool> ExistsAsync(string userId, int productId);
         Task<double> GetAverageRatingForProductAsync(int productId);
     }

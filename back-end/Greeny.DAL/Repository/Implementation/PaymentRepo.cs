@@ -14,77 +14,51 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(Payment payment)
+        public async Task CreateAsync(Payment payment)
         {
             await _context.Payments.AddAsync(payment);
             await _context.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<IEnumerable<Payment>> GetAllAsync()
+        public IQueryable<Payment> GetAll()
         {
-            return await _context.Payments.Where(p=>!p.IsDeleted).ToListAsync();
+            return _context.Payments.Where(p=>!p.IsDeleted).AsNoTracking();
         }
 
-        public async Task<Payment?> GetByIdAsync(int id)
+        public async Task<Payment> GetByIdAsync(int id)
         {
             return await _context.Payments.Include(p=>p.Order).FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
         }
 
-        public async Task<bool> UpdateAsync(Payment newPayment)
+        public async Task UpdateAsync(Payment newPayment)
         {
-            var result = await _context.Payments.FirstOrDefaultAsync(p => p.Id == newPayment.Id && !p.IsDeleted);
-            if (result == null)
-            {
-                return false;
-            }
-            result.TransactionRef = newPayment.TransactionRef;
-            result.Method = newPayment.Method;
-            result.Amount = newPayment.Amount;
-            result.Status = newPayment.Status;
-            result.PaidAt = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-            return true;
+            await _context.Payments.Where(p => p.Id == newPayment.Id && !p.IsDeleted)
+               .ExecuteUpdateAsync(setter => setter
+               .SetProperty(p => p.TransactionRef, newPayment.TransactionRef)
+               .SetProperty(p => p.Method, newPayment.Method)
+               .SetProperty(p => p.Amount, newPayment.Amount)
+               .SetProperty(p => p.Status, newPayment.Status)
+               .SetProperty(p => p.PaidAt, DateTime.Now));
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var result = await _context.Payments.FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
-            if (result == null) { return false; }
-
-            result.IsDeleted= true;
-            await _context.SaveChangesAsync();
-            return true;
+            await _context.Payments.Where(p => p.Id == id && !p.IsDeleted)
+               .ExecuteUpdateAsync(setter => setter
+               .SetProperty(p => p.IsDeleted, true));
         }
 
-        public async Task<IEnumerable<Payment>> GetByUserIdAsync(string userId)
+        public IQueryable<Payment> GetByUserId(string userId)
         {
-            return await _context.Payments
-            .Include(p => p.Order)
-            .Where(p => p.UserId == userId && !p.IsDeleted).ToListAsync();
+            return _context.Payments
+            .Where(p => p.UserId == userId && !p.IsDeleted).AsNoTracking();
         }
 
-        public async Task<Payment?> GetByOrderIdAsync(int orderId)
+      public IQueryable<Payment> GetAllByStatus(string status)
         {
-            return await _context.Payments
-            .Include(p => p.User)
-            .Include(p => p.Order)
-            .FirstOrDefaultAsync(p => p.OrderId == orderId && !p.IsDeleted);
-        }
-
-        public async Task<bool> ExistsByOrderIdAsync(int orderId)
-        {
-            return await _context.Payments.AnyAsync(p => p.OrderId == orderId && !p.IsDeleted);
-        }
-
-      public async Task<IEnumerable<Payment>> GetAllByStatusAsync(string status)
-        {
-            return await _context.Payments
+            return _context.Payments
            .Where(p => p.Status == status && !p.IsDeleted)
-           .Include(p => p.User)
-           .Include(p => p.Order)
-           .ToListAsync();
+           .AsNoTracking();
         }
 
     }

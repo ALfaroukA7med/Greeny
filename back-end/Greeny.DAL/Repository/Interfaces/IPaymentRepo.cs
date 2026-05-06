@@ -3,19 +3,17 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface IPaymentRepo
     {
-        Task<IEnumerable<Payment>> GetAllAsync();
+        IQueryable<Payment> GetAll();
 
         Task<Payment> GetByIdAsync(int id);
 
-        Task<bool> CreateAsync(Payment payment);
+        Task CreateAsync(Payment payment);
 
-        Task<bool> UpdateAsync(Payment payment);
+        Task UpdateAsync(Payment payment);
 
-        Task<bool> DeleteAsync(int id);
+        Task DeleteAsync(int id);
 
-        Task<IEnumerable<Payment>> GetByUserIdAsync(string userId);
-        Task<Payment> GetByOrderIdAsync(int orderId);
-        Task<bool> ExistsByOrderIdAsync(int orderId);
-        Task<IEnumerable<Payment>> GetAllByStatusAsync(string status);
+        IQueryable<Payment> GetByUserId(string userId);
+        IQueryable<Payment> GetAllByStatus(string status);
     }
 }

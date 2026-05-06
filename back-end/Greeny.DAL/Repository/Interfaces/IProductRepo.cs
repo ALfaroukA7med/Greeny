@@ -3,24 +3,24 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface IProductRepo
     {
-        Task<IEnumerable<Product>> GetAllAsync();
+        IQueryable<Product> GetAll();
 
         Task<Product> GetByIdAsync(int id);
 
-        Task<bool> CreateAsync(Product product);
+        Task CreateAsync(Product product);
 
-        Task<bool> UpdateAsync(Product product);
+        Task UpdateAsync(Product product);
 
-        Task<bool> DeleteAsync(int id);
+        Task DeleteAsync(int id);
 
-        Task<IEnumerable<Product>> SearchByNameAsync(string name);
-        Task<IEnumerable<Product>> GetInStockAsync();
-        Task<IEnumerable<Product>> GetOutStockAsync();
-        Task<IEnumerable<Product>> GetMostExpensiveAsync();
-        Task<IEnumerable<Product>> GetLestExpensiveAsync();
+        IQueryable<Product> SearchByName(string name);
+        IQueryable<Product> GetInStock();
+        IQueryable<Product> GetOutStock();
+        IQueryable<Product> GetMostExpensive();
+        IQueryable<Product> GetLestExpensive();
         Task<bool> ExistsByNameAsync(string name);
         Task<bool> ExistsByIdAsync(int id);
-        Task<IEnumerable<Product>> GetAllByCategoryIdAsync(int categoryId);
+        IQueryable<Product> GetAllByCategoryId(int categoryId);
 
 
     }

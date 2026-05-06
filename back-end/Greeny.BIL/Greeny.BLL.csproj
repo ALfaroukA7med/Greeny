@@ -9,24 +9,20 @@
   <ItemGroup>
     <Compile Remove="AutoMapper\**" />
     <Compile Remove="Helper\**" />
-    <Compile Remove="Services\**" />
     <EmbeddedResource Remove="AutoMapper\**" />
     <EmbeddedResource Remove="Helper\**" />
-    <EmbeddedResource Remove="Services\**" />
     <None Remove="AutoMapper\**" />
     <None Remove="Helper\**" />
-    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Admin\Helper\" />
-    <Folder Include="Auth\AutoMapper\" />
-    <Folder Include="Auth\Helper\" />
-    <Folder Include="Auth\Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
+    <PackageReference Include="MailKit" Version="4.16.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.3.9" />
   </ItemGroup>
 
   <ItemGroup>

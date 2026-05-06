@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 namespace Greeny.DAL.Database
 {
+
     public class GreenyDbContext : IdentityDbContext<User>
     {
         public GreenyDbContext(DbContextOptions<GreenyDbContext> options) : base(options) { }

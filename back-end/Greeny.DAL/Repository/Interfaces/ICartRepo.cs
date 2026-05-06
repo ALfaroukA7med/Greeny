@@ -4,14 +4,14 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface ICartRepo
     {
-        Task<IEnumerable<Cart>> GetAllAsync();
-        Task<Cart> GetByIdAsync(int id);
-        Task<bool> CreateAsync(Cart cart);
-        Task<bool> DeleteAsync(int id);
+        IQueryable<Cart> GetById(int id);
 
-        Task<Cart> GetByUserIdAsync(string userId);
+
+
+        Task CreateAsync(Cart cart);
+        Task DeleteAsync(int id);
+        IQueryable<Cart> GetByUserId(string userId);
         Task<bool> ExistsByUserIdAsync(string userId);
-
         Task<decimal> GetTotalPriceAsync(int cartId);
 
     }

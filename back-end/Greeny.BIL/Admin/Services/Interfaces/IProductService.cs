@@ -6,9 +6,9 @@ namespace Greeny.BLL.Admin.Services.Interfaces
     {
         Task<Response<IEnumerable<DetailsProductVM>>> GetAllAsync();
         Task<Response<DetailsProductVM>> GetByIdAsync(int id);
-        Task<Response<string>> CreateAsync(CreateProductVM vm);
-        Task<Response<string>> UpdateAsync(UpdateProductVM vm);
-        Task<Response<string>> DeleteAsync(int id);
+        Task<Response<bool>> CreateAsync(CreateProductVM vm);
+        Task<Response<bool>> UpdateAsync(UpdateProductVM vm);
+        Task<Response<bool>> DeleteAsync(int id);
         Task<Response<IEnumerable<DetailsProductVM>>> SearchByNameAsync(string name);
         Task<Response<IEnumerable<DetailsProductVM>>> GetInStockAsync();
         Task<Response<IEnumerable<DetailsProductVM>>> GetOutStockAsync();

@@ -12,79 +12,56 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
-        public async Task<bool> CreateAsync(Notification notification)
+        public async Task CreateAsync(Notification notification)
         {
                 await _context.Notifications.AddAsync(notification);
                 await _context.SaveChangesAsync();
-                return true;
         }
 
-        public async Task<IEnumerable<Notification>> GetAllAsync()
+        public IQueryable<Notification> GetAll()
         {
-                return await _context.Notifications.Where(n=>!n.IsDeleted).ToListAsync();
+                return _context.Notifications
+                .Where(n=>!n.IsDeleted)
+                .AsNoTracking();
         }
 
-        public async Task<Notification?> GetByIdAsync(int id) 
+        public IQueryable<Notification> GetById(int id)
         {
-                return await _context.Notifications
-                .Include(n=>n.Sender)
-                .FirstOrDefaultAsync(n => n.Id == id &&!n.IsDeleted);
+            return _context.Notifications
+            .Where(n => n.Id == id)
+            .AsNoTracking();
         }
 
-        public async Task<bool> UpdateAsync(Notification newNotification)
+        public IQueryable<Notification> GetByUserId(string userId)
         {
-                var result = await _context.Notifications.FirstOrDefaultAsync(n => n.Id == newNotification.Id && !n.IsDeleted);
-
-            if (result == null) { return false; }
-
-                result.Content = newNotification.Content;
-                result.Date = DateTime.Now;
-                await _context.SaveChangesAsync();
-                return true;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-                var result = await _context.Notifications.FirstOrDefaultAsync(n => n.Id == id && !n.IsDeleted);
-                if (result == null) { return false; }
-
-                result.IsDeleted = true;
-                await _context.SaveChangesAsync();
-                return true;
-        }
-
-        public async Task<IEnumerable<Notification>> GetByUserIdAsync(string userId)
-        {
-            return await _context.Notifications
-            .Where(n => n.ReceiverId == userId && !n.IsDeleted)
-            .Include(n=>n.Sender).ToListAsync();
+            return _context.Notifications
+            .Where(n => n.ReceiverId == userId)
+            .AsNoTracking();
         }
 
 
-        public async Task<IEnumerable<Notification>> GetUnreadByUserIdAsync(string userId)
+        public IQueryable<Notification> GetUnreadByUserId(string userId)
         {
-            return await _context.Notifications
-            .Where(n => n.ReceiverId == userId && !n.IsRead && !n.IsDeleted)
-            .Include(n => n.Sender).ToListAsync();
+            return _context.Notifications
+            .Where(n => n.ReceiverId == userId && !n.IsRead)
+            .AsNoTracking();
         }
 
         public async Task<bool> MarkAsReadAsync(int notificationId)
         {
-            var notification = await _context.Notifications
-                .FirstOrDefaultAsync(n => n.Id == notificationId && !n.IsDeleted);
+            var rowsaffected = await _context.Notifications
+                .Where(n => n.Id == notificationId)
+                .ExecuteUpdateAsync(setter => setter
+                .SetProperty(p => p.IsRead, true)
+                );
 
-            if (notification == null)
-                return false;
-
-            notification.IsRead = true;
-            await _context.SaveChangesAsync();
-            return true;
+            return rowsaffected > 0;
         }
 
-        public async Task<int> CountUnreadAsync(string userId)
+        public async Task<bool> UnreadExists(string userId)
         {
             return await _context.Notifications
-               .CountAsync(n => n.ReceiverId == userId && !n.IsRead && !n.IsDeleted);
+                .AnyAsync(n => n.ReceiverId == userId && !n.IsRead && !n.IsDeleted);
         }
     }
 }

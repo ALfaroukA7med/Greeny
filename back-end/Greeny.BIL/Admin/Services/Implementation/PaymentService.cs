@@ -1,276 +1,134 @@
-﻿using AutoMapper;
-using Greeny.BLL.Admin.Response;
-using Greeny.DAL.Database;
+﻿using Greeny.BLL.Admin.Errors;
+using Greeny.BLL.Admin.ModelVM.Payment;
+using Greeny.BLL.Extension;
+using Greeny.DAL.Entities;
 using Greeny.DAL.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Greeny.BLL.Admin.Services.Implementation
 {
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepo _repo;
-        private readonly IMapper _mapper;
 
-        public PaymentService(IPaymentRepo repo, IMapper mapper)
+        public PaymentService(IPaymentRepo repo)
         {
             _repo = repo;
-            _mapper = mapper;
-        }
-        public async Task<Response<bool>> CreateAsync(Payment payment)
-        {
-            try
-            {
-                if (payment == null)
-                {
-                    return new Response<bool>
-                    {
-                        IsSuccess = false,
-                        Message = "Invalid Data"
-                    };
-                }
-                var result = await _repo.CreateAsync(payment);
-
-                if (!result)
-                {
-                    return new Response<bool>
-                    {
-                        IsSuccess = false,
-                        Message = "Create Failed"
-                    };
-                }
-
-                return new Response<bool>
-                {
-                    IsSuccess = true,
-                    Message = "Payment Created Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
-        }
-        public async Task<Response<IEnumerable<Payment>>> GetAllAsync()
-        {
-            try
-            {
-                var payments = await _repo.GetAllAsync();
-
-                if (payments == null || !payments.Any())
-                {
-                    return new Response<IEnumerable<Payment>>
-                    {
-                        IsSuccess = false,
-                        Message = "No Payments Found"
-                    };
-                }
-
-                return new Response<IEnumerable<Payment>>
-                {
-                    IsSuccess = true,
-                    Data = payments,
-                    Message = "Payments Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<IEnumerable<Payment>>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
         }
 
-        public async Task<Response<Payment?>> GetByIdAsync(int id)
+        public async Task<Response<bool>> CreateAsync(PaymentCreateVM vm)
         {
-            try
+            var entity = new Payment
             {
-                var payment = await _repo.GetByIdAsync(id);
+                OrderId = vm.OrderId,
+                TransactionRef = vm.TransactionRef,
+                Method = vm.Method,
+                Amount = vm.Amount,
+                Status = "Pending",
+                PaidAt = null
+            };
 
-                if (payment == null)
-                {
-                    return new Response<Payment?>
-                    {
-                        IsSuccess = false,
-                        Message = "Payment Not Found"
-                    };
-                }
+            await _repo.CreateAsync(entity);
 
-                return new Response<Payment?>
-                {
-                    IsSuccess = true,
-                    Data = payment,
-                    Message = "Payment Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<Payment?>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<bool>.Success(true);
         }
 
-        public async Task<Response<bool>> UpdateAsync(Payment newPayment)
+        public async Task<Response<bool>> UpdateAsync(PaymentUpdateVM vm)
         {
-            try
+            var entity = new Payment
             {
-                var result = await _repo.UpdateAsync(newPayment);
+                Id = vm.Id,
+                TransactionRef = vm.TransactionRef,
+                Method = vm.Method,
+                Amount = vm.Amount,
+                Status = vm.Status
+            };
 
-                return new Response<bool>
-                {
-                    IsSuccess = result,
-                    Data = result,
-                    Message = result ? "Updated Successfully" : "Update Failed"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            await _repo.UpdateAsync(entity);
+
+            return Response<bool>.Success(true);
         }
 
         public async Task<Response<bool>> DeleteAsync(int id)
         {
-            try
-            {
-                var result = await _repo.DeleteAsync(id);
+            await _repo.DeleteAsync(id);
 
-                return new Response<bool>
-                {
-                    IsSuccess = result,
-                    Data = result,
-                    Message = result ? "Deleted Successfully" : "Delete Failed"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<bool>.Success(true);
         }
 
-        public async Task<Response<IEnumerable<Payment>>> GetByUserIdAsync(string userId)
+        public async Task<Response<PaymentVM>> GetByIdAsync(int id)
         {
-            try
-            {
-                var payments = await _repo.GetByUserIdAsync(userId);
+            var payment = await _repo.GetByIdAsync(id);
 
-                return new Response<IEnumerable<Payment>>
-                {
-                    IsSuccess = true,
-                    Data = payments,
-                    Message = "Payments Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
+            if (payment == null)
+                return Response<PaymentVM>.Fail(PaymentError.NotFound);
+
+            var vm = new PaymentVM
             {
-                return new Response<IEnumerable<Payment>>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+                Id = payment.Id,
+                OrderId = payment.OrderId,
+                TransactionRef = (payment.TransactionRef != null) ? payment.TransactionRef : string.Empty,
+                Method = payment.Method,
+                Amount = payment.Amount,
+                Status = payment.Status,
+                PaidAt = payment.PaidAt
+            };
+
+            return Response<PaymentVM>.Success(vm);
         }
 
-        public async Task<Response<Payment?>> GetByOrderIdAsync(int orderId)
+        public async Task<Response<IEnumerable<PaymentVM>>> GetAllAsync()
         {
-            try
-            {
-                var payment = await _repo.GetByOrderIdAsync(orderId);
+            var payments = await _repo.GetAll()
+                .Select(p => new PaymentVM
+                {
+                    Id = p.Id,
+                    OrderId = p.OrderId,
+                    TransactionRef = (p.TransactionRef != null) ? p.TransactionRef : string.Empty,
+                    Method = p.Method,
+                    Amount = p.Amount,
+                    Status = p.Status,
+                    PaidAt = p.PaidAt
+                })
+                .ToListAsync();
 
-                if (payment == null)
-                {
-                    return new Response<Payment?>
-                    {
-                        IsSuccess = false,
-                        Message = "Not Found"
-                    };
-                }
-
-                return new Response<Payment?>
-                {
-                    IsSuccess = true,
-                    Data = payment,
-                    Message = "Payment Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<Payment?>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<IEnumerable<PaymentVM>>.Success(payments);
         }
 
-        public async Task<Response<bool>> ExistsByOrderIdAsync(int orderId)
+        public async Task<Response<IEnumerable<PaymentVM>>> GetByUserIdAsync(string userId)
         {
-            try
-            {
-                var exists = await _repo.ExistsByOrderIdAsync(orderId);
+            var payments = await _repo.GetByUserId(userId)
+                .Select(p => new PaymentVM
+                {
+                    Id = p.Id,
+                    OrderId = p.OrderId,
+                    TransactionRef = (p.TransactionRef != null) ? p.TransactionRef : string.Empty,
+                    Method = p.Method,
+                    Amount = p.Amount,
+                    Status = p.Status,
+                    PaidAt = p.PaidAt
+                })
+                .ToListAsync();
 
-                return new Response<bool>
-                {
-                    IsSuccess = true,
-                    Data = exists,
-                    Message = exists ? "Exists" : "Not Found"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<bool>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<IEnumerable<PaymentVM>>.Success(payments);
         }
 
-        public async Task<Response<IEnumerable<Payment>>> GetAllByStatusAsync(string status)
+        public async Task<Response<IEnumerable<PaymentVM>>> GetByStatusAsync(string status)
         {
-            try
-            {
-                var payments = await _repo.GetAllByStatusAsync(status);
+            var payments = await _repo.GetAllByStatus(status)
+                .Select(p => new PaymentVM
+                {
+                    Id = p.Id,
+                    OrderId = p.OrderId,
+                    TransactionRef = (p.TransactionRef != null) ? p.TransactionRef : string.Empty,
+                    Method = p.Method,
+                    Amount = p.Amount,
+                    Status = p.Status,
+                    PaidAt = p.PaidAt
+                })
+                .ToListAsync();
 
-                if (payments == null || !payments.Any())
-                {
-                    return new Response<IEnumerable<Payment>>
-                    {
-                        IsSuccess = false,
-                        Message = "No Payments Found"
-                    };
-                }
-
-                return new Response<IEnumerable<Payment>>
-                {
-                    IsSuccess = true,
-                    Data = payments,
-                    Message = "Payments Retrieved Successfully"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response<IEnumerable<Payment>>
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            return Response<IEnumerable<PaymentVM>>.Success(payments);
         }
     }
 }
