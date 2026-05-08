@@ -1,12 +1,11 @@
-using Greeny.BLL.Admin.Services.Interfaces;
 using Greeny.DAL.Database;
 using Greeny.DAL.Entities;
 using Greeny.DAL.Repository.Implementation;
 using Greeny.DAL.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Greeny.BLL.Admin.Services.Implementation;
-using Greeny.BLL.Auth.Service.Interfaces;
+using Greeny.BLL.Services.Implementation;
+using Greeny.BLL.Services.Interfaces;
 
 
 namespace Greeny.PL

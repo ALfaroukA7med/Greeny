@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Greeny.BLL.Admin.Services.Interfaces;
-using Greeny.BLL.Admin.ModelVM.Category;
+using Greeny.BLL.ModelVM.Category;
+using Greeny.BLL.Services.Interfaces;
 
 namespace Greeny.PL.Controllers
 {

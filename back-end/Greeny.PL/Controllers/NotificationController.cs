@@ -1,5 +1,5 @@
-﻿using Greeny.BLL.Admin.ModelVM.Notification;
-using Greeny.BLL.Admin.Services.Interfaces;
+﻿using Greeny.BLL.ModelVM.Notification;
+using Greeny.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Greeny.PL.Controllers
