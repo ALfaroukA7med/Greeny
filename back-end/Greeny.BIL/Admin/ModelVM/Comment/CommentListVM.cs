@@ -11,7 +11,7 @@ namespace Greeny.BLL.Admin.ModelVM.Comment
 
         // UI Friendly data
         public string AuthorName { get; set; } = string.Empty;
-        public string TimeAgo { get; set; } = string.Empty; // e.g., "5 minutes ago"
+        public string TimeAgo { get; set; } = string.Empty;// e.g., "5 minutes ago"
 
     }
 }

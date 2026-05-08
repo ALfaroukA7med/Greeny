@@ -8,6 +8,5 @@ namespace Greeny.BLL.Admin.Response
         {
             public static readonly Error None = new Error(string.Empty, string.Empty, ErrorType.None);
         }
-
     }
 }
