@@ -44,6 +44,9 @@ namespace Greeny.PL
             builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
             builder.Services.AddScoped<IReviewRepo,ReviewRepo>();
             builder.Services.AddScoped<IReferencePlanetRepo, ReferencePlanetRepo>();
+            builder.Services.AddScoped<ICommentRepo, CommentRepo>();
+            builder.Services.AddScoped<IPostRepo, PostRepo>();
+
 
 
             // Services
@@ -52,7 +55,8 @@ namespace Greeny.PL
             builder.Services.AddScoped<IReviewService, ReviewService>();
             builder.Services.AddScoped<IReferencePlanetService, ReferencePlanetService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
-
+            builder.Services.AddScoped<IPostService, PostService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
 
 
             //AutoMapper
