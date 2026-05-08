@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Templates\ForgetPassword.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Templates\ForgetPassword.html" />
+    <None Include="wwwroot\Templates\EmailConfirme.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Greeny.BIL\Greeny.BLL.csproj" />
   </ItemGroup>
 

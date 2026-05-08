@@ -1,11 +1,11 @@
-using Greeny.BLL.Admin.Services.Interfaces;
 using Greeny.DAL.Database;
 using Greeny.DAL.Entities;
 using Greeny.DAL.Repository.Implementation;
 using Greeny.DAL.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Greeny.BLL.Admin.Services.Implementation;
+using Greeny.BLL.Services.Implementation;
+using Greeny.BLL.Services.Interfaces;
 
 
 namespace Greeny.PL
@@ -43,11 +43,16 @@ namespace Greeny.PL
             builder.Services.AddScoped<IProductRepo, ProductRepo>();
             builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
             builder.Services.AddScoped<IReviewRepo,ReviewRepo>();
+            builder.Services.AddScoped<IReferencePlanetRepo, ReferencePlanetRepo>();
+
 
             // Services
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IReferencePlanetService, ReferencePlanetService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 
             //AutoMapper
@@ -66,6 +71,10 @@ namespace Greeny.PL
 
             }, typeof(ReviewProfile).Assembly);
 
+            builder.Services.AddAutoMapper(cfg =>
+            {
+
+            }, typeof(RefPlanet).Assembly);
 
 
             // Add services to the container.

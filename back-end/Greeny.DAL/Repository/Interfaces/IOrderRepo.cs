@@ -11,7 +11,6 @@ namespace Greeny.DAL.Repository.Interfaces
         Task CreateAsync(Order order);
 
         Task UpdateAsync(Order order);
-
         Task DeleteAsync(int id);
         IQueryable<Order> GetOrdersByUserIdAsync(string userId);
         IQueryable<Order> GetOrdersByUserIdAndStatusAsync(string userId , Status status);

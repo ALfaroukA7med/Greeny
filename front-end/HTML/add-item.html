@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Item - Greeny</title>
+    <link rel="stylesheet" href="../CSS/master.css" />
+    <link rel="stylesheet" href="../CSS/market.css" />
+    <link rel="stylesheet" href="../CSS/add-item.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    
+    <header class="market-page-header">
+        <div class="container">
+            <span class="market-badge">SELLER PANEL</span>
+            <h1 class="market-page-title">Add New Product</h1>
+            <p class="market-page-desc">Share your fresh crops with the community.</p>
+        </div>
+    </header>
+
+    <section class="add-item-section">
+        <div class="form-container">
+            <form action="/Market/Create" method="post" enctype="multipart/form-data" class="add-item-form">
+                
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" name="Title" id="Title" placeholder="e.g. Organic Red Apples" required>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Price </label>
+                        <input type="number" name="Price" id="Price" step="0.01" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="CategoryId" id="CategoryId">
+                            <option value="1">Vegetables</option>
+                            <option value="2">Fruits</option>
+                            <option value="3">Seeds</option>
+                            <option value="4">Tools</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Product Image</label>
+                    <input type="file" name="ImageFile" id="ImageFile" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea rows="4" name="Description" placeholder="Tell buyers more about your product..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fa-solid fa-circle-check"></i> List Product Now
+                </button>
+            </form>
+        </div>
+    </section>
+    </body>
+</html>
