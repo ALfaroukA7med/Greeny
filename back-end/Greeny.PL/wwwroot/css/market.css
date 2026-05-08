@@ -1,0 +1,168 @@
+.market-page-header {
+  background-color: #edf2ed; 
+  padding: 50px 5%;
+  border-bottom: 1px solid #e2e8f0;
+}
+.container{
+  padding:0;
+}
+.market-badge {
+  color: var(--primary-green, #237a4e);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.market-page-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3.5rem;
+  color: var(--dark-green, #113f28);
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+.market-page-desc {
+  color: #64748b;
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+/* ======================= Marketplace Filters ======================== */
+.market-filter-section {
+  padding: 30px 5% 30px 5%;
+  background-color: var(--whiteColor, white);
+}
+
+.search-sort-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.search-box {
+  flex-grow: 1; 
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 14px 20px 14px 45px;
+  border-radius: 50px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  outline: none;
+  color: var(--blackColor, black);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.search-box input:focus {
+  border-color: var(--primary-green, #237a4e);
+  box-shadow: 0 0 0 3px rgba(35, 122, 78, 0.1);
+}
+
+.sort-box select {
+  padding: 14px 40px 14px 20px;
+  border-radius: 50px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  outline: none;
+  color: #475569;
+  background-color: var(--whiteColor, white);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px top 50%;
+  background-size: 12px auto;
+  min-width: 180px;
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.pill-btn {
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 1px solid #cbd5e1;
+  background-color: var(--whiteColor, white);
+  color: #475569;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pill-btn:hover {
+  border-color: #94a3b8;
+  background-color: #f8fafc;
+}
+
+.pill-btn.active {
+  background-color: var(--darkGreen, #276842);
+  color: var(--whiteColor, white);
+  border-color: var(--darkGreen, #276842);
+}
+
+.results-count {
+  grid-row: 1/1;
+  grid-column: 1 / end;
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.results-count strong {
+  color: var(--blackColor, black);
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .market-page-title {
+    font-size: 2.5rem;
+  }
+
+  .search-sort-row {
+    flex-direction: column; 
+  }
+
+  .sort-box select {
+    width: 100%;
+  }
+}
+
+.add-product-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--darkGreen, #276842);
+    color: white;
+    padding: 14px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s, background-color 0.2s;
+    white-space: nowrap; 
+}
+
+.add-product-link:hover {
+    background-color: #1e5335; 
+    transform: translateY(-2px);
+    color: white;
+}
