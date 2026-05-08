@@ -1,5 +1,5 @@
-﻿using Greeny.BLL.Admin.ModelVM.Comment;
-using Greeny.BLL.Admin.Services.Interfaces;
+﻿using Greeny.BLL.ModelVM.Comment;
+using Greeny.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Greeny.PL.Controllers

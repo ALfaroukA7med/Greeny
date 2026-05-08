@@ -1,5 +1,5 @@
-﻿using Greeny.BLL.Auth.ModelVM;
-using Greeny.BLL.Auth.Service.Interfaces;
+﻿using Greeny.BLL.ModelVM.AuthVM;
+using Greeny.BLL.Services.Interfaces;
 using Greeny.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
