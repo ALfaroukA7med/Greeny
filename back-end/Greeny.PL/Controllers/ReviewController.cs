@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Greeny.BLL.Admin.Services.Interfaces;
-using Greeny.BLL.Admin.ModelVM.Review;
+using Greeny.BLL.ModelVM.Review;
+using Greeny.BLL.Services.Interfaces;
 
 namespace Greeny.PL.Controllers
 {

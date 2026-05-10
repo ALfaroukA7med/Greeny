@@ -1,5 +1,5 @@
-﻿using Greeny.BLL.Auth.ModelVM;
-using Greeny.BLL.Auth.Service.Interfaces;
+﻿using Greeny.BLL.ModelVM.AuthVM;
+using Greeny.BLL.Services.Interfaces;
 using Greeny.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -191,7 +191,7 @@ namespace Greeny.PL.Controllers
                 var htmlBody = await System.IO.File.ReadAllTextAsync(path);
                 htmlBody = htmlBody.Replace("{{Name}}", user.FirstName);
                 htmlBody = htmlBody.Replace("{{OTP}}", otp);
-                await _emailService.SendEmailAsync(vm.Email, "Confirme Email", htmlBody);
+                await _emailService.SendEmailAsync(vm.Email, "Reset Password", htmlBody);
 
                 return RedirectToAction("AddNewPassword");
             }

@@ -1,6 +1,6 @@
-﻿using Greeny.BLL.Admin.ModelVM.ProductVM;
-using Greeny.BLL.Admin.ModelVM.ReferencePlanet;
-using Greeny.BLL.Admin.Services.Interfaces;
+﻿using Greeny.BLL.ModelVM.ProductVM;
+using Greeny.BLL.ModelVM.ReferencePlanet;
+using Greeny.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Greeny.PL.Controllers

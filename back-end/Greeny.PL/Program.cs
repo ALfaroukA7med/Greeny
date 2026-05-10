@@ -1,12 +1,11 @@
-using Greeny.BLL.Admin.Services.Interfaces;
 using Greeny.DAL.Database;
 using Greeny.DAL.Entities;
 using Greeny.DAL.Repository.Implementation;
 using Greeny.DAL.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Greeny.BLL.Admin.Services.Implementation;
-using Greeny.BLL.Auth.Service.Interfaces;
+using Greeny.BLL.Services.Implementation;
+using Greeny.BLL.Services.Interfaces;
 
 
 namespace Greeny.PL
@@ -45,6 +44,9 @@ namespace Greeny.PL
             builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
             builder.Services.AddScoped<IReviewRepo,ReviewRepo>();
             builder.Services.AddScoped<IReferencePlanetRepo, ReferencePlanetRepo>();
+            builder.Services.AddScoped<ICommentRepo, CommentRepo>();
+            builder.Services.AddScoped<IPostRepo, PostRepo>();
+
 
 
             // Services
@@ -53,7 +55,8 @@ namespace Greeny.PL
             builder.Services.AddScoped<IReviewService, ReviewService>();
             builder.Services.AddScoped<IReferencePlanetService, ReferencePlanetService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
-
+            builder.Services.AddScoped<IPostService, PostService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
 
 
             //AutoMapper
