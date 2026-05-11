@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Greeny Marketplace</title>
     <link rel="stylesheet" href="../CSS/master.css" />
@@ -25,7 +25,7 @@
     <nav>
       <a class="left-nav" href="index.html">
         <img src="..\media\photos\Transparent Greeny leaf.png" alt="logo" />
-        <p class="greeny">greeny</p>
+        <p class="greeny">Greeny</p>
       </a>
       <div class="middle-nav">
         <a href="index.html" class="active-link">home</a>
@@ -34,12 +34,46 @@
         <a href="refrence.html">refrence</a>
       </div>
       <div class="right-nav">
+        <div class="notification-wrapper">
+          <a href="#" class="bell-button">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge">2</span>
+          </a>
+
+          <div class="notification-dropdown">
+            <div class="notif-header">Notifications</div>
+
+            <div class="notif-item unread">
+              <div class="notif-icon">👤</div>
+              <div class="notif-details">
+                <p>Someone commented to your blog.</p>
+                <span class="notif-time">10mins ago.</span>
+              </div>
+              <div class="clear-fix"></div>
+            </div>
+
+            <div class="notif-item">
+              <div class="notif-icon">🛒</div>
+              <div class="notif-details">
+                <p>New statue update to your order.</p>
+                <span class="notif-time">2hrs ago.</span>
+              </div>
+              <div class="clear-fix"></div>
+            </div>
+
+            <div class="notif-footer">
+              <a href="notifications.html">Show All</a>
+            </div>
+          </div>
+        </div>
         <a href="cart.html" title="Go to Cart" class="cart-icon-container">
           <img src="../media/photos/cart.png" alt="Cart" />
           <span class="cart-badge">0</span>
         </a>
-        <a class="logIn" href="log.html">log in</a>
-        <a class="signUp" href="log.html?tab=register">sign up</a>
+        <div class="sign-bottoms">
+          <a class="logIn" href="logIn.html">log in</a>
+          <a class="signUp" href="signUp.html">sign up</a>
+        </div>
 
         <div class="hamburger" title="Menu ">
           <div></div>
@@ -72,7 +106,7 @@
           <a href="add-item.html" class="add-product-link">
             <i class="fa-solid fa-plus-circle"></i> Add Product
           </a>
-          
+
           <div class="search-box">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <input type="text" placeholder="Search products, tags..." />
@@ -201,7 +235,10 @@
       <div class="footer-container">
         <div class="footer-brand">
           <a class="footer-logo" href="index.html">
-            <img src="..\media\photos\Transparent Greeny leaf.png" alt="Greeny Logo" />
+            <img
+              src="..\media\photos\Transparent Greeny leaf.png"
+              alt="Greeny Logo"
+            />
             <span class="greeny-text">greeny</span>
           </a>
           <p class="footer-description">

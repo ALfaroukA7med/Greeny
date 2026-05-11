@@ -1,9 +1,8 @@
-nav {
-    display: none !important; 
-}
+
 
 body {
     background-color: #e8f5e9 !important; 
+    margin-top: 20px;
 }
 
 .notifications-page {

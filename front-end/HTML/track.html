@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
-    <title>Greeny Marketplace</title>
+    <title>Greeny</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="stylesheet" href="../CSS/master.css" />
-    <link rel="stylesheet" href="../CSS/cart.css" />
+    <link rel="stylesheet" href="../CSS/track.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
       rel="stylesheet"
@@ -88,63 +89,83 @@
       <a href="community.html">community</a>
       <a href="refrence.html">refrence</a>
       <a href="log.html" class="logIn">log in</a>
-      <a href="log.html" class="signUp">join us</a>
+      <a href="log.html?tab=register" class="signUp">join us</a>
     </div>
-    <header class="cart-page-header">
+
+    <section class="tracking-section">
       <div class="container">
-        <h1 class="cart-title">Your Cart</h1>
-        <p class="cart-subtitle" id="cart-item-count">
-          0 items ready to harvest
-        </p>
-      </div>
-    </header>
-
-    <section class="cart-section">
-      <div class="container cart-layout">
-        <div class="cart-left-side">
-          <div class="cart-items-wrapper" id="cart-items-wrapper"></div>
-
-          <button class="clear-cart-btn" id="clear-cart-btn">Clear cart</button>
+        <div class="tracking-header">
+          <a href="index.html" class="back-link"
+            ><i class="fa-solid fa-arrow-left"></i> Back to Home</a
+          >
+          <h1 class="tracking-title">Track Your Order</h1>
         </div>
 
-        <div class="cart-right-side">
-          <div class="cart-summary-box">
-            <h2 class="summary-title">Order Summary</h2>
-
-            <div class="summary-row">
-              <span id="summary-subtotal-text">Subtotal (0 items)</span>
-              <span id="summary-subtotal-price">$0.00</span>
+        <div class="tracking-card">
+          <div class="tracking-info-bar">
+            <div class="info-group">
+              <span class="info-label">Order Number</span>
+              <span class="info-value">#GRN-84729</span>
             </div>
-
-            <div class="summary-row">
-              <span>Shipping</span>
-              <span id="summary-shipping-price">$0.00</span>
+            <div class="info-group">
+              <span class="info-label">Expected Delivery</span>
+              <span class="info-value">May 15, 2026</span>
             </div>
-
-            <div class="free-shipping-alert" id="free-shipping-alert">
-              Add $0.00 more for free shipping
+            <div class="info-group">
+              <span class="info-label">Status</span>
+              <span class="info-value status-highlight">Shipped</span>
             </div>
+          </div>
 
-            <div class="summary-divider"></div>
+          <div class="tracking-progress-container">
+            <div class="progress-line"></div>
+            <div class="progress-line-fill" style="width: 50%"></div>
 
-            <div class="summary-row total-row">
-              <span>Total</span>
-              <span id="summary-total-price">$0.00</span>
+            <div class="progress-steps">
+              <div class="step completed">
+                <div class="step-icon"><i class="fa-solid fa-check"></i></div>
+                <span class="step-text">Order Placed</span>
+                <span class="step-date">May 11</span>
+              </div>
+              <div class="step completed">
+                <div class="step-icon">
+                  <i class="fa-solid fa-box-open"></i>
+                </div>
+                <span class="step-text">Processing</span>
+                <span class="step-date">May 12</span>
+              </div>
+              <div class="step active">
+                <div class="step-icon">
+                  <i class="fa-solid fa-truck-fast"></i>
+                </div>
+                <span class="step-text">Shipped</span>
+                <span class="step-date">May 13</span>
+              </div>
+              <div class="step">
+                <div class="step-icon"><i class="fa-solid fa-house"></i></div>
+                <span class="step-text">Delivered</span>
+                <span class="step-date">Pending</span>
+              </div>
             </div>
+          </div>
 
-            <button class="btn-checkout">
-              Proceed to Checkout <i class="fa-solid fa-arrow-right"></i>
-            </button>
-            <a href="market.html" class="continue-shopping"
-              >Continue Shopping</a
-            >
+          <div class="order-items-list">
+            <h3 class="items-title">Items in this shipment</h3>
+            <div class="tracking-item">
+              <img
+                src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=100"
+                alt="Tomatoes"
+              />
+              <div class="item-details">
+                <h4>Organic Vine Tomatoes</h4>
+                <span>Qty: 3</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
-    <div class="success-buttons-row">
-      <a href="track.html" class="btn-track-order">Track Your Orders</a>
-    </div>
+
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-brand">
@@ -169,7 +190,7 @@
     <button id="scrollTopBtn" class="scroll-top-btn" title="Go to top">
       <i class="fa-solid fa-arrow-up"></i>
     </button>
-    <script src="../JavaScript/cart.js"></script>
+    <script src="../JavaScript/home.js"></script>
     <script src="../JavaScript/script.js"></script>
   </body>
 </html>

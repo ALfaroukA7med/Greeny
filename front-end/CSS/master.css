@@ -40,7 +40,7 @@ a {
 }
 
 .hide{
-  display: none;
+  display: none !important;
 }
 /* ================================================= Nav ================================================= */
 nav {
@@ -135,6 +135,10 @@ img[alt="logo"] {
 }
 .signUp:hover {
   background-color: var(--lighterDarkGreen) !important;
+}
+.sign-bottoms{
+  display: flex; 
+  flex-flow: row;
 }
 .cart-icon-container {
   position: relative;

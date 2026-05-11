@@ -1,0 +1,286 @@
+.checkout-section {
+  padding: 60px 5% 80px 5%;
+  background-color: #f9fbf9;
+  min-height: 80vh;
+}
+.back-link{
+    color: black;
+}
+.container{
+    padding-top: 0 !important;
+}
+.checkout-header-nav {
+  margin-bottom: 40px;
+}
+
+.checkout-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  color: #113f28;
+  margin: 15px 0 0 0;
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.checkout-block {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+}
+
+.checkout-block-title {
+  font-size: 1.25rem;
+  color: #113f28;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.checkout-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: "Inter", sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.checkout-form input:focus {
+  border-color: #237a4e;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.payment-method {
+  flex: 1;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #475569;
+  transition: all 0.2s;
+}
+
+.payment-method.active {
+  border-color: #237a4e;
+  background-color: #f0fdf4;
+  color: #113f28;
+}
+
+.payment-method input[type="radio"] {
+  display: none;
+}
+
+.payment-method i {
+  font-size: 1.2rem;
+}
+
+.btn-place-order {
+  width: 100%;
+  background-color: #113f28;
+  color: white;
+  border: none;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-place-order:hover {
+  background-color: #237a4e;
+}
+
+.checkout-summary-column {
+  position: sticky;
+  top: 100px;
+}
+.summary-row{
+    margin-bottom: 10px;
+}
+.checkout-summary-box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.checkout-items {
+  margin-bottom: 24px;
+}
+
+.checkout-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.ci-img-wrapper {
+  position: relative;
+  width: 65px;
+  height: 65px;
+}
+
+.ci-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.ci-qty {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #475569;
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ci-details {
+  flex-grow: 1;
+}
+
+.ci-details h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+  color: #113f28;
+}
+
+.ci-details span {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.ci-price {
+  font-weight: 600;
+  color: #113f28;
+}
+
+.order-success-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.order-success-modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.success-content {
+  background: white;
+  padding: 50px;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 450px;
+  width: 90%;
+  transform: translateY(30px) scale(0.95);
+  transition: all 0.3s ease;
+}
+
+.order-success-modal.show .success-content {
+  transform: translateY(0) scale(1);
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  margin: 0 auto 24px auto;
+}
+
+.success-content h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  color: #113f28;
+  margin: 0 0 16px 0;
+}
+
+.success-content p {
+  color: #475569;
+  line-height: 1.6;
+  margin: 0 0 30px 0;
+}
+
+.btn-continue-shopping {
+  display: inline-block;
+  background-color: #237a4e;
+  color: white;
+  text-decoration: none;
+  padding: 14px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-continue-shopping:hover {
+  background-color: #113f28;
+}
+
+@media (max-width: 992px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+  .checkout-summary-column {
+    position: static;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

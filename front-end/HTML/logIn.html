@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Greeny Marketplace</title>
+    <link rel="stylesheet" href="../CSS/master.css" />
+    <link rel="stylesheet" href="../CSS/log.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="auth-layout">
+      <div class="auth-banner">
+        <div class="auth-overlay"></div>
+        <a class="sign-logo2" href="index.html">
+          <img
+            src="..\media\photos\Transparent white greeny leaf.png"
+            alt="logo"
+          />
+          <span class="greeny">greeny</span>
+        </a>
+        <div class="auth-quote-box">
+          <h2 class="auth-quote">
+            "Growing food is like printing your own money."
+          </h2>
+          <p class="auth-quote-sub">
+            Join our community of farmers and gardening enthusiasts
+          </p>
+        </div>
+      </div>
+
+      <div class="auth-content">
+        <div class="auth-form-container">
+          <a class="sign-logo" href="index.html">
+            <img src="..\media\photos\Transparent Greeny leaf.png" alt="logo" />
+            <span class="greeny">greeny</span>
+          </a>
+          <div class="auth-header">
+            <h1>Welcome back</h1>
+            <p>Sign in to continue to Greeny</p>
+          </div>
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-signin">Sign In</button>
+            <button class="auth-tab" id="tab-register">Register</button>
+          </div>
+          <form id="loginForm" class="auth-form">
+            <div class="input-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="lorem@example.com"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <label for="password">Password</label>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="••••••••••••••••"
+                  required
+                />
+                <i
+                  class="fa-regular fa-eye toggle-password"
+                  id="togglePassword"
+                ></i>
+              </div>
+            </div>
+            <button type="submit" class="auth-submit-btn">Sign In</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="../JavaScript/logIn.js"></script>
+    <script src="../JavaScript/log.js"></script>
+    <script src="../JavaScript/script.js"></script>
+  </body>
+</html>
