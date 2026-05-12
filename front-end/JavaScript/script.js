@@ -61,7 +61,25 @@ avatars.forEach((avatar) => {
     window.open("profile.html", self);
   });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const profileBtn = document.getElementById("profile-dropdown-btn");
+  const profileMenu = document.getElementById("profile-menu");
 
+  if (profileBtn && profileMenu) {
+    profileBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      profileMenu.classList.toggle("show");
+      profileBtn.classList.toggle("active");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+        profileMenu.classList.remove("show");
+        profileBtn.classList.remove("active");
+      }
+    });
+  }
+});
 // let comments = document.querySelectorAll(".fa-comment");
 // comments.forEach((comment) => {
 //   comment.addEventListener("click", function () {
