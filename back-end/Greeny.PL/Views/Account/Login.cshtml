@@ -4,39 +4,103 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
+    <div class="auth-layout">
+        <div class="auth-banner">
+            <div class="auth-overlay"></div>
+        <a class="sign-logo2" asp-controller="Home" asp-action="Index">
+                <img src="~/media/photos/Transparent white greeny leaf.png" alt="logo" />
+                <span class="greeny">greeny</span>
+            </a>
+            <div class="auth-quote-box">
+                <h2 class="auth-quote">
+                    "Growing food is like printing your own money."
+                </h2>
+                <p class="auth-quote-sub">
+                    Join our community of farmers and gardening enthusiasts
+                </p>
+            </div>
+        </div>
 
-<hr />
-<div class="row justify-content-center">
-    <div class="col-md-4">
-        <form asp-action="SaveLogin">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+        <div class="auth-content">
+            <div class="auth-form-container">
+                <a class="sign-logo" asp-controller="Home" asp-action="Index">
+                    <img src="~/media/photos/Transparent Greeny leaf.png" alt="logo" />
+                    <span class="greeny">greeny</span>
+                </a>
+                <div class="auth-header">
+                    <h1>Welcome back</h1>
+                    <p>Log in to continue to Greeny</p>
+                </div>
+
+            <form asp-action="SaveLogin" method="post" id="loginForm" class="auth-form">
+                @Html.AntiForgeryToken()
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="input-group">
+                        <label asp-for="Email" id="email" class="control-label">Email</label>
+                        <input asp-for="Email" class="form-control" type="Email"
+                               placeholder="lorem@example.com"
+                               required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="input-group">
+
+                        <label asp-for="Password" id="password" class="control-label"></label>
+                        <div class="password-wrapper">
+                            <input asp-for="Password" class="form-control" type="Password"
+                                   placeholder="••••••••••••••••"
+                                   required />
+                        <i class="fa-regular fa-eye toggle-password" style="cursor:pointer;"></i>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Login" class="auth-submit-btn" />
+                    </div>
+
+                <a class="auth-tab" asp-controller="Account" asp-action="ForgetPassword" style="color: black;">
+                    Forgot your password ?!
+                </a>
+
+                </form>
+
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
-            </div>
-            <div class="mt-2">
-                <span>Don't have an account?</span>
-                <a asp-action="Register">Register here</a>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+
+
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/master.css" />
+    <link rel="stylesheet" href="~/css/log.css" />
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        document.addEventListener("click", function(e){
+            if(e.target.classList.contains("toggle-password")){
+
+                const input = e.target.closest(".password-wrapper")
+                                         .querySelector("input");
+
+                if(input){
+                    input.type = input.type === "password" ? "text" : "password";
+                    e.target.classList.toggle("fa-eye");
+                    e.target.classList.toggle("fa-eye-slash");
+                }
+            }
+        });
+    </script>
+
+    @* <script src="~/js/logIn.js"></script>
+    <script src="~/js/log.js"></script> *@
 }

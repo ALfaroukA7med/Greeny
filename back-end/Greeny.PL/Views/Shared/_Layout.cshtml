@@ -5,34 +5,63 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Greeny @ViewBag.Title </title>
-    <link rel="stylesheet" href="css/master.css" />
-    <link rel="stylesheet" href="css/community.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
-          rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="~/css/master.css" />
+    <link rel="stylesheet" href="~/css/community.css" />
+    @RenderSection("Styles", required: false)
 </head>
 
 <body>
     <nav>
-        <a class="left-nav" href="index.html">
-            <img src="..\media\photos\Transparent Greeny leaf.png" alt="logo" />
+        <a class="left-nav" asp-controller="Home" asp-action="Index">
+            <img src="~/media/photos/Transparent Greeny leaf.png" alt="logo" />
             <p class="greeny">greeny</p>
         </a>
         <div class="middle-nav">
-            <a href="index.html" class="active-link">home</a>
+            <a asp-controller="Home" asp-action="Index" class="active-link">home</a>
             <a href="market.html">marketplace</a>
             <a href="community.html">community</a>
             <a href="refrence.html">refrence</a>
         </div>
         <div class="right-nav">
             <a href="cart.html" title="Go to Cart" class="cart-icon-container">
-                <img src="../media/photos/cart.png" alt="Cart" />
+                <img src="~/media/photos/cart.png" alt="Cart" />
                 <span class="cart-badge">0</span>
             </a>
-            <a class="logIn" href="log.html">log in</a>
-            <a class="signUp" href="log.html?tab=register">sign up</a>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <form asp-controller="Account"
+                      asp-action="SignOut"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit" class="signUp">
+                        Sign Out
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a class="logIn" asp-controller="Account" asp-action="Login">
+                    Login
+                </a>
+
+                <a class="signUp" asp-controller="Account" asp-action="Register">
+                    Register
+                </a>
+            }
 
             <div class="hamburger" title="Menu ">
                 <div></div>
@@ -52,7 +81,7 @@
         <div class="footer-container">
             <div class="footer-brand">
                 <a class="footer-logo" href="index.html">
-                    <img src="..\media\photos\Transparent Greeny leaf.png" alt="Greeny Logo" />
+                    <img src="~/media/photos/Transparent Greeny leaf.png" alt="logo" />
                     <span class="greeny-text">greeny</span>
                 </a>
                 <p class="footer-description">
@@ -69,8 +98,9 @@
     <button id="scrollTopBtn" class="scroll-top-btn" title="Go to top">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
-    <script src="js/community.js"></script>
-    <script src="js/script.js"></script>
+    <script src="~/js/community.js"></script>
+    <script src="~/js/script.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 
 </html>

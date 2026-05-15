@@ -1,0 +1,43 @@
+.success-content{
+    margin: 80px;
+}
+*{
+    text-align: center;
+}
+.success-buttons-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-track-order {
+  display: block;
+  background-color: #237a4e;
+  color: white;
+  text-decoration: none;
+  padding: 14px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-track-order:hover {
+  background-color: #113f28;
+}
+
+.btn-continue-shopping-outline {
+  display: block;
+  background-color: transparent;
+  color: #237a4e;
+  border: 2px solid #237a4e;
+  text-decoration: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-continue-shopping-outline:hover {
+  background-color: #f0fdf4;
+}

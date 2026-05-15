@@ -113,12 +113,15 @@ namespace Greeny.PL.Controllers
             return View("Login", vm);
         }
 
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignOut()
         {
             await _signInManager.SignOutAsync();
-            return View("Login");
+
+            return RedirectToAction("Login", "Account");
         }
+
 
 
 
