@@ -3,10 +3,8 @@ using Greeny.BLL.Services.Interfaces;
 using Greeny.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 using System.Security.Cryptography;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
-using static System.Net.WebRequestMethods;
+
 namespace Greeny.PL.Controllers
 {
     public class AccountController : Controller
@@ -99,7 +97,7 @@ namespace Greeny.PL.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(vm.Email);
-                if (user != null)
+                if (user != null && user.IsDeleted != true)
                 {
                     bool checkPassword = await _userManager.CheckPasswordAsync(user, vm.Password);
                     if (checkPassword)
@@ -232,6 +230,10 @@ namespace Greeny.PL.Controllers
             }
             return View("AddNewPassword",vm);
         }
+
+
+
+
 
     }
 }

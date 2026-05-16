@@ -1341,3 +1341,12 @@ h2.title {
 .logout-item i {
   color: #ef4444;
 }
+
+.logout-item {
+    width: 100%;
+    background: none;
+    border: none;
+}
+.profile-menu button.profile-menu-item {
+    cursor: pointer;
+}
