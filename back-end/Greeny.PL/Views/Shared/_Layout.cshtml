@@ -1,4 +1,13 @@
-﻿<!doctype html>
+﻿@using Greeny.DAL.Entities
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -33,43 +42,108 @@
             <a href="community.html">community</a>
             <a href="refrence.html">refrence</a>
         </div>
+
         <div class="right-nav">
+            <div class="notification-wrapper">
+                <a href="#" class="bell-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notif-badge">2</span>
+                </a>
+
+                <div class="notification-dropdown">
+                    <div class="notif-header">Notifications</div>
+
+                    <div class="notif-item unread">
+                        <div class="notif-icon">👤</div>
+                        <div class="notif-details">
+                            <p>Someone commented to your blog.</p>
+                            <span class="notif-time">10mins ago.</span>
+                        </div>
+                        <div class="clear-fix"></div>
+                    </div>
+
+                    <div class="notif-item">
+                        <div class="notif-icon">🛒</div>
+                        <div class="notif-details">
+                            <p>New statue update to your order.</p>
+                            <span class="notif-time">2hrs ago.</span>
+                        </div>
+                        <div class="clear-fix"></div>
+                    </div>
+
+                    <div class="notif-footer">
+                        <a href="notifications.html">Show All</a>
+                    </div>
+                </div>
+            </div>
             <a href="cart.html" title="Go to Cart" class="cart-icon-container">
-                <img src="~/media/photos/cart.png" alt="Cart" />
+                <img src="~/media/photos/cart.png" alt="Cart">
                 <span class="cart-badge">0</span>
             </a>
-
             @if (User.Identity.IsAuthenticated)
             {
-                <form asp-controller="Account"
-                      asp-action="SignOut"
-                      method="post">
-
-                    @Html.AntiForgeryToken()
-
-                    <button type="submit" class="signUp">
-                        Sign Out
+                <div class="user-profile-wrapper">
+                    <button class="profile-dropdown-btn" id="profile-dropdown-btn">
+                        <img src="@(string.IsNullOrEmpty(user?.ProfilePicture)
+                               ? Url.Content("~/images/default-user.png")
+                              : Url.Content("~/Files/" + user.ProfilePicture))"
+                             class="profile-avatar" />
+                        <span class="profile-name">@user?.FirstName @user?.LastName</span>
+                        <i class="fa-solid fa-chevron-down profile-chevron"></i>
                     </button>
-                </form>
+
+                    <div class="profile-menu" id="profile-menu">
+                        <a asp-controller="User" asp-action="Details" asp-route-id="@user?.Id" class="profile-menu-item">
+                            <i class="fa-regular fa-user"></i>
+                            My Profile
+                        </a>
+
+                        <div class="profile-menu-divider"></div>
+
+                        <form asp-controller="Account" asp-action="SignOut" method="post">
+                            <button type="submit" class="profile-menu-item logout-item">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                SignOut
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
             }
             else
             {
-                <a class="logIn" asp-controller="Account" asp-action="Login">
-                    Login
-                </a>
+                <!-- Login / Register -->
+                <div class="sign-bottoms">
+                    <a class="logIn" asp-controller="Account" asp-action="Login">
+                        Login
+                    </a>
 
-                <a class="signUp" asp-controller="Account" asp-action="Register">
-                    Register
-                </a>
+                    <a class="signUp" asp-controller="Account" asp-action="Register">
+                        Register
+                    </a>
+                </div>
             }
-
+      
             <div class="hamburger" title="Menu ">
                 <div></div>
                 <div></div>
                 <div></div>
+          
             </div>
+        
         </div>
-    </nav>
+
+    </nav> 
+
+
+
+
+
+
+
+
+
+
 
     <div class="container">
         <main role="main" class="pb-3">
