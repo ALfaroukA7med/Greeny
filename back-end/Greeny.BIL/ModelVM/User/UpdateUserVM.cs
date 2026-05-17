@@ -1,4 +1,6 @@
-﻿namespace Greeny.BLL.ModelVM.User
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Greeny.BLL.ModelVM.User
 {
     public class UpdateUserVM
     {

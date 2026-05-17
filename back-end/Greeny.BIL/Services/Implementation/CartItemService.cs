@@ -1,7 +1,8 @@
-﻿using Greeny.BLL.Abstraction;
-using Greeny.BLL.Errors;
+﻿using AutoMapper;
+using Greeny.BLL.Abstraction;
 using Greeny.BLL.ModelVM.CartItem;
 using Greeny.BLL.Services.Interfaces;
+using Greeny.DAL.Repository.Interfaces;
 
 namespace Greeny.BLL.Services.Implementation
 {
