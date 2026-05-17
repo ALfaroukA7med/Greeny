@@ -1,5 +1,6 @@
+﻿
 
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Greeny.BLL.ModelVM.AuthVM
 {
