@@ -1,4 +1,6 @@
-﻿namespace Greeny.BLL.ModelVM.AuthVM
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Greeny.BLL.ModelVM.AuthVM
 {
     public class RegisterWithRoleVM
     {
@@ -24,6 +26,7 @@
 
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
+        public List<IdentityRole> Roles { get; set; }
 
 
     }
