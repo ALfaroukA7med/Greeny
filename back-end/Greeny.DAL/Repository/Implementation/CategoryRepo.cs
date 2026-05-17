@@ -21,21 +21,19 @@ namespace Greeny.DAL.Repository.Implementation
         public IQueryable<Category> GetAll()
         {
                 return _context.Categories
-                .Where(c=>!c.IsDeleted)
                 .AsNoTracking();
         }
 
         public IQueryable<Category> GetById(int id)
         {
                 return _context.Categories
-                .Where(c => c.Id == id&& !c.IsDeleted)
+                .Where(c => c.Id == id)
                 .AsNoTracking();
         }
 
         public async Task UpdateAsync(Category newCategory)
         {
             await _context.Categories
-                .Where(c => !c.IsDeleted)
                 .ExecuteUpdateAsync(setter => setter
                 .SetProperty(p => p.Icon, newCategory.Icon)
                 .SetProperty(p => p.Name, newCategory.Name)
@@ -46,7 +44,6 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task DeleteAsync(int id)
         {
             await _context.Categories
-            .Where(c => !c.IsDeleted)
             .ExecuteUpdateAsync(setter => setter
             .SetProperty(p => p.IsDeleted, true)
             );
@@ -55,14 +52,14 @@ namespace Greeny.DAL.Repository.Implementation
         public IQueryable<Category> SearchByName(string name)
         {
             return _context.Categories
-              .Where(c => EF.Functions.Like(c.Name, $"%{name}%") && !c.IsDeleted)
+              .Where(c => EF.Functions.Like(c.Name, $"%{name}%"))
               .AsNoTracking();
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
         {
             return await _context.Categories
-                .Where(c => c.Id == id && !c.IsDeleted)
+                .Where(c => c.Id == id)
                 .AnyAsync();
         }
     }

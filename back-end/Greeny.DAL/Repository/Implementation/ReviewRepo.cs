@@ -49,12 +49,12 @@ namespace Greeny.DAL.Repository.Implementation
 
       public IQueryable<Review> GetAllByProductId(int productId)
         {
-            return _context.Reviews.Where(r => r.ProductId == productId && !r.IsDeleted).AsNoTracking();     
+            return _context.Reviews.Where(r => r.ProductId == productId).AsNoTracking();     
         }
 
         public async Task<int> CountByProductIdAsync(int productId)
         {
-            return await _context.Reviews.CountAsync(r => r.ProductId == productId && !r.IsDeleted);     
+            return await _context.Reviews.CountAsync(r => r.ProductId == productId);     
         }
 
         public IQueryable<Review> GetByUserId(string userId)
@@ -71,7 +71,7 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<double> GetAverageRatingForProductAsync(int productId)
         {
             return await _context.Reviews
-           .Where(r => r.ProductId == productId && !r.IsDeleted)
+           .Where(r => r.ProductId == productId)
            .Select(r => (double?)r.Stars)
            .AverageAsync() ?? 0;
         }

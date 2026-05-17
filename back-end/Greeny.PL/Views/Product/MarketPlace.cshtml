@@ -1,0 +1,166 @@
+﻿@using Greeny.BLL.ModelVM.ProductVM
+@model MarketPlaceVM
+
+<header class="market-page-header">
+
+    <div class="container">
+
+        <span class="market-badge">
+            FRESH & LOCAL
+        </span>
+
+        <h1 class="market-page-title">
+            Marketplace
+        </h1>
+
+        <p class="market-page-desc">
+            Discover fresh produce, seeds,
+            and tools from local farmers
+        </p>
+
+    </div>
+
+</header>
+
+<section class="market-filter-section">
+
+    <div class="market-container">
+
+        <!-- SEARCH + SORT -->
+
+        <div class="search-sort-row">
+
+            <!-- ADD PRODUCT -->
+
+            <a asp-action="Create"
+               asp-controller="Product"
+               class="add-product-link">
+
+                <i class="fa-solid fa-plus-circle"></i>
+
+                Add Product
+
+            </a>
+
+            <!-- SEARCH -->
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+
+                <input type="text"
+                       id="searchInput"
+                       class="search-input"
+                       placeholder="Search products..." />
+
+            </div>
+
+            <!-- SORT -->
+
+            <select id="sortSelect"
+                    class="sort-dropdown">
+
+                <option value="">
+                    Featured
+                </option>
+
+                <option value="priceAsc">
+                    Price Low → High
+                </option>
+
+                <option value="priceDesc">
+                    Price High → Low
+                </option>
+
+                <option value="rating">
+                    Best Rating
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- CATEGORIES -->
+
+        <div class="filter-pills">
+
+            <!-- ALL -->
+
+            <button class="pill-btn active"
+                    data-category="All">
+
+                All Products
+
+            </button>
+
+            <!-- DYNAMIC -->
+            @foreach (var category in Model.Categories)
+            {
+                <button class="pill-btn"
+                        data-category="@category">
+
+                    @category
+
+                </button>
+            }
+
+        </div>
+
+        <!-- PRODUCTS -->
+
+        <div class="product-grid">
+
+            <p class="results-count">
+
+                Showing
+
+                <strong>
+                    @Model.Products.Count
+                </strong>
+
+                products
+
+            </p>
+
+            <div id="productsContainer">
+
+                <partial name="_ProductsPartial"
+                         model="Model.Products" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+@section Styles {
+
+    <link rel="stylesheet"
+          href="~/css/master.css" />
+
+    <link rel="stylesheet"
+          href="~/css/market.css" />
+
+}
+
+@section Scripts {
+
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- VALIDATION -->
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- YOUR FILES -->
+
+    <script src="~/js/script.js"></script>
+
+    <script src="~/js/market.js"></script>
+
+    <script src="~/js/product.js"></script>
+
+}

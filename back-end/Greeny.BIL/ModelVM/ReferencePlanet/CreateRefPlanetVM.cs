@@ -1,4 +1,6 @@
-﻿namespace Greeny.BLL.ModelVM.ReferencePlanet
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Greeny.BLL.ModelVM.ReferencePlanet
 {
     public class CreateRefPlanetVM
     {

@@ -4,7 +4,7 @@ namespace Greeny.BLL.Services.Interfaces
 {
     public interface IProductService
     {
-        Task<Response<IEnumerable<DetailsProductVM>>> GetAllAsync();
+        Task<Response<MarketPlaceVM>> GetAllAsync(string? searchTerm,string? categoryName,string? sortOrder);
         Task<Response<DetailsProductVM>> GetByIdAsync(int id);
         Task<Response<bool>> CreateAsync(CreateProductVM vm);
         Task<Response<bool>> UpdateAsync(UpdateProductVM vm);

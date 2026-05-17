@@ -17,14 +17,33 @@ namespace Greeny.PL.Controllers
         }
 
         // GET: All Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> MarketPlace()
         {
-            var result = await _productService.GetAllAsync();
+            var result = await _productService.GetAllAsync(null, null, null);
+
+            var empty = new MarketPlaceVM { Categories = new List<string>() ,
+            Products = new List<ProductListVM>()};
 
             if (!result.IsSuccess)
-                return View("Index", Enumerable.Empty<DetailsProductVM>());
+                return View("MarketPlace", empty);
 
-            return View("Index", result.Data);
+            return View("MarketPlace", result.Data);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string? searchTerm,string? categoryName,string? sortOrder)
+        {
+            var result = await _productService.GetAllAsync(searchTerm,categoryName,sortOrder);
+
+            if (result.Data == null)
+            {
+                return PartialView(
+                    "_ProductsPartial",
+                    new List<ProductListVM>());
+            }
+            return PartialView(
+                "_ProductsPartial",
+                result.Data.Products);
         }
 
         // GET: Product Details
@@ -32,8 +51,8 @@ namespace Greeny.PL.Controllers
         {
             var result = await _productService.GetByIdAsync(id);
 
-            if (!result.IsSuccess)
-                return NotFound();
+            //if (!result.IsSuccess)
+            //    return NotFound();
 
             return View(result.Data);
         }
@@ -120,77 +139,6 @@ namespace Greeny.PL.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        // SEARCH by name
-        public async Task<IActionResult> Search(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                return RedirectToAction(nameof(Index));
-            var result = await _productService.SearchByNameAsync(name);
-            if (!result.IsSuccess)
-                return View("Index", Enumerable.Empty<DetailsProductVM>());
-
-            return View("Index", result.Data);
-        }
-
-        //Get by category id
-        public async Task<IActionResult> GetByCategory(int id)
-        {
-            var result = await _productService.GetAllByCategoryIdAsync(id);
-            if (!result.IsSuccess)
-                return View("Index", Enumerable.Empty<DetailsProductVM>());
-
-            return View("Index", result.Data);
-        }
-
-
-        //Get All in stock
-        public async Task<IActionResult> GetAllInStock()
-        {
-            var result = await _productService.GetInStockAsync();
-
-            if (!result.IsSuccess)
-                return View("Index", Enumerable.Empty<DetailsProductVM>());
-
-            return View("Index", result.Data);
-        }
-
-
-        //Get All out stock
-        public async Task<IActionResult> GetAllOutStock()
-        {
-            var result = await _productService.GetOutStockAsync();
-
-            if (!result.IsSuccess)
-                return View("Index", Enumerable.Empty<DetailsProductVM>());
-
-            return View("Index", result.Data);
-        }
-
-
-        //Get Lest Expensive
-        public async Task<IActionResult> GetLestExpensive()
-        {
-            var result = await _productService.GetLestExpensiveAsync();
-            if (!result.IsSuccess)
-                return View("Index", Enumerable.Empty<DetailsProductVM>());
-
-            return View("Index", result.Data);
-        }
-
-
-
-        //Get Most Expensive
-        public async Task<IActionResult> GetMostExpensive()
-        {
-            var result = await _productService.GetMostExpensiveAsync();
-            if (!result.IsSuccess)
-                return View("Index", Enumerable.Empty<DetailsProductVM>());
-
-            return View("Index", result.Data);
-        }
-
-
 
     }
 }
