@@ -16,13 +16,15 @@ namespace Greeny.PL.Controllers
         }
 
 
-        // Get All 
+        // Get All IEnumerable<DetailsRefPlanetVM>
         public async Task<IActionResult> Index()
         {
             var result = await _referencePlanetService.GetAll();
 
             if (!result.IsSuccess)
-                return View("Index", Enumerable.Empty<DetailsProductVM>());
+            {
+                return View("Index", Enumerable.Empty<DetailsRefPlanetVM>());
+            }
 
             return View("Index", result.Data);
         }
@@ -50,17 +52,19 @@ namespace Greeny.PL.Controllers
         public async Task<IActionResult> Create(CreateRefPlanetVM vm)
         {
             if (!ModelState.IsValid)
-                return View(vm);
-
-            var result = await _referencePlanetService.CreateAsync(vm);
-
-            if (!result.IsSuccess)
             {
-                ModelState.AddModelError("", "Failed to create Ref Planet");
                 return View(vm);
             }
 
-            return RedirectToAction(nameof(Index));
+            var result = await _referencePlanetService.CreateAsync(vm);
+         
+            if (!result.IsSuccess)
+            {
+                TempData["Error"] = "Failed to create Ref Planet";
+                return View(vm);
+            }
+
+            return RedirectToAction("Index","ReferencePlanet");
         }
 
         // Edit
@@ -83,6 +87,7 @@ namespace Greeny.PL.Controllers
                 GrowthSeason = result.Data.GrowthSeason,
                 Image = result.Data.Image,
                 Description = result.Data.Description,
+                ShortDescription = result.Data.ShortDescription,
                 PlanetType = result.Data.PlanetType,
                 Family = result.Data.Family,
                 WaterReq = result.Data.WaterReq,
@@ -110,7 +115,7 @@ namespace Greeny.PL.Controllers
         }
 
         // Delete 
-        [HttpDelete]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
@@ -121,6 +126,8 @@ namespace Greeny.PL.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
         [HttpGet]
         public async Task<IActionResult> GetBySciNameAsync(string name)
         {
@@ -141,5 +148,7 @@ namespace Greeny.PL.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
     }
 }

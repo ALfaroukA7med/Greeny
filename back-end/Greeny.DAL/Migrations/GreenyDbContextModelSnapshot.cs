@@ -428,6 +428,9 @@ namespace Greeny.DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("ShortDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SolidType")
                         .IsRequired()
                         .HasMaxLength(255)
