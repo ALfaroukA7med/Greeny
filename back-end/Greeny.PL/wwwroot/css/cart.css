@@ -20,7 +20,7 @@
 
 /* ======================= Cart Layout ======================== */
 .cart-section {
-  padding: 50px 5%;
+  padding: 50px 5% 0;
   background-color: #f9fbf9;
   min-height: 60vh;
 }
@@ -295,4 +295,26 @@
     justify-content: space-between;
     align-items: center;
   }
+}
+.success-buttons-row{
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+}
+.btn-track-order {
+  display: block;
+  width: 30%;
+  background-color: #237a4e;
+  color: white;
+  text-decoration: none;
+  padding: 23px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  text-align: center;
+  margin: 10px;
+}
+
+.btn-track-order:hover {
+  background-color: #113f28;
 }

@@ -10,31 +10,37 @@
   --fontSize: 20px;
   --logoSize: 50px;
   --hamburgerSize: 25px;
-  --cartSize: 55px;
+  --cartSize: 40px;
   scroll-behavior: smooth;
 }
+
 * {
   scrollbar-color: var(--text-dark) var(--darkGreen);
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
   transition-duration: 0.3s;
 }
+
 *::selection {
   background-color: var(--yellow);
   color: var(--blackColor);
 }
+
 body {
   margin: 0;
 }
-img{
+
+img {
   user-select: none;
 }
+
 a {
   text-decoration: none;
   color: white;
 }
-.hide{
-  display: none;
+
+.hide {
+  display: none !important;
 }
 /* ================================================= Nav ================================================= */
 nav {
@@ -130,6 +136,10 @@ img[alt="logo"] {
 .signUp:hover {
   background-color: var(--lighterDarkGreen) !important;
 }
+.sign-bottoms {
+  display: flex;
+  flex-flow: row;
+}
 .cart-icon-container {
   position: relative;
   display: inline-flex;
@@ -194,6 +204,135 @@ img[alt="Cart"] {
 .hamburger.is-active div:nth-child(3) {
   transform: translateY(-6px) rotate(-45deg);
   background-color: red;
+}
+
+.clear-fix {
+  clear: both;
+}
+
+.notification-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.bell-button {
+  font-size: var(--cartSize);
+  color: var(--blackColor);
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  font-size: 24px;
+}
+
+.notif-badge {
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  background-color: var(--yellow);
+  color: var(--whiteColor);
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--whiteColor);
+  z-index: 10;
+}
+
+.notification-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 320px;
+  background-color: var(--whiteColor);
+  border: 1px solid var(--navBorderColor);
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.notification-wrapper:hover .notification-dropdown {
+  display: block;
+}
+
+.notif-header,
+.notif-footer {
+  padding: 12px;
+  background-color: var(--lightGreen);
+  text-align: center;
+  font-weight: bold;
+  color: var(--darkGreen);
+}
+
+.notif-header {
+  border-bottom: 1px solid var(--navBorderColor);
+}
+
+.notif-footer {
+  border-top: 1px solid var(--navBorderColor);
+}
+
+.notif-footer a {
+  color: var(--lighterDarkGreen);
+  font-size: 14px;
+}
+
+.notif-footer a:hover {
+  color: var(--yellow);
+}
+
+.notif-item {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  background-color: var(--whiteColor);
+}
+
+.notif-item:hover {
+  background-color: #f9f9f9;
+}
+
+.notif-item.unread {
+  background-color: #f4fbf5;
+  border-left: 4px solid var(--darkGreen);
+}
+
+.notif-icon {
+  float: left;
+  width: 40px;
+  height: 40px;
+  background-color: var(--lightGreen);
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.notif-details {
+  float: left;
+  width: 220px;
+}
+
+.notif-details p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--blackColor);
+  line-height: 1.4;
+}
+
+.notif-time {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--greyColor);
 }
 
 /* ================================================= Down-Nav ================================================= */
@@ -938,7 +1077,6 @@ h2.title {
   align-items: center;
 }
 
-
 @media (max-width: 768px) {
   .cta-title {
     font-size: 2.2rem;
@@ -994,15 +1132,15 @@ h2.title {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width:400px) {
-  .stat-box{
+@media (max-width: 400px) {
+  .stat-box {
     margin: 0;
     flex-basis: 20%;
   }
-  .btn{
-    font-size: .85rem;
+  .btn {
+    font-size: 0.85rem;
   }
-  nav{
+  nav {
     padding: 5px 0;
   }
 }
@@ -1027,7 +1165,7 @@ h2.title {
   flex-direction: column;
   gap: 12px;
   margin-bottom: 16px;
-  padding:10px;
+  padding: 10px;
 }
 
 .comment-item {
@@ -1098,4 +1236,117 @@ h2.title {
 
 .comment-send-btn:hover {
   background-color: #237a4e;
+}
+.user-profile-wrapper {
+  position: relative;
+  display: inline-block;
+}
+@media(max-width: 555px){
+  .user-profile-wrapper{
+    display: none;
+  }
+}
+.profile-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 1px solid #cbd5e1;
+  padding: 6px 16px 6px 6px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-dropdown-btn:hover {
+  border-color: #237a4e;
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #113f28;
+}
+
+.profile-chevron {
+  font-size: 0.8rem;
+  color: #113f28;
+  transition: transform 0.3s ease;
+}
+
+.profile-dropdown-btn.active .profile-chevron {
+  transform: rotate(180deg);
+}
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  display: flex;
+  flex-flow: column;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  width: 220px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    visibility 0.3s;
+  z-index: 1000;
+}
+
+.profile-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  color: #113f28;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  border-radius: 12px;
+  transition: background-color 0.2s;
+}
+
+.profile-menu-item:hover {
+  background-color: #f8fafc;
+}
+
+.profile-menu-divider {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 0;
+}
+
+.logout-item {
+  color: #ef4444;
+}
+
+.logout-item i {
+  color: #ef4444;
+}
+
+.logout-item {
+    width: 100%;
+    background: none;
+    border: none;
+}
+.profile-menu button.profile-menu-item {
+    cursor: pointer;
 }
