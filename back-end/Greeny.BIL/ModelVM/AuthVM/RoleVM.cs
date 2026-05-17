@@ -1,4 +1,6 @@
-﻿namespace Greeny.BLL.ModelVM.AuthVM
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Greeny.BLL.ModelVM.AuthVM
 {
     public class RoleVM
     {

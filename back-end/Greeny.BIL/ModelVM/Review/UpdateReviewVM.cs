@@ -1,4 +1,6 @@
-﻿namespace Greeny.BLL.ModelVM.Review
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Greeny.BLL.ModelVM.Review
 {
     public class UpdateReviewVM
     {
