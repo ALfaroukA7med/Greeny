@@ -4,41 +4,50 @@
     ViewData["Title"] = "Add Role";
 }
 
-<h1>AddRole</h1>
+<div class="agri-role-container">
 
-@if (ViewBag.Success != null)
-{
-    <div class="alert alert-success">
-        @ViewBag.Success
-    </div>
-}
+    <div class="agri-role-card">
 
-<hr />
+        <div class="agri-role-header">
+            <h2>🌿 Add New Role</h2>
+            <p>Create a new role for your agricultural platform</p>
+        </div>
 
-<div class="row justify-content-center">
-    <div class="col-md-4">
+        @if (ViewBag.Success != null)
+        {
+            <div class="agri-success">
+                ✅ @ViewBag.Success
+            </div>
+        }
 
         <form asp-action="SaveRole" method="post">
 
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="RoleName" class="control-label"></label>
-                <input asp-for="RoleName" class="form-control" />
+            <div class="form-group agri-group">
+                <label asp-for="RoleName"></label>
+
+                <input asp-for="RoleName"
+                       class="form-control agri-input"
+                       placeholder="Enter role name..." />
+
                 <span asp-validation-for="RoleName" class="text-danger"></span>
             </div>
 
-            <div class="form-group mt-2">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <button type="submit" class="agri-btn">
+                🌱 Create Role
+            </button>
 
         </form>
 
-    </div>
-</div>
+        <div class="back-link">
+            <a asp-action="Index">
+                ← Back to Roles List
+            </a>
+        </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    </div>
+
 </div>
 
 @section Scripts {
@@ -46,3 +55,152 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<style>
+
+    body {
+        background: linear-gradient(to bottom right, #eef7ee, #dff1df);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+    }
+
+    /* Container */
+    .agri-role-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 60px 15px;
+    }
+
+    /* Card */
+    .agri-role-card {
+        width: 100%;
+        max-width: 500px;
+        background: #fff;
+        padding: 35px;
+        border-radius: 24px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        border: 1px solid #dce9dc;
+        position: relative;
+        overflow: hidden;
+    }
+
+        /* Top Green Line */
+        .agri-role-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, #43a047, #8bc34a);
+        }
+
+    /* Header */
+    .agri-role-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .agri-role-header h2 {
+            color: #2e7d32;
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .agri-role-header p {
+            color: #777;
+            font-size: 15px;
+        }
+
+    /* Success Message */
+    .agri-success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+        padding: 14px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    /* Form Group */
+    .agri-group {
+        margin-bottom: 25px;
+    }
+
+        /* Label */
+        .agri-group label {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #2e7d32;
+            font-weight: 600;
+            background: #f1faf1;
+            padding: 8px 14px;
+            border-radius: 12px;
+            border: 1px solid #d6ead6;
+        }
+
+    /* Input */
+    .agri-input {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid #cdddcf;
+        background: #fafdf9;
+        transition: 0.3s;
+        font-size: 15px;
+    }
+
+        .agri-input:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 4px rgba(76,175,80,0.15);
+            background: #fff;
+            outline: none;
+        }
+
+    /* Button */
+    .agri-btn {
+        width: 100%;
+        border: none;
+        padding: 15px;
+        border-radius: 14px;
+        background: linear-gradient(to right, #2e7d32, #4caf50);
+        color: white;
+        font-size: 17px;
+        font-weight: bold;
+        transition: 0.3s ease;
+    }
+
+        .agri-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(76,175,80,0.25);
+        }
+
+    /* Back Link */
+    .back-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        .back-link a {
+            text-decoration: none;
+            color: #2e7d32;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+            .back-link a:hover {
+                color: #1b5e20;
+            }
+
+    /* Validation */
+    .text-danger {
+        font-size: 13px;
+        margin-top: 5px;
+        display: block;
+    }
+
+</style>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace Greeny.BLL.ModelVM.AuthVM
 {
@@ -26,6 +27,7 @@ namespace Greeny.BLL.ModelVM.AuthVM
 
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
+        public List<IdentityRole> Roles { get; set; }
 
 
     }

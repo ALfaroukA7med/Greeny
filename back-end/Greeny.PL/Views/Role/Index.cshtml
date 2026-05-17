@@ -1,33 +1,230 @@
 ﻿@model List<Microsoft.AspNetCore.Identity.IdentityRole>
 
-<h2>All Roles</h2>
+@{
+    ViewData["Title"] = "All Roles";
+}
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Role Name</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+<div class="agri-roles-container">
 
-    <tbody>
-        @foreach (var role in Model)
-        {
-            <tr>
-                <td>@role.Id</td>
-                <td>@role.Name</td>
+    <div class="agri-roles-card">
 
-                <td>
-                    <form asp-action="DeleteRole" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@role.Id" />
-                        <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('Are you sure?')">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
+        <div class="agri-header">
+            <h2>🌿 All Roles</h2>
+            <p>Manage user roles for your agricultural platform</p>
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="agri-table">
+
+                <thead>
+                    <tr>
+                        <th>🆔 Role ID</th>
+                        <th>🌱 Role Name</th>
+                        <th>⚙️ Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var role in Model)
+                    {
+                        <tr>
+
+                            <td class="role-id">
+                                @role.Id
+                            </td>
+
+                            <td>
+                                <span class="role-badge">
+                                    @role.Name
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <form asp-action="DeleteRole"
+                                      method="post"
+                                      style="display:inline;">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@role.Id" />
+
+                                    <button type="submit"
+                                            class="agri-delete-btn"
+                                            onclick="return confirm('Are you sure you want to delete this role?')">
+
+                                        🗑 Delete
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+    body {
+        background: linear-gradient(to bottom right, #eef7ee, #dff1df);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+    }
+
+    /* Container */
+    .agri-roles-container {
+        padding: 50px 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Card */
+    .agri-roles-card {
+        width: 100%;
+        max-width: 1100px;
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 35px;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+        border: 1px solid #dce9dc;
+        position: relative;
+        overflow: hidden;
+    }
+
+        /* Top Line */
+        .agri-roles-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, #43a047, #8bc34a);
         }
-    </tbody>
-</table>
+
+    /* Header */
+    .agri-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .agri-header h2 {
+            font-size: 32px;
+            color: #2e7d32;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .agri-header p {
+            color: #6c757d;
+            font-size: 15px;
+        }
+
+    /* Table */
+    .agri-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 18px;
+    }
+
+        .agri-table thead {
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            color: white;
+        }
+
+        .agri-table th {
+            padding: 18px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .agri-table td {
+            padding: 18px;
+            text-align: center;
+            border-bottom: 1px solid #edf2ed;
+            vertical-align: middle;
+        }
+
+        .agri-table tbody tr {
+            transition: 0.3s ease;
+            background: #fff;
+        }
+
+            .agri-table tbody tr:hover {
+                background: #f7fcf7;
+                transform: scale(1.01);
+            }
+
+    /* Role Badge */
+    .role-badge {
+        background: #e8f5e9;
+        color: #2e7d32;
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-weight: 600;
+        display: inline-block;
+        border: 1px solid #c8e6c9;
+    }
+
+    /* Role ID */
+    .role-id {
+        color: #666;
+        font-size: 13px;
+        word-break: break-all;
+    }
+
+    /* Delete Button */
+    .agri-delete-btn {
+        border: none;
+        padding: 10px 18px;
+        border-radius: 12px;
+        background: linear-gradient(to right, #d32f2f, #f44336);
+        color: white;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+        .agri-delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(244,67,54,0.25);
+        }
+
+    /* Responsive */
+   @@media (max-width: 768px) {
+
+        .agri-roles-card {
+            padding: 20px;
+        }
+
+        .agri-header h2 {
+            font-size: 25px;
+        }
+
+        .agri-table th,
+        .agri-table td {
+            padding: 12px;
+            font-size: 13px;
+        }
+
+        .agri-delete-btn {
+            padding: 8px 14px;
+            font-size: 13px;
+        }
+    }
+
+</style>

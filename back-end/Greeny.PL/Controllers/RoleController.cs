@@ -84,7 +84,12 @@ namespace Greeny.PL.Controllers
         [Authorize]
         public IActionResult RegisterWithRole()
         {
-            return View();
+            RegisterWithRoleVM vm = new RegisterWithRoleVM()
+            {
+                Roles = _roleManager.Roles.ToList()
+            };
+
+            return View(vm);
         }
 
         [HttpPost]
@@ -107,7 +112,9 @@ namespace Greeny.PL.Controllers
                     FirstName = vm.FirstName,
                     LastName = vm.LastName,
                     UserName = vm.Email
+                  
                 };
+                user.EmailConfirmed = true;
 
                 IdentityResult result = await _userManager.CreateAsync(user, vm.Password);
 
