@@ -1,0 +1,335 @@
+﻿@model Greeny.BLL.ModelVM.ReferencePlanet.CreateRefPlanetVM
+
+@{
+    ViewData["Title"] = "Create Plant";
+}
+
+
+
+<div class="plant-container">
+
+    <div class="plant-card">
+
+        <div class="plant-image-side">
+
+            <div class="image-overlay">
+                <h1>🌱 Add New Plant</h1>
+
+                <p>
+                    Create a new plant article with detailed agricultural
+                    information including soil, water, sunlight,
+                    temperature requirements and more.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="form-side">
+
+            <h2 class="form-title">
+                Plant Information
+            </h2>
+
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="CommonName">Common Name</label>
+                    <input asp-for="CommonName" class="form-control" />
+                    <span asp-validation-for="CommonName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="SciName">Sci Name</label>
+                    <input asp-for="SciName" class="form-control" />
+                    <span asp-validation-for="SciName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Family">Family</label>
+                    <input asp-for="Family" class="form-control" />
+                    <span asp-validation-for="Family" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ShortDescription">Short Description</label>
+                    <input asp-for="ShortDescription" class="form-control" />
+                    <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description">Description</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PlanetType">Planet Type</label>
+                    <input asp-for="PlanetType" class="form-control" />
+                    <span asp-validation-for="PlanetType" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GrowthSeason">Growth Season</label>
+                    <input asp-for="GrowthSeason" class="form-control" />
+                    <span asp-validation-for="GrowthSeason" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="SunlightReq">Sunlight Req</label>
+                    <input asp-for="SunlightReq" class="form-control" />
+                    <span asp-validation-for="SunlightReq" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="SolidType">Solid Type</label>
+                    <input asp-for="SolidType" class="form-control" />
+                    <span asp-validation-for="SolidType" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="WaterReq">Water Req</label>
+                    <input asp-for="WaterReq" class="form-control" />
+                    <span asp-validation-for="WaterReq" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TempReq">Temp Req</label>
+                    <input asp-for="TempReq" class="form-control" />
+                    <span asp-validation-for="TempReq" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+
+                    <img id="preview"
+                         style="max-width:200px; margin-bottom:10px; display:none; border-radius:10px;" />
+
+                    <label for="PictureInput" class="file-label">
+                        📤 Upload Plant Image
+                    </label>
+
+                    <input asp-for="UploadImage"
+                           type="file"
+                           id="PictureInput"
+                           accept="image/*"
+                           style="display:none;" />
+
+                    <span asp-validation-for="UploadImage" class="text-danger"></span>
+
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    🌿 Create Plant
+                </button>
+
+            </form>
+
+            <a asp-controller="ReferencePlanet" asp-action="Index" class="back-link">
+                ← Back To Plants
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Styles {
+    <style>
+
+        body {
+            background: linear-gradient(to right, #edf7ed, #f4fff4);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .plant-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .plant-card {
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+        }
+
+        .plant-image-side {
+            background: linear-gradient(135deg, #2d6a4f, #40916c, #52b788);
+            min-height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .plant-image-side::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: rgba(0,0,0,0.12);
+            }
+
+        .image-overlay {
+            position: relative;
+            z-index: 2;
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+            .image-overlay h1 {
+                font-size: 42px;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+
+            .image-overlay p {
+                line-height: 1.8;
+                font-size: 17px;
+            }
+
+        .form-side {
+            padding: 40px;
+        }
+
+        .form-title {
+            color: #2d6a4f;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                font-weight: 600;
+                color: #1b4332;
+                margin-bottom: 8px;
+                display: block;
+            }
+
+        .form-control {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid #d8e2dc;
+            padding: 14px;
+            transition: .3s;
+            font-size: 15px;
+        }
+
+            .form-control:focus {
+                border-color: #40916c;
+                box-shadow: 0 0 0 4px rgba(64,145,108,.15);
+                outline: none;
+            }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: none;
+        }
+
+        .file-label {
+            display: block;
+            border: 2px dashed #95d5b2;
+            padding: 18px;
+            text-align: center;
+            border-radius: 16px;
+            cursor: pointer;
+            background: #f8fff8;
+            transition: .3s;
+            font-weight: 600;
+            color: #2d6a4f;
+        }
+
+            .file-label:hover {
+                background: #e9fbe9;
+                border-color: #40916c;
+            }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            padding: 15px;
+            border-radius: 14px;
+            background: linear-gradient(to right, #40916c, #2d6a4f);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+            .submit-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(45,106,79,.25);
+            }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2d6a4f;
+            font-weight: 600;
+        }
+
+        .text-danger {
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        #preview {
+            border: 2px solid #95d5b2;
+            padding: 5px;
+            background: #fff;
+        }
+
+        @@media(max-width:900px) {
+
+            .plant-card {
+                grid-template-columns: 1fr;
+            }
+
+            .plant-image-side {
+                height: 250px;
+            }
+        }
+
+    </style>
+}
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById("PictureInput").addEventListener("change", function (event) {
+
+            const file = event.target.files[0];
+
+            if (file) {
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const preview = document.getElementById("preview");
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

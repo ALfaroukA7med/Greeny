@@ -1,5 +1,6 @@
 ﻿using Greeny.BLL.Abstraction;
 using Greeny.BLL.Errors;
+using Greeny.BLL.Helper;
 using Greeny.BLL.ModelVM.ReferencePlanet;
 using Greeny.BLL.Services.Interfaces;
 
@@ -17,19 +18,24 @@ namespace Greeny.BLL.Services.Implementation
             _mapper = mapper;
         }
 
-       public async Task<Response<bool>> CreateAsync(CreateRefPlanetVM vm)
+        public async Task<Response<bool>> CreateAsync(CreateRefPlanetVM vm)
         {
             if (vm == null)
-            {
                 return Response<bool>.Fail(RefPlanetError.InvalidData);
+
+            if (vm.UploadImage != null)
+            {
+                vm.Image = Upload.UploadFile("Files", vm.UploadImage);
             }
 
-            var RefPlanet = _mapper.Map<ReferencePlanet>(vm);
+            var entity = _mapper.Map<ReferencePlanet>(vm);
 
-            await _referencePlanetRepo.CreateAsync(RefPlanet);
+            await _referencePlanetRepo.CreateAsync(entity);
 
             return Response<bool>.Success(true);
         }
+
+
 
         public async Task<Response<bool>> DeleteAsync(int id)
         {
@@ -105,16 +111,20 @@ namespace Greeny.BLL.Services.Implementation
         {
             var refPlanet = await _referencePlanetRepo.GetByIdAsync(vm.Id);
 
-            if (refPlanet == null ||refPlanet.IsDeleted)
-            {
+            if (refPlanet == null || refPlanet.IsDeleted)
                 return Response<bool>.Fail(RefPlanetError.NotFound);
+
+            if (vm.UploadImage != null)
+            {
+                vm.Image = Upload.UploadFile("Files", vm.UploadImage);
             }
+
             _mapper.Map(vm, refPlanet);
+
             await _referencePlanetRepo.UpdateAsync(refPlanet);
 
             return Response<bool>.Success(true);
         }
-
 
     }
 }

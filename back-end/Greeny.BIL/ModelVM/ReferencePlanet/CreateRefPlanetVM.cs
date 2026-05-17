@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Greeny.BLL.ModelVM.ReferencePlanet
 {
@@ -13,7 +14,12 @@ namespace Greeny.BLL.ModelVM.ReferencePlanet
         [MaxLength(100)]
         public string Family { get; set; }
 
-        public string Image { get; set; }
+        public string? Image { get; set; }
+
+        public IFormFile? UploadImage { get; set; }
+
+        [MaxLength(250)]
+        public string? ShortDescription { get; set; }
 
         [MaxLength(1000)]
         public string Description { get; set; }

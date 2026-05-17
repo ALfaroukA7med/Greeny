@@ -8,6 +8,7 @@
         public string Family { get; set; }
         public string Image { get; set; }
         public string Description { get; set; }
+        public string? ShortDescription { get; set; }
         public string PlanetType { get; set; }
         public string GrowthSeason { get; set; }
         public int SunlightReq { get; set; }

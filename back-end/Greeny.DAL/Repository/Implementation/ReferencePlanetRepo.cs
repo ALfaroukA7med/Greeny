@@ -40,9 +40,11 @@ namespace Greeny.DAL.Repository.Implementation
                 .SetProperty(r => r.WaterReq, newReferencePlanet.WaterReq)
                 .SetProperty(r => r.SunlightReq, newReferencePlanet.SunlightReq)
                 .SetProperty(r => r.Description, newReferencePlanet.Description)
+                .SetProperty(r => r.ShortDescription, newReferencePlanet.ShortDescription)
                 .SetProperty(r => r.SolidType, newReferencePlanet.SolidType)
                 .SetProperty(r => r.GrowthSeason, newReferencePlanet.GrowthSeason)
                 .SetProperty(r => r.Family, newReferencePlanet.Family)
+                .SetProperty(r => r.Image, newReferencePlanet.Image)
                 .SetProperty(r => r.PlanetType, newReferencePlanet.PlanetType));
         }
 

@@ -1,0 +1,229 @@
+﻿@model Greeny.BLL.ModelVM.ReferencePlanet.DetailsRefPlanetVM
+
+@{
+    ViewData["Title"] = "Plant Details";
+}
+
+
+
+<div class="container">
+
+    <!-- HERO -->
+    <div class="plant-hero">
+
+        <img src="~/Files/@Model.Image" alt="Plant Image" />
+
+        <div class="plant-hero-content">
+
+            <div class="plant-title">@Model.CommonName</div>
+            <div class="plant-sub">
+                Scientific Name: <i>@Model.SciName</i>
+            </div>
+
+            <div class="badge-type">
+                @Model.PlanetType
+            </div>
+
+            <p style="margin-top:15px;">
+                @Model.ShortDescription
+            </p>
+        </div>
+
+    </div>
+
+    <!-- DETAILS GRID -->
+    <div class="details-grid">
+
+        @* <!-- ID -->
+        <div class="info-card">
+            <div class="info-title">Plant ID</div>
+            <small>Unique identifier for this plant inside the system</small>
+            <div>@Model.Id</div>
+        </div> *@
+
+        <!-- FAMILY -->
+        <div class="info-card">
+            <div class="info-title">Family</div>
+            <small>Botanical family that this plant belongs to</small>
+            <div>@Model.Family</div>
+        </div>
+
+        <!-- GROWTH SEASON -->
+        <div class="info-card">
+            <div class="info-title">Growth Season</div>
+            <small>The season in which this plant grows best</small>
+            <div>@Model.GrowthSeason</div>
+        </div>
+
+        <!-- SUNLIGHT -->
+        <div class="info-card">
+            <div class="info-title">Sunlight Requirement</div>
+            <small>How much sunlight this plant needs daily</small>
+            <div>@Model.SunlightReq</div>
+        </div>
+
+        <!-- SOIL -->
+        <div class="info-card">
+            <div class="info-title">Soil Type</div>
+            <small>Type of soil required for optimal growth</small>
+            <div>@Model.SolidType</div>
+        </div>
+
+        <!-- WATER -->
+        <div class="info-card">
+            <div class="info-title">Water Requirement</div>
+            <small>How often the plant should be watered</small>
+            <div>@Model.WaterReq</div>
+        </div>
+
+        <!-- TEMPERATURE -->
+        <div class="info-card">
+            <div class="info-title">Temperature Requirement</div>
+            <small>Ideal temperature range for healthy growth</small>
+            <div>@Model.TempReq</div>
+        </div>
+
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="desc-box">
+        <h3 style="color:#2e7d32;">Full Description</h3>
+        <p>@Model.Description</p>
+    </div>
+
+    <!-- BACK BUTTON -->
+    <a asp-controller="ReferencePlanet" asp-action="Index" class="btn-back">
+        ← Back to Plants
+    </a>
+
+</div>
+
+
+@section Styles{
+    <style>
+        body {
+            background: linear-gradient(180deg, #f6fbf6, #ffffff);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .plant-hero {
+            display: flex;
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, #1b5e20, #43a047);
+            color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .plant-hero {
+            display: flex;
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+            color: #1b5e20;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 1px solid rgba(46, 125, 50, 0.1);
+        }
+
+            .plant-hero img {
+                width: 100%;
+                max-width: 450px;
+                object-fit: cover;
+                filter: contrast(1.05) saturate(1.05);
+            }
+
+        .plant-hero-content {
+            padding: 30px;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .plant-title {
+            font-size: 34px;
+            font-weight: 700;
+            color: #1b5e20;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .plant-sub {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .badge-type {
+            display: inline-block;
+            background: rgba(46, 125, 50, 0.12);
+            color: #2e7d32;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 10px;
+            border: 1px solid rgba(46, 125, 50, 0.2);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        @@media (max-width: 992px) {
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @@media (max-width: 600px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+            .info-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .info-title {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .desc-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            background: #2e7d32;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+            .btn-back:hover {
+                background: #1b5e20;
+            }
+    </style>
+}
