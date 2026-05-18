@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Greeny Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <i class="fa-solid fa-leaf"></i>
+                <h2>Greeny</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a class="nav-link active" href="dashboard.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Dashboard
+                </a>
+
+                <a class="nav-link" href="products.html">
+                    <i class="fa-solid fa-box"></i>
+                    Products
+                </a>
+
+                <a class="nav-link" href="customers.html">
+                    <i class="fa-solid fa-users"></i>
+                    Customers
+                </a>
+
+                <a class="nav-link" href="orders.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Orders
+                </a>
+
+                <a class="nav-link" href="posts.html">
+                    <i class="fa-solid fa-newspaper"></i>
+                    Posts
+                </a>
+
+            </nav>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Welcome back 👋</p>
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="notification-wrapper">
+
+                        <button class="notification-btn" id="notificationBtn">
+                            <i class="fa-regular fa-bell"></i>
+                        </button>
+
+                        <div class="notification-box" id="notificationBox">
+                        </div>
+
+                    </div>
+
+                    <div class="profile">
+                        <div class="profile-icon">A</div>
+                        <div>
+                            <h4>Admin</h4>
+                            <span>Manager</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+            <section class="cards">
+
+                <div class="card">
+                    <div class="card-icon products-icon"><i class="fa-solid fa-box"></i></div>
+                    <div>
+                        <h3>Products</h3>
+                        <h2>1,240</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon customers-icon"><i class="fa-solid fa-users"></i></div>
+                    <div>
+                        <h3>Customers</h3>
+                        <h2>8,420</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon orders-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <div>
+                        <h3>Orders</h3>
+                        <h2>932</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon posts-icon"><i class="fa-solid fa-newspaper"></i></div>
+                    <div>
+                        <h3>Posts</h3>
+                        <h2>124</h2>
+                    </div>
+                </div>
+
+            </section>
+            <section class="table-section">
+
+                <div class="section-header">
+                    <h2>Recent Orders</h2>
+                    <button class="view-all-btn" id="viewAllBtn">View All</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Product</th>
+                            <th>Status</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>#1021</td>
+                            <td>Ahmed Ali</td>
+                            <td>Organic Tomato</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td>$120</td>
+                        </tr>
+
+                        <tr>
+                            <td>#1022</td>
+                            <td>Mohamed Adel</td>
+                            <td>Fresh Lettuce</td>
+                            <td><span class="status pending">Pending</span></td>
+                            <td>$80</td>
+                        </tr>
+
+                        <tr>
+                            <td>#1023</td>
+                            <td>Sameh Hassan</td>
+                            <td>Green Seeds</td>
+                            <td><span class="status canceled">Canceled</span></td>
+                            <td>$45</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="dashboard.js"></script>
+
+</body>
+
+</html>
