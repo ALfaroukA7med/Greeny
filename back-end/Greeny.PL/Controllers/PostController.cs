@@ -1,4 +1,6 @@
 ﻿using Greeny.BLL.ModelVM.Post;
+using Greeny.BLL.ModelVM.Wrapper;
+using Greeny.BLL.Services.Implementation;
 using Greeny.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,55 +9,51 @@ namespace Greeny.PL.Controllers
     public class PostController : Controller
     {
         private readonly IPostService _postService;
-
-        public PostController(IPostService postService)
+        private readonly ICommentService _commentService;
+        //private readonly IUserService userService;
+        
+        public PostController(IPostService postService, ICommentService commentservice)
         {
             _postService = postService;
+            _commentService = commentservice;
         }
-
-        public async Task<IActionResult> Index()
-        {
-            var result = await _postService.GetAllAsync();
-
-            if (!result.IsSuccess)
-                return View(Enumerable.Empty<PostListVM>());
-
-            return View(result.Data);
-        }
-
-        public async Task<IActionResult> Details(int id)
-        {
-            var result = await _postService.GetByIdAsync(id);
-
-            if (!result.IsSuccess || result.Data == null)
-                return NotFound();
-
-            return View(result.Data);
-        }
-
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Feed()
         {
-            return View();
+            var posts = await _postService.GetAllAsync();
+            var commvm = new CommunityVM()
+            {
+                Posts = posts.Value.ToList(),
+                CreatePost = new PostCreateVM()
+            };
+            return View("Feed", commvm);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostListVM vm)
+        public async Task<IActionResult> Create(PostCreateVM vm)
         {
             if (!ModelState.IsValid)
-                return View(vm);
+                return View("Feed");
 
             var result = await _postService.AddAsync(vm);
 
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError("", "Failed to create post");
-                return View(vm);
+                return View("Feed");
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Feed");
         }
+        public async Task<IActionResult> Details(int id)
+        {
+            var post = await _postService.GetByIdAsync(id);
+            var comments = await _commentService.GetAllByPostId(id);
+
+            return View("Post");
+        }
+
+        
 
         // Delete
         [HttpPost]
