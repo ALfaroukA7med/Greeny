@@ -1,0 +1,313 @@
+﻿@model Greeny.BLL.ModelVM.User.UpdateUserVM
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="agri-container">
+
+    <div class="agri-card">
+
+        <div class="agri-header">
+            <h2>🌿 Edit User Profile</h2>
+            <p>Update user information and profile image</p>
+        </div>
+
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="Id" type="hidden" />
+
+            <!-- First Name -->
+            <div class="form-group agri-group">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control agri-input" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group agri-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control agri-input" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group agri-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control agri-input" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Address -->
+            <div class="form-group agri-group">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" class="form-control agri-input" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="agri-image-box">
+                <label>Current Profile Image</label>
+
+                <img id="previewImg"
+                     src="@Url.Content("~/Files/" + Model.ProfilePicture)"
+                     class="agri-img"
+                     onerror="this.src='@Url.Content("~/images/default-user.png")'" />
+            </div>
+
+            <!-- Upload New Image -->
+            <div class="form-group agri-group">
+                <label for="PictureInput" class="file-label">
+                    📤 Upload New Profile Image (click here)
+                </label>
+
+                <input asp-for="Picture"
+                       type="file"
+                       id="PictureInput"
+                       accept="image/*"
+                       hidden />
+
+                <span asp-validation-for="Picture" class="text-danger"></span>
+            </div>
+
+             
+            <!-- Submit -->
+            <button type="submit" class="agri-btn">
+                🌱 Save Changes
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Styles {
+
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #eef7ee, #dff1df);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .agri-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 15px;
+        }
+
+        /* Card */
+        .agri-card {
+            width: 100%;
+            max-width: 650px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+            border: 1px solid #dbe8db;
+            position: relative;
+            overflow: hidden;
+        }
+
+            /* Top Decoration */
+            .agri-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 8px;
+                background: linear-gradient(to right, #4caf50, #8bc34a);
+            }
+
+        /* Header */
+        .agri-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .agri-header h2 {
+                color: #2e7d32;
+                font-size: 30px;
+                margin-bottom: 8px;
+                font-weight: 700;
+            }
+
+            .agri-header p {
+                color: #6c757d;
+                font-size: 15px;
+            }
+
+        /* Form Group */
+        .agri-group {
+            margin-bottom: 22px;
+        }
+
+            /* Labels */
+            .agri-group label,
+            .file-label {
+                display: inline-block;
+                margin-bottom: 10px;
+                font-weight: 600;
+                color: #2e7d32;
+                font-size: 15px;
+                background: #f1faf1;
+                padding: 8px 14px;
+                border-radius: 12px;
+                border: 1px solid #d7ead7;
+                transition: 0.3s;
+            }
+
+        /* Inputs */
+        .agri-input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid #cdddcf;
+            background: #fafdf9;
+            transition: 0.3s ease;
+            font-size: 15px;
+        }
+
+            .agri-input:focus {
+                border-color: #4caf50;
+                box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.15);
+                background: #fff;
+                outline: none;
+            }
+
+        /* Image Box */
+        .agri-image-box {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+            .agri-image-box label {
+                display: inline-block;
+                margin-bottom: 15px;
+                color: #2e7d32;
+                font-weight: 700;
+                background: #f1faf1;
+                padding: 8px 16px;
+                border-radius: 12px;
+            }
+
+        /* Profile Image */
+        .agri-img {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #4caf50;
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.25);
+            transition: 0.4s ease;
+        }
+
+            .agri-img:hover {
+                transform: scale(1.05);
+            }
+
+        /* Upload Label */
+        .file-label {
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            background: linear-gradient(to right, #4caf50, #66bb6a);
+            color: white !important;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+            .file-label:hover {
+                background: linear-gradient(to right, #388e3c, #43a047);
+                transform: translateY(-2px);
+            }
+
+        /* Button */
+        .agri-btn {
+            width: 100%;
+            border: none;
+            padding: 15px;
+            border-radius: 14px;
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            transition: 0.3s ease;
+            margin-top: 10px;
+        }
+
+            .agri-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(76, 175, 80, 0.25);
+            }
+
+        /* Validation */
+        .text-danger {
+            font-size: 13px;
+            margin-top: 5px;
+            display: block;
+            color: #dc3545;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+
+            .agri-card {
+                padding: 25px;
+            }
+
+            .agri-header h2 {
+                font-size: 24px;
+            }
+
+            .agri-img {
+                width: 140px;
+                height: 140px;
+            }
+        }
+
+    </style>
+
+}
+
+
+
+@* @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const input = document.getElementById("PictureInput");
+            const img = document.getElementById("previewImg");
+            const noImage = document.getElementById("noImageText");
+
+            input.addEventListener("change", function (event) {
+
+                const file = event.target.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        img.src = e.target.result;
+                        img.style.display = "block";
+
+                        if (noImage) {
+                            noImage.style.display = "none";
+                        }
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
+        });
+    </script>
+} *@

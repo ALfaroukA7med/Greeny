@@ -1,4 +1,6 @@
-﻿namespace Greeny.BLL.ModelVM.Category
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Greeny.BLL.ModelVM.Category
 {
     public class UpdateCategoryVM
     {

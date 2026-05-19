@@ -52,6 +52,7 @@ namespace Greeny.DAL.Migrations
                     Family = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Image = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PlanetType = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     GrowthSeason = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     SunlightReq = table.Column<int>(type: "int", nullable: false),

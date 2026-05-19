@@ -28,3 +28,22 @@ productAddButtons.forEach((btn) => {
     }, 200);
   });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const starInputs = document.querySelectorAll(".star-rating-input i");
+  
+  starInputs.forEach(star => {
+    star.addEventListener("click", function() {
+      const rating = this.getAttribute("data-rating");
+      
+      starInputs.forEach(s => {
+        s.classList.remove("fa-solid", "active");
+        s.classList.add("fa-regular");
+        
+        if (s.getAttribute("data-rating") <= rating) {
+          s.classList.remove("fa-regular");
+          s.classList.add("fa-solid", "active");
+        }
+      });
+    });
+  });
+});

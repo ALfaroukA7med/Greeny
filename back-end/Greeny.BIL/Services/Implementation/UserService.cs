@@ -1,7 +1,8 @@
-﻿using Greeny.BLL.Abstraction;
-using Greeny.BLL.Errors;
+﻿
+
+using Greeny.BLL.Abstraction;
+using Greeny.BLL.Helper;
 using Greeny.BLL.ModelVM.User;
-using Greeny.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace Greeny.BLL.Services.Implementation
@@ -49,7 +50,8 @@ namespace Greeny.BLL.Services.Implementation
                 {
                     Id = user.Id,
                     Email = user.Email,
-                    FullName = user.FirstName + " " + user.LastName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     Address = user.Address,
                     PhoneNumber = user.PhoneNumber,
                     ProfilePicture = user.ProfilePicture,
@@ -74,7 +76,8 @@ namespace Greeny.BLL.Services.Implementation
                 {
                     Id = user.Id,
                     Email = user.Email,
-                    FullName = user.FirstName + " " + user.LastName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     Address = user.Address,
                     PhoneNumber = user.PhoneNumber,
                     ProfilePicture = user.ProfilePicture,
@@ -96,7 +99,8 @@ namespace Greeny.BLL.Services.Implementation
             var data = new DetailsUserVM{ 
                     Id = user.Id,
                     Email = user.Email,
-                    FullName = user.FirstName + " " + user.LastName,
+                     FirstName = user.FirstName,
+                     LastName = user.LastName,
                     Address = user.Address,
                     PhoneNumber = user.PhoneNumber,
                     ProfilePicture = user.ProfilePicture,
@@ -119,7 +123,11 @@ namespace Greeny.BLL.Services.Implementation
             user.LastName = vm.LastName;
             user.PhoneNumber = vm.PhoneNumber;
             user.Address = vm.Address;
-            user.ProfilePicture = vm.ProfilePicture;
+            // Upload Image
+            if (vm.Picture != null)
+            {
+                user.ProfilePicture = Upload.UploadFile("Files", vm.Picture);
+            }
 
             var result = await _userManager.UpdateAsync(user);
 

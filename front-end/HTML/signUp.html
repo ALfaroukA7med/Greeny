@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Greeny Marketplace</title>
     <link rel="stylesheet" href="../CSS/master.css" />
     <link rel="stylesheet" href="../CSS/log.css" />
@@ -22,20 +22,14 @@
     />
   </head>
   <body>
-    <div class="menu">
-      <a href="index.html" class="active-link">home</a>
-      <a href="market.html">marketplace</a>
-      <a href="community.html">community</a>
-      <a href="refrence.html">refrence</a>
-      <a href="log.html" class="logIn">log in</a>
-      <a href="log.html" class="signUp">join us</a>
-    </div>
-
     <div class="auth-layout">
       <div class="auth-banner">
         <div class="auth-overlay"></div>
         <a class="sign-logo2" href="index.html">
-          <img src="..\media\photos\Transparent white greeny leaf.png" alt="logo" />
+          <img
+            src="..\media\photos\Transparent white greeny leaf.png"
+            alt="logo"
+          />
           <span class="greeny">greeny</span>
         </a>
         <div class="auth-quote-box">
@@ -59,18 +53,17 @@
             <p>Sign in to continue to Greeny</p>
           </div>
           <div class="auth-tabs">
-            <button class="auth-tab active" id="tab-signin">Sign In</button>
-            <button class="auth-tab" id="tab-register">Register</button>
+            <button class="auth-tab" id="tab-signin">Sign In</button>
+            <button class="auth-tab active" id="tab-register">Register</button>
           </div>
           <form id="loginForm" class="auth-form">
-            <div class="input-group fullName hide">
+            <div class="input-group fullName">
               <label for="fullName">Full Name</label>
               <div class="fullName-wrapper">
                 <input
                   type="text"
                   id="fullName"
                   placeholder="Lorem ipsum dolor sit amet"
-"
                   required
                 />
               </div>
@@ -99,7 +92,7 @@
                 ></i>
               </div>
             </div>
-            <div class="input-group confirm-pass-group hide">
+            <div class="input-group confirm-pass-group">
               <label for="confirm-password">Confirm Password</label>
               <div class="password-wrapper">
                 <input
@@ -111,12 +104,12 @@
                 <i class="fa-regular fa-eye toggle-password"></i>
               </div>
             </div>
-
             <button type="submit" class="auth-submit-btn">Sign In</button>
           </form>
         </div>
       </div>
     </div>
+    <script src="../JavaScript/signUp.js"></script>
     <script src="../JavaScript/log.js"></script>
     <script src="../JavaScript/script.js"></script>
   </body>

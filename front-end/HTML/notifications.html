@@ -1,77 +1,177 @@
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Greeny - All Notifications</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../CSS/master.css" />
     <link rel="stylesheet" href="../CSS/notifications.css" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-</head>
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
 
-<body>
+  <body>
     <nav>
-    </nav>
-    <main class="notifications-page">
-        <div class="container">
-            <div class="page-header">
-                <h1 class="title">My Notifications</h1>
-                <div class="header-actions">
-                    <button class="btn-text">Mark all as read</button>
-                </div>
+      <a class="left-nav" href="index.html">
+        <img src="..\media\photos\Transparent Greeny leaf.png" alt="logo" />
+        <p class="greeny">Greeny</p>
+      </a>
+      <div class="middle-nav">
+        <a href="index.html" class="active-link">home</a>
+        <a href="market.html">marketplace</a>
+        <a href="community.html">community</a>
+        <a href="refrence.html">refrence</a>
+      </div>
+      <div class="right-nav">
+        <div class="notification-wrapper">
+          <a href="#" class="bell-button">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge">2</span>
+          </a>
+
+          <div class="notification-dropdown">
+            <div class="notif-header">Notifications</div>
+
+            <div class="notif-item unread">
+              <div class="notif-icon">👤</div>
+              <div class="notif-details">
+                <p>Someone commented to your blog.</p>
+                <span class="notif-time">10mins ago.</span>
+              </div>
+              <div class="clear-fix"></div>
             </div>
 
-            <div class="notifications-list">
-                <div class="full-notif-item unread">
-                    <div class="notif-content">
-                        <div class="notif-icon-large">👤</div>
-                        <div class="notif-text-area">
-                            <h3>New Comment!</h3>
-                            <p>Someone Commented to your last blog " ................................... "</p>
-                            <span class="time">10 mins ago</span>
-                        </div>
-                    </div>
-                    <div class="notif-actions">
-                        <button class="action-dot" title="Mark as Read"><i class="fa-solid fa-check"></i></button>
-                        <button class="action-dot delete" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </div>
-
-                <div class="full-notif-item">
-                    <div class="notif-content">
-                        <div class="notif-icon-large">🛒</div>
-                        <div class="notif-text-area">
-                            <h3>New Order Placed</h3>
-                            <p>We will make you up to dated with all new status.</p>
-                            <span class="time">2 hours ago</span>
-                        </div>
-                    </div>
-                    <div class="notif-actions">
-                        <button class="action-dot delete" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </div>
-
-                <div class="full-notif-item">
-                    <div class="notif-content">
-                        <div class="notif-icon-large">✅</div>
-                        <div class="notif-text-area">
-                            <h3>Account Updated</h3>
-                            <p>You have successfully changed your profile picture.</p>
-                            <span class="time">Yesterday, 5:30 PM</span>
-                        </div>
-                    </div>
-                    <div class="notif-actions">
-                        <button class="action-dot delete" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </div>
+            <div class="notif-item">
+              <div class="notif-icon">🛒</div>
+              <div class="notif-details">
+                <p>New statue update to your order.</p>
+                <span class="notif-time">2hrs ago.</span>
+              </div>
+              <div class="clear-fix"></div>
             </div>
+
+            <div class="notif-footer">
+              <a href="notifications.html">Show All</a>
+            </div>
+          </div>
         </div>
+        <a href="cart.html" title="Go to Cart" class="cart-icon-container">
+          <img src="../media/photos/cart.png" alt="Cart" />
+          <span class="cart-badge">0</span>
+        </a>
+        <div class="sign-bottoms hide">
+          <a class="logIn" href="logIn.html">log in</a>
+          <a class="signUp" href="signUp.html">sign up</a>
+        </div>
+        <div class="user-profile-wrapper">
+          <button class="profile-dropdown-btn" id="profile-dropdown-btn">
+            <img
+              src="https://i.pravatar.cc/150?img=11"
+              alt="Marcus Green"
+              class="profile-avatar"
+            />
+            <span class="profile-name">Marcus Green</span>
+            <i class="fa-solid fa-chevron-down profile-chevron"></i>
+          </button>
+          <div class="profile-menu" id="profile-menu">
+            <a href="profile.html" class="profile-menu-item">
+              <i class="fa-regular fa-user"></i>
+              My Profile
+            </a>
+            <div class="profile-menu-divider"></div>
+            <a href="index.html" class="profile-menu-item logout-item">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              Logout
+            </a>
+          </div>
+        </div>
+        <div class="hamburger" title="Menu ">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </nav>
+    <div class="menu">
+      <a href="index.html" class="active-link">home</a>
+      <a href="market.html">marketplace</a>
+      <a href="community.html">community</a>
+      <a href="refrence.html">refrence</a>
+      <a href="logIn.html" class="logIn">log in</a>
+      <a href="signUp.html" class="signUp">join us</a>
+    </div>
+    <main class="notifications-page">
+      <div class="container">
+        <div class="page-header">
+          <h1 class="title">My Notifications</h1>
+          <div class="header-actions">
+            <button class="btn-text">Mark all as read</button>
+          </div>
+        </div>
+
+        <div class="notifications-list">
+          <div class="full-notif-item unread">
+            <div class="notif-content">
+              <div class="notif-icon-large">👤</div>
+              <div class="notif-text-area">
+                <h3>New Comment!</h3>
+                <p>
+                  Someone Commented to your last blog "
+                  ................................... "
+                </p>
+                <span class="time">10 mins ago</span>
+              </div>
+            </div>
+            <div class="notif-actions">
+              <button class="action-dot" title="Mark as Read">
+                <i class="fa-solid fa-check"></i>
+              </button>
+              <button class="action-dot delete" title="Delete">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="full-notif-item">
+            <div class="notif-content">
+              <div class="notif-icon-large">🛒</div>
+              <div class="notif-text-area">
+                <h3>New Order Placed</h3>
+                <p>We will make you up to dated with all new status.</p>
+                <span class="time">2 hours ago</span>
+              </div>
+            </div>
+            <div class="notif-actions">
+              <button class="action-dot delete" title="Delete">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="full-notif-item">
+            <div class="notif-content">
+              <div class="notif-icon-large">✅</div>
+              <div class="notif-text-area">
+                <h3>Account Updated</h3>
+                <p>You have successfully changed your profile picture.</p>
+                <span class="time">Yesterday, 5:30 PM</span>
+              </div>
+            </div>
+            <div class="notif-actions">
+              <button class="action-dot delete" title="Delete">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
-
-</body>
-
+  </body>
+  <script src="../JavaScript/script.js"></script>
 </html>

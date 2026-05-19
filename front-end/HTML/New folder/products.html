@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-leaf"></i>
+                <h2>Greeny</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a class="active" href="products.html"><i class="fa-solid fa-box"></i> Products</a>
+                <a href="customers.html"><i class="fa-solid fa-users"></i> Customers</a>
+                <a href="orders.html"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
+                <a href="posts.html"><i class="fa-solid fa-newspaper"></i> Posts</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <h1>Products</h1>
+                    <p>Manage all marketplace products</p>
+                </div>
+
+                <div class="topbar-actions">
+                    <button class="add-btn">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Product
+                    </button>
+                </div>
+            </header>
+
+            <section class="table-section">
+
+                <div class="section-header">
+
+                    <h2>Products List</h2>
+
+                    <div class="filters">
+                        <div class="search-wrapper">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Search product..." class="search-input">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="productsTable">
+
+                        <tr data-category="vegetables">
+                            <td>#101</td>
+                            <td>Organic Tomato</td>
+                            <td>Vegetables</td>
+                            <td>$30</td>
+                            <td><span class="status completed">Available</span></td>
+                        </tr>
+
+                        <tr data-category="greens">
+                            <td>#102</td>
+                            <td>Fresh Lettuce</td>
+                            <td>Greens</td>
+                            <td>$18</td>
+                            <td><span class="status pending">Limited</span></td>
+                        </tr>
+
+                        <tr data-category="seeds">
+                            <td>#103</td>
+                            <td>Potato Seeds</td>
+                            <td>Seeds</td>
+                            <td>$12</td>
+                            <td><span class="status canceled">Out Stock</span></td>
+                        </tr>
+
+                        <tr data-category="vegetables">
+                            <td>#104</td>
+                            <td>Organic Carrot</td>
+                            <td>Vegetables</td>
+                            <td>$22</td>
+                            <td><span class="status completed">Available</span></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

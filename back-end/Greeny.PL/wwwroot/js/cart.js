@@ -119,3 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     renderCart();
 });
+procced = document.querySelector('.btn-checkout');
+procced.addEventListener('click',function(){
+    window.open('checkout.html');
+})

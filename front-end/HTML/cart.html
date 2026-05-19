@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Greeny Marketplace</title>
     <link rel="stylesheet" href="../CSS/master.css" />
@@ -25,7 +25,7 @@
     <nav>
       <a class="left-nav" href="index.html">
         <img src="..\media\photos\Transparent Greeny leaf.png" alt="logo" />
-        <p class="greeny">greeny</p>
+        <p class="greeny">Greeny</p>
       </a>
       <div class="middle-nav">
         <a href="index.html" class="active-link">home</a>
@@ -34,13 +34,68 @@
         <a href="refrence.html">refrence</a>
       </div>
       <div class="right-nav">
+        <div class="notification-wrapper">
+          <a href="#" class="bell-button">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge">2</span>
+          </a>
+
+          <div class="notification-dropdown">
+            <div class="notif-header">Notifications</div>
+
+            <div class="notif-item unread">
+              <div class="notif-icon">👤</div>
+              <div class="notif-details">
+                <p>Someone commented to your blog.</p>
+                <span class="notif-time">10mins ago.</span>
+              </div>
+              <div class="clear-fix"></div>
+            </div>
+
+            <div class="notif-item">
+              <div class="notif-icon">🛒</div>
+              <div class="notif-details">
+                <p>New statue update to your order.</p>
+                <span class="notif-time">2hrs ago.</span>
+              </div>
+              <div class="clear-fix"></div>
+            </div>
+
+            <div class="notif-footer">
+              <a href="notifications.html">Show All</a>
+            </div>
+          </div>
+        </div>
         <a href="cart.html" title="Go to Cart" class="cart-icon-container">
           <img src="../media/photos/cart.png" alt="Cart" />
           <span class="cart-badge">0</span>
         </a>
-        <a class="logIn" href="log.html">log in</a>
-        <a class="signUp" href="log.html?tab=register">sign up</a>
-
+        <div class="sign-bottoms hide">
+          <a class="logIn" href="logIn.html">log in</a>
+          <a class="signUp" href="signUp.html">sign up</a>
+        </div>
+        <div class="user-profile-wrapper">
+          <button class="profile-dropdown-btn" id="profile-dropdown-btn">
+            <img
+              src="https://i.pravatar.cc/150?img=11"
+              alt="Marcus Green"
+              class="profile-avatar"
+            />
+            <span class="profile-name">Marcus Green</span>
+            <i class="fa-solid fa-chevron-down profile-chevron"></i>
+          </button>
+          <div class="profile-menu" id="profile-menu">
+            <a href="profile.html" class="profile-menu-item">
+              <i class="fa-regular fa-user"></i>
+              My Profile
+            </a>
+            <div class="profile-menu-divider"></div>
+            <a href="index.html" class="profile-menu-item logout-item">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              Logout
+            </a>
+          </div>
+        </div>
         <div class="hamburger" title="Menu ">
           <div></div>
           <div></div>
@@ -53,22 +108,22 @@
       <a href="market.html">marketplace</a>
       <a href="community.html">community</a>
       <a href="refrence.html">refrence</a>
-      <a href="log.html" class="logIn">log in</a>
-      <a href="log.html" class="signUp">join us</a>
+      <a href="logIn.html" class="logIn">log in</a>
+      <a href="signUp.html" class="signUp">join us</a>
     </div>
-<header class="cart-page-header">
+    <header class="cart-page-header">
       <div class="container">
         <h1 class="cart-title">Your Cart</h1>
-        <p class="cart-subtitle" id="cart-item-count">0 items ready to harvest</p>
+        <p class="cart-subtitle" id="cart-item-count">
+          0 items ready to harvest
+        </p>
       </div>
     </header>
 
     <section class="cart-section">
       <div class="container cart-layout">
-        
         <div class="cart-left-side">
-          <div class="cart-items-wrapper" id="cart-items-wrapper">
-            </div>
+          <div class="cart-items-wrapper" id="cart-items-wrapper"></div>
 
           <button class="clear-cart-btn" id="clear-cart-btn">Clear cart</button>
         </div>
@@ -76,12 +131,12 @@
         <div class="cart-right-side">
           <div class="cart-summary-box">
             <h2 class="summary-title">Order Summary</h2>
-            
+
             <div class="summary-row">
               <span id="summary-subtotal-text">Subtotal (0 items)</span>
               <span id="summary-subtotal-price">$0.00</span>
             </div>
-            
+
             <div class="summary-row">
               <span>Shipping</span>
               <span id="summary-shipping-price">$0.00</span>
@@ -98,18 +153,27 @@
               <span id="summary-total-price">$0.00</span>
             </div>
 
-            <button class="btn-checkout">Proceed to Checkout <i class="fa-solid fa-arrow-right"></i></button>
-            <a href="market.html" class="continue-shopping">Continue Shopping</a>
+            <button class="btn-checkout">
+              Proceed to Checkout <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <a href="market.html" class="continue-shopping"
+              >Continue Shopping</a
+            >
           </div>
         </div>
-
       </div>
     </section>
+    <div class="success-buttons-row">
+      <a href="track.html" class="btn-track-order">Track Your Orders</a>
+    </div>
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-brand">
           <a class="footer-logo" href="index.html">
-            <img src="..\media\photos\Transparent Greeny leaf.png" alt="Greeny Logo" />
+            <img
+              src="..\media\photos\Transparent Greeny leaf.png"
+              alt="Greeny Logo"
+            />
             <span class="greeny-text">greeny</span>
           </a>
           <p class="footer-description">

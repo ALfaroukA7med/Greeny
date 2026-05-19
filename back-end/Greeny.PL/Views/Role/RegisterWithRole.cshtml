@@ -1,65 +1,229 @@
 ﻿@model Greeny.BLL.ModelVM.AuthVM.RegisterWithRoleVM
 
+
 @{
     ViewData["Title"] = "Register With Role";
 }
 
-<h1>RegisterWithRole</h1>
-
-
-@if (ViewBag.Success != null)
-{
-    <div class="alert alert-success">
-        @ViewBag.Success
+<div class="auth-layout">
+    <div class="auth-banner">
+        <div class="auth-overlay"></div>
+        <a class="sign-logo2" asp-controller="Home" asp-action="Index">
+            <img src="~/media/photos/Transparent white greeny leaf.png"
+                 alt="logo" />
+            <span class="greeny">greeny</span>
+        </a>
+        <div class="auth-quote-box">
+            <h2 class="auth-quote">
+                "Growing food is like printing your own money."
+            </h2>
+            <p class="auth-quote-sub">
+                Join our community of farmers and gardening enthusiasts
+            </p>
+        </div>
     </div>
+
+    <div class="auth-content">
+        <div class="auth-form-container">
+            <a class="sign-logo" asp-controller="Home" asp-action="Index">
+                <img src="~/media/photos/Transparent Greeny leaf.png" alt="logo" />
+                <span class="greeny">greeny</span>
+            </a>
+            <div class="auth-header">
+                <h1>Welcome back</h1>
+                <p>Register to continue to Greeny</p>
+            </div>
+            
+            <form asp-action="SaveRegisterWithRole" method="post" class="auth-form">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+
+                <div class="input-group FirstName">
+                    <label asp-for="FirstName" class="control-label">First Name</label>
+                    <div class="FirstName-wrapper">
+                        <input type="text" asp-for="FirstName" class="form-control"
+                               placeholder="Lorem ipsum dolor sit amet" />
+                    </div>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="input-group LastName">
+                    <label asp-for="LastName" class="control-label">Last Name</label>
+                    <div class="LastName-wrapper">
+                        <input type="text" asp-for="LastName" class="form-control"
+                               placeholder="Lorem ipsum dolor sit amet" />
+                    </div>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+
+
+                <div class="input-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" type="email"
+                           placeholder="lorem@example.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="input-group RoleName">
+
+                    <label asp-for="RoleName" class="control-label">
+                        Role Name
+                    </label>
+
+                    <div class="LastName-wrapper">
+
+                        <select asp-for="RoleName" class="form-control">
+
+                            <option disabled selected>
+                                Choose Role
+                            </option>
+
+                            @foreach (var role in Model.Roles)
+                            {
+                                <option value="@role.Name">
+                                    @role.Name
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+
+                </div>
+
+                <div class="input-group">
+                    <label asp-for="Password" class="control-label">Password</label>
+                    <div class="password-wrapper">
+                        <input asp-for="Password" class="form-control" type="password"
+                               placeholder="••••••••••••••••" />
+                        <i class="fa-regular fa-eye toggle-password" style="cursor:pointer;"></i>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+
+                <div class="input-group confirm-pass-group">
+                    <label asp-for="ConfirmPassword" class="control-label">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input asp-for="ConfirmPassword" class="form-control" type="password"
+                               placeholder="••••••••••••••••" />
+                        <i class="fa-regular fa-eye toggle-password" style="cursor:pointer;"></i>
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>            
+         
+
+                <div class="form-group">
+                    <input type="submit" value="Register" class="auth-submit-btn" />
+                </div>
+                <div>
+                    <a asp-controller="Home" asp-action="Index">Back to List</a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/master.css" />
+    <link rel="stylesheet" href="~/css/log.css" />
+
+    <style>
+
+    /* Role Select Wrapper */
+    .RoleName .LastName-wrapper {
+    position: relative;
+    }
+
+    /* Select Style */
+    .RoleName select.form-control {
+    width: 100%;
+    height: 55px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid #cdddcf;
+    background: #fafdf9;
+    font-size: 15px;
+    color: #2e2e2e;
+    transition: 0.3s ease;
+    appearance: none;
+    cursor: pointer;
+    }
+
+    /* Focus Effect */
+    .RoleName select.form-control:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 4px rgba(76,175,80,0.15);
+    background: #fff;
+    outline: none;
+    }
+
+    /* Label Style */
+    .RoleName label {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background: #f1faf1;
+    border: 1px solid #d6ead6;
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 15px;
+    }
+
+    /* Custom Arrow */
+    .RoleName .LastName-wrapper::after {
+    content: "⌄";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #4caf50;
+    pointer-events: none;
+    }
+
+    /* Hover */
+    .RoleName select.form-control:hover {
+    border-color: #81c784;
+    }
+    </style>
 }
 
-<hr />
-<div class="row justify-content-center">
-    <div class="col-md-4">
-        <form asp-action="SaveRegisterWithRole" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RoleName" class="control-label"></label>
-                <input asp-for="RoleName" class="form-control" />
-                <span asp-validation-for="RoleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.addEventListener("click", function(e){
+            if(e.target.classList.contains("toggle-password")){
+
+                const input = e.target.closest(".password-wrapper")
+                                         .querySelector("input");
+
+                if(input){
+                    input.type = input.type === "password" ? "text" : "password";
+                    e.target.classList.toggle("fa-eye");
+                    e.target.classList.toggle("fa-eye-slash");
+                }
+            }
+        });
+    </script>
+
+    @* <script src="~/js/signUp.js"></script>
+    <script src="~/js/log.js"></script> *@
 }
+
