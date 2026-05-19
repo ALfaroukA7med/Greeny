@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<User> UserManager
 
-
 @{
     var user = await UserManager.GetUserAsync(User);
 }
@@ -46,23 +45,14 @@
         <div class="middle-nav">
             <a asp-controller="Home" asp-action="Index" class="active-link">home</a>
             <a href="market.html">marketplace</a>
-<<<<<<< HEAD
             <a asp-controller="Post" asp-action="Feed">community</a>
-            <a href="refrence.html">refrence</a>
-=======
-            <a href="community.html">community</a>
             <a asp-controller="ReferencePlanet" asp-action="Index">refrence</a>
->>>>>>> 39566ffc3b7199d442758250fd82c58efbc4b7c4
         </div>
 
         <div class="right-nav">
             <div class="notification-wrapper">
                 <a href="#" class="bell-button">
-<<<<<<< HEAD
                     <i class="fa-regular fa-bell"></i> <!-- استخدمت أيقونة FontAwesome عشان تليق مع المشروع -->
-=======
-                    <i class="fa-regular fa-bell"></i>
->>>>>>> 39566ffc3b7199d442758250fd82c58efbc4b7c4
                     <span class="notif-badge">2</span>
                 </a>
 
