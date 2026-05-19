@@ -12,10 +12,11 @@
     <meta charset="UTF-8" />
     <title>Greeny</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/css/master.css" />
-    <link rel="stylesheet" href="~/css/community.css">
-    <link rel="stylesheet" href="~/css/market.css">
-    <link rel="stylesheet" href="~/css/refrence.css">
+    <link rel="stylesheet" href="../css/master.css" />
+    <link rel="stylesheet" href="../css/community.css">
+    <link rel="stylesheet" href="../css/market.css">
+    <link rel="stylesheet" href="../css/refrence.css">
+    <link rel="stylesheet" href="../css/master.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
           rel="stylesheet" />
     <link rel="stylesheet"
@@ -24,17 +25,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- Local CSS -->
-    <link rel="stylesheet" href="~/css/master.css" />
-    <link rel="stylesheet" href="~/css/community.css" />
-    @RenderSection("Styles", required: false)
 </head>
+
+
 <body>
 
     <nav>
@@ -91,7 +84,7 @@
                 <div class="user-profile-wrapper">
                     <button class="profile-dropdown-btn" id="profile-dropdown-btn">
                         <img src="@(string.IsNullOrEmpty(user?.ProfilePicture)
-                               ? Url.Content("~/images/default-user.png")
+                                ? Url.Content("~/media/photos/default-user.jpg")
                               : Url.Content("~/Files/" + user.ProfilePicture))"
                              class="profile-avatar" />
                         <span class="profile-name">@user?.FirstName @user?.LastName</span>
@@ -140,16 +133,6 @@
         </div>
 
     </nav> 
-
-
-
-
-
-
-
-
-
-
 
     @RenderBody()
 
