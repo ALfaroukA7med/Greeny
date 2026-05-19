@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Customers Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="dashboard.css">
+
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <i class="fa-solid fa-leaf"></i>
+                <h2>Greeny</h2>
+            </div>
+
+            <nav>
+
+                <a href="dashboard.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Dashboard
+                </a>
+
+                <a href="products.html">
+                    <i class="fa-solid fa-box"></i>
+                    Products
+                </a>
+
+                <a class="active" href="customers.html">
+                    <i class="fa-solid fa-users"></i>
+                    Customers
+                </a>
+
+                <a href="orders.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Orders
+                </a>
+
+                <a href="posts.html">
+                    <i class="fa-solid fa-newspaper"></i>
+                    Posts
+                </a>
+
+            </nav>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div>
+                    <h1>Customers</h1>
+                    <p>Manage all registered users</p>
+                </div>
+
+                <button class="add-btn">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Add Customer
+                </button>
+
+            </header>
+
+            <section class="cards">
+
+                <div class="card">
+                    <div class="card-icon customers-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <h3>Total Customers</h3>
+                        <h2>8,420</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon products-icon">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <div>
+                        <h3>Active</h3>
+                        <h2>6,980</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon orders-icon">
+                        <i class="fa-solid fa-user-slash"></i>
+                    </div>
+                    <div>
+                        <h3>Inactive</h3>
+                        <h2>1,440</h2>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="table-section">
+
+                <div class="section-header">
+
+                    <h2>Customers List</h2>
+
+                    <input type="text" placeholder="Search customer..." class="search-input" />
+
+                </div>
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>#201</td>
+                            <td>Ahmed Ali</td>
+                            <td>ahmed@gmail.com</td>
+                            <td>01002030664</td>
+                            <td><span class="status completed">Active</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>#202</td>
+                            <td>Mohamed Adel</td>
+                            <td>mohamed@gmail.com</td>
+                            <td>01091427344</td>
+                            <td><span class="status pending">Pending</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>#203</td>
+                            <td>Sameh Hassan</td>
+                            <td>sameh@gmail.com</td>
+                            <td>01000151810</td>
+                            <td><span class="status canceled">Blocked</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>#204</td>
+                            <td>Omar Khaled</td>
+                            <td>omar@gmail.com</td>
+                            <td>01091631105</td>
+                            <td><span class="status completed">Active</span></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
