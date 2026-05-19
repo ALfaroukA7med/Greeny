@@ -1,0 +1,138 @@
+﻿@using Greeny.BLL.ModelVM.Wrapper
+@using Greeny.BLL.ModelVM.Post
+@model CommunityVM
+    <header class="comm-page-header">
+        <div>
+            <span class="comm-page-badge">GROWING TOGETHER</span>
+            <h1 class="comm-page-title">Community Feed</h1>
+            <p class="comm-page-desc">
+                Share your garden journey with fellow growers
+            </p>
+        </div>
+    </header>
+<div class="container comm-grid">
+
+        <form class="comm-card" asp-controller="Post" asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="comm-card-body">
+
+                <textarea rows="4" asp-for="CreatePost.Content" placeholder="Share your Thoughts..."></textarea>
+
+                <!-- <div class="upload-section">
+                  <label for="photoUpload" class="upload-label">📷 Add Photo</label>
+                  <input type="file" id="photoUpload" name="photo" accept="image/*">
+                  <span id="fileName">No file chosen</span>
+                </div> -->
+
+                <button type="submit" class="submit-btn">Post</button>
+            </div>
+        </form>
+    @foreach (var post in Model.Posts)
+    {
+        <article class="comm-card">
+            <div class="comm-card-header">
+                <img src="https://i.pravatar.cc/150?img=11" alt="@post.AuthorName" class="comm-avatar" />
+                <div class="comm-user-info">
+                    <div class="comm-name-badge">
+                        <span class="comm-user-name">@post.AuthorName</span>
+                    </div>
+                    <span class="comm-post-date">@post.FormattedDate</span>
+                </div>
+            </div>
+            <div class="comm-card-image">
+                <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?q=80&w=800&auto=format&fit=crop"
+                     alt="Tomatoes" class="comm-post-img" />
+            </div>
+            <div class="comm-card-body">
+                <div class="comm-interactions">
+                    <span class="comm-action">
+                        <i class="fa-regular fa-heart"></i> @post.Votes </span>
+                    <span class="comm-action">
+                        <i class="fa-regular fa-comment"></i>
+                    </span>
+                </div>
+                <p class="comm-post-text">
+                    @post.Contents
+                </p>
+                @* <div class="comm-comments-section">
+                    <div class="comments-list">
+                        <div class="comment-item">
+                            <div class="comment-avatar">J</div>
+                            <div class="comment-content">
+                                <span class="comment-author">Jamie Rivera</span> Wow, these
+                                look incredible! What variety is this?
+                            </div>
+                        </div>
+                        <div class="comment-item">
+                            <div class="comment-avatar">S</div>
+                            <div class="comment-content">
+                                <span class="comment-author">Sara Bloom</span> Beautiful
+                                harvest Marcus! 😍 I can see why these sell out so fast.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-input-area">
+                        <input type="text" placeholder="Add a comment..." class="comment-input" />
+                        <button class="comment-send-btn">
+                            <i class="fa-regular fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div> *@
+            </div>
+        </article>
+    }
+    
+
+    @*     <article class="comm-card">
+            <div class="comm-card-header">
+                <img src="https://i.pravatar.cc/150?img=11" alt="Marcus Green" class="comm-avatar" />
+                <div class="comm-user-info">
+                    <div class="comm-name-badge">
+                        <span class="comm-user-name">Marcus Green</span>
+                    </div>
+                    <span class="comm-post-date">Jul 12</span>
+                </div>
+            </div>
+            <div class="comm-card-image">
+                <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=800&auto=format&fit=crop"
+                     alt="Balcony Garden" class="comm-post-img" />
+            </div>
+            <div class="comm-card-body">
+                <div class="comm-interactions">
+                    <span class="comm-action"><i class="fa-regular fa-heart"></i> 98</span>
+                    <span class="comm-action">
+                        <i class="fa-regular fa-comment"></i>
+                    </span>
+                </div>
+                <p class="comm-post-text">
+                    Finally set up my balcony herb garden! 🌿 Ordered these pots from
+                    Marcus and they arrived in perfect condition. Growing basil, mint,
+                    parsley and cilantro. Small space, big flavor! Who else is doing
+                    urban gardening?
+                </p>
+                <div class="comm-comments-section">
+                    <div class="comments-list">
+                        <div class="comment-item">
+                            <div class="comment-avatar">J</div>
+                            <div class="comment-content">
+                                <span class="comment-author">Jamie Rivera</span> Wow, these
+                                look incredible! What variety is this?
+                            </div>
+                        </div>
+                        <div class="comment-item">
+                            <div class="comment-avatar">S</div>
+                            <div class="comment-content">
+                                <span class="comment-author">Sara Bloom</span> Beautiful
+                                harvest Marcus! 😍 I can see why these sell out so fast.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-input-area">
+                        <input type="text" placeholder="Add a comment..." class="comment-input" />
+                        <button class="comment-send-btn">
+                            <i class="fa-regular fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div> *@

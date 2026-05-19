@@ -9,7 +9,7 @@ using System.Reflection.Metadata;
 
 namespace Greeny.BLL.Services.Implementation
 {
-   public class PostService : IPostService 
+    public class PostService : IPostService
     {
         private readonly IPostRepo _postrepo;
         private readonly ICommentRepo _commentrepo;
@@ -18,7 +18,7 @@ namespace Greeny.BLL.Services.Implementation
             _postrepo = postrepo;
             _commentrepo = commentrepo;
         }
-        public async Task<Response<bool>> AddAsync(PostListVM post)
+        public async Task<Result> AddAsync(PostCreateVM post)
         {
             var npost = new Post()
             {
@@ -28,21 +28,26 @@ namespace Greeny.BLL.Services.Implementation
 
             await _postrepo.CreateAsync(npost);
 
-            return Response<bool>.Success(true);
+            return Result.Success();
         }
 
-        public async Task<Response<bool>> DeleteAsync(int id)
+        public async Task<Result> DeleteAsync(int id)
         {
             var post = await _postrepo.GetByIdAsync(id).FirstOrDefaultAsync();
 
-            if (post == null) return Response<bool>.Fail(PostError.NotFound);
+            if (post == null) return Result.Failure(PostError.NotFound);
 
             await _postrepo.DeleteAsync(id);
 
-            return Response<bool>.Success(true);
+            return Result.Success();
         }
 
-        public async Task<Response<IEnumerable<PostListVM>>> GetAllAsync()
+        public Task<Result<IEnumerable<PostListVM>>> Feed()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Result<IEnumerable<PostListVM>>> GetAllAsync()
         {
             var posts = await _postrepo
                 .GetAll()
@@ -52,10 +57,10 @@ namespace Greeny.BLL.Services.Implementation
                 })
                 .ToListAsync();
 
-            return Response<IEnumerable<PostListVM>>.Success(posts);
+            return Result.Success<IEnumerable<PostListVM>>(posts);
         }
 
-        public async Task<Response<PostDetailsVM>> GetByIdAsync(int id)
+        public async Task<Result<PostDetailsVM>> GetByIdAsync(int id)
         {
             var comments = await _commentrepo
                 .GetAllByPostId(id)
@@ -79,7 +84,7 @@ namespace Greeny.BLL.Services.Implementation
                 }).FirstOrDefaultAsync();
 
 
-            return Response<PostDetailsVM>.Success(post);
+            return Result.Success(post);
         }
     }
 }
