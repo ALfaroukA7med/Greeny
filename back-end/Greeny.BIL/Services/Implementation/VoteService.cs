@@ -1,4 +1,5 @@
 ﻿using Greeny.BLL.Abstraction;
+using Greeny.DAL.Enums;
 using Greeny.DAL.Repository.Implementation;
 using System;
 using System.Collections.Generic;
@@ -22,84 +23,72 @@ namespace Greeny.BLL.Services.Implementation
             var post = await _postrepo.GetByIdAsync(id).FirstOrDefaultAsync();
             if (post == null) return Result.Failure(PostError.NotFound);
 
-            var existingVote = _voterepo.GetVoteAsync(userId, id).FirstOrDefault();
-
-            if (existingVote != null)
+            var existingVote = await _voterepo.GetVoteAsync(userId, id).FirstOrDefaultAsync();
+            if (existingVote == null) {
+                existingVote = new Vote()
+                {
+                    PostId = post.Id,
+                    UserId = userId,
+                    Type = Voting.Dismiss
+                };
+                await _voterepo.AddAsync(userId, existingVote);
+            }
+            if (existingVote.Type == Voting.Dismiss)
             {
-                if (!existingVote.IsUpvote)
-                {
-                    post.Votes += 1;
-                    await _voterepo.DeleteAsync(userId , id);
-                }
-                else
-                {
-                    // Switch from upvote to downvote (-2 score change)
-                    existingVote.IsUpvote = false;
-                    post.Votes -= 2;
-                    await _voterepo.UpdateAsync(userId, existingVote);
-                }
+                post.Votes -= 1;
+                existingVote.Type = Voting.DownVote;
+            }
+            else if (existingVote.Type == Voting.UpVote)
+            {
+                post.Votes -= 2;
+                existingVote.Type = Voting.DownVote;
             }
             else
             {
-                // Brand new downvote (-1 score change)
-                var newVote = new Vote { UserId = userId, PostId = id, IsUpvote = false };
-                post.Votes -= 1;
-                await _voterepo.AddAsync(userId , newVote);
+                post.Votes += 1;
+                existingVote.Type = Voting.Dismiss;
             }
-
+            await _voterepo.UpdateAsync(userId, existingVote);
+            await _postrepo.UpdateAsync(post);
             return Result.Success();
         }
 
-        public async Task<Result> RemoveVote(string userId, int id)
-        {
-            var post = _postrepo.GetByIdAsync(id).FirstOrDefault();
-            if (post == null) return Result.Failure(PostError.NotFound);
-
-            var existingVote = _voterepo.GetVoteAsync(userId, id).FirstOrDefault();
-            if (existingVote == null) return Result.Success(); // No vote exists anyway
-
-            // Pure dismissal manual track
-            if (existingVote.IsUpvote) post.Votes  -= 1;
-            else post.Votes += 1;
-
-            await _voterepo.DeleteAsync(userId, id);
-
-            return Result.Success();
-        }
-
+        
         public async Task<Result> UpVote(string userId, int id)
         {
-            var post = _postrepo.GetByIdAsync(id).FirstOrDefault();
+            var post = await _postrepo.GetByIdAsync(id).FirstOrDefaultAsync();
             if (post == null) return Result.Failure(PostError.NotFound);
 
-            var existingVote = _voterepo.GetVoteAsync(userId, id).FirstOrDefault();
-
-            if (existingVote != null)
+            var existingVote = await _voterepo.GetVoteAsync(userId, id).FirstOrDefaultAsync();
+            if (existingVote == null)
             {
-                if (existingVote.IsUpvote)
+                existingVote = new Vote()
                 {
-                    // --- DISMISS UPVOTE ---
-                    // User clicked upvote again. Undo it entirely!
-                    post.Votes -= 1;
-                    await _voterepo.DeleteAsync(userId, id);
-                }
-                else
-                {
-                    // Switch from downvote to upvote (+2 score change)
-                    existingVote.IsUpvote = true;
-                    post.Votes += 2;
-                    await _voterepo.UpdateAsync(userId, existingVote);
-                }
+                    PostId = post.Id,
+                    UserId = userId,
+                    Type = Voting.Dismiss
+                };
+                await _voterepo.AddAsync(userId, existingVote);
+            }
+            if (existingVote.Type == Voting.Dismiss)
+            {
+                post.Votes += 1;
+                existingVote.Type = Voting.UpVote;
+            }
+            else if (existingVote.Type == Voting.UpVote)
+            {
+                post.Votes -= 1;
+                existingVote.Type = Voting.Dismiss;
             }
             else
             {
-                // Brand new upvote (+1 score change)
-                var newVote = new Vote { UserId = userId, PostId = id, IsUpvote = true };
-                post.Votes += 1;
-                await _voterepo.AddAsync(userId, newVote);
+                post.Votes += 2;
+                existingVote.Type = Voting.UpVote;
             }
-            //await _voterepo.GetVoteAsync(post);
+            await _voterepo.UpdateAsync(userId, existingVote);
+            await _postrepo.UpdateAsync(post);
             return Result.Success();
+
         }
     }
 }

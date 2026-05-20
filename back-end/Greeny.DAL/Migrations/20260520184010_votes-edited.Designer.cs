@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Greeny.DAL.Migrations
 {
     [DbContext(typeof(GreenyDbContext))]
-    [Migration("20260519223319_Zero")]
-    partial class Zero
+    [Migration("20260520184010_votes-edited")]
+    partial class votesedited
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -598,18 +598,15 @@ namespace Greeny.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsUpvote")
-                        .HasColumnType("bit");
-
                     b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

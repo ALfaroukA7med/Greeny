@@ -9,6 +9,6 @@ namespace Greeny.DAL.Repository.Interfaces
         IQueryable<Vote> GetVoteAsync(string userId, int postId);
         Task AddAsync(string userId, Vote vote);
         Task UpdateAsync(string userId, Vote vote);
-        Task DeleteAsync(string userId, int id);
+        //Task DeleteAsync(string userId, int id);
     }
 }

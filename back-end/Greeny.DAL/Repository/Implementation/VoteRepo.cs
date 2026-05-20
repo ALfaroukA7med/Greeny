@@ -18,13 +18,13 @@ namespace Greeny.DAL.Repository.Implementation
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(string userId, int id)
-        {
-            await _context.Votes
-                .Where(v => v.Id == id && !v.isDeleted)
-                .ExecuteUpdateAsync(setter => setter
-                .SetProperty(v => v.isDeleted, true));
-        }
+        //public async Task DeleteAsync(string userId, int id)
+        //{
+        //    await _context.Votes
+        //        .Where(v => v.Id == id )
+        //        .ExecuteUpdateAsync(setter => setter
+        //        .SetProperty(v => v.isDeleted, true));
+        //}
 
         public IQueryable<Vote> GetVoteAsync(string userId, int postId)
         {
@@ -35,9 +35,9 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task UpdateAsync(string userId, Vote vote)
         {
             await _context.Votes
-                .Where(v => v.Id == vote.Id && !v.isDeleted)
+                .Where(v => v.Id == vote.Id && vote.UserId == userId)
                 .ExecuteUpdateAsync(setter => setter
-                .SetProperty(v => v.IsUpvote, vote.IsUpvote));
+                .SetProperty(v => v.Type, vote.Type));
         }
     }
 }
