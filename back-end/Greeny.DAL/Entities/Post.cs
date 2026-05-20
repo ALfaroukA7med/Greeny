@@ -5,9 +5,6 @@ namespace Greeny.DAL.Entities
     {
         public int Id { get; set; }
         public string Content { get; set; }
-
-        [Range(0,1)]
-
         public int Votes { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow.AddHours(3);
         public string? ImagePath { get; set; }

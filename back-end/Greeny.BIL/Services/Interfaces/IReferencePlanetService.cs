@@ -6,7 +6,7 @@ namespace Greeny.BLL.Services.Interfaces
     public interface IReferencePlanetService
     {
         Task<Response<IEnumerable<DetailsRefPlanetVM>>> GetAll();
-
+        Task<Response<IEnumerable<DetailsForDashboard>>> GetAllForDashboard();
         Task<Response<DetailsRefPlanetVM>> GetByIdAsync(int id);
 
         Task<Response<bool>> CreateAsync(CreateRefPlanetVM vm);

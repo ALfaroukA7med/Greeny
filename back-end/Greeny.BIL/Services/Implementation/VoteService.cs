@@ -98,7 +98,7 @@ namespace Greeny.BLL.Services.Implementation
                 post.Votes += 1;
                 await _voterepo.AddAsync(userId, newVote);
             }
-            await _voterepo.GetVoteAsync(post);
+            //await _voterepo.GetVoteAsync(post);
             return Result.Success();
         }
     }

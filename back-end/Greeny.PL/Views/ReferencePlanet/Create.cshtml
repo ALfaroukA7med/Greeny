@@ -1,28 +1,9 @@
 ﻿@model Greeny.BLL.ModelVM.ReferencePlanet.CreateRefPlanetVM
 
 @{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     ViewData["Title"] = "Create Plant";
 }
-
-
-
-<div class="plant-container">
-
-    <div class="plant-card">
-
-        <div class="plant-image-side">
-
-            <div class="image-overlay">
-                <h1>🌱 Add New Plant</h1>
-
-                <p>
-                    Create a new plant article with detailed agricultural
-                    information including soil, water, sunlight,
-                    temperature requirements and more.
-                </p>
-            </div>
-
-        </div>
 
         <div class="form-side">
 
@@ -125,15 +106,11 @@
 
             </form>
 
-            <a asp-controller="ReferencePlanet" asp-action="Index" class="back-link">
+            <a asp-controller="ReferencePlanet" asp-action="IndexForDashboard" class="back-link">
                 ← Back To Plants
             </a>
 
         </div>
-
-    </div>
-
-</div>
 
 
 

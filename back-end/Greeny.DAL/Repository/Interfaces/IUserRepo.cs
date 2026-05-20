@@ -13,9 +13,5 @@ namespace Greeny.DAL.Repository.Interfaces
         Task UpdateAsync(User user);
 
         Task DeleteAsync(string id);
-
-        IQueryable<User> GetAllActive();
-        IQueryable<User> GetAllDeleted();
-
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-using Greeny.BLL.Abstraction;
+﻿using Greeny.BLL.Abstraction;
 using Greeny.BLL.Helper;
 using Greeny.BLL.ModelVM.User;
 using Microsoft.AspNetCore.Identity;
@@ -36,11 +34,9 @@ namespace Greeny.BLL.Services.Implementation
             return Response<bool>.Success(true);
         }
 
-        public async Task<Response<IEnumerable<DetailsUserVM>>> GetAllActiveAsync()
+        public async Task<Response<IEnumerable<DetailsUserVM>>> GetAllAsync()
         {
-            var users = _userManager.Users
-                .Where(u => !u.IsDeleted)
-                .ToList();
+            var users = _userManager.Users.ToList();
 
             var data = new List<DetailsUserVM>();
 
@@ -54,38 +50,15 @@ namespace Greeny.BLL.Services.Implementation
                     LastName = user.LastName,
                     Address = user.Address,
                     PhoneNumber = user.PhoneNumber,
+                    IsDeleted = user.IsDeleted,
                     ProfilePicture = user.ProfilePicture,
+                   
                 });
             }
 
             return Response<IEnumerable<DetailsUserVM>>.Success(data);
         }
 
-
-        public async Task<Response<IEnumerable<DetailsUserVM>>> GetAllDeletedAsync()
-        {
-            var users = _userManager.Users
-                .Where(u => u.IsDeleted)
-                .ToList();
-
-            var data = new List<DetailsUserVM>();
-
-            foreach (var user in users)
-            {
-                data.Add(new DetailsUserVM
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Address = user.Address,
-                    PhoneNumber = user.PhoneNumber,
-                    ProfilePicture = user.ProfilePicture,
-                });
-            }
-
-            return Response<IEnumerable<DetailsUserVM>>.Success(data);
-        }
 
         public async Task<Response<DetailsUserVM>> GetByIdAsync(string id)
         {
