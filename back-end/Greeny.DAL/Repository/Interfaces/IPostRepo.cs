@@ -8,9 +8,8 @@ namespace Greeny.DAL.Repository.Interfaces
         IQueryable<Post> GetByIdAsync(int id);
 
         Task CreateAsync(Post post);
+        Task UpdateAsync(Post post);
 
-        //Task UpdateAsync(Post post);
-         
         Task DeleteAsync(int id);
 
         //IQueryable<Post> SearchByKeyword(string keyword);

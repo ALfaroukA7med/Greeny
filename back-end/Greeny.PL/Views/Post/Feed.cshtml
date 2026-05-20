@@ -1,138 +1,124 @@
 ﻿@using Greeny.BLL.ModelVM.Wrapper
 @using Greeny.BLL.ModelVM.Post
+@using System.Security.Claims
+
 @model CommunityVM
-    <header class="comm-page-header">
-        <div>
-            <span class="comm-page-badge">GROWING TOGETHER</span>
-            <h1 class="comm-page-title">Community Feed</h1>
-            <p class="comm-page-desc">
-                Share your garden journey with fellow growers
-            </p>
-        </div>
-    </header>
-<div class="container comm-grid">
 
-        <form class="comm-card" asp-controller="Post" asp-action="Create" method="post" enctype="multipart/form-data">
-            <div class="comm-card-body">
-
-                <textarea rows="4" asp-for="CreatePost.Content" placeholder="Share your Thoughts..."></textarea>
-
-                <!-- <div class="upload-section">
-                  <label for="photoUpload" class="upload-label">📷 Add Photo</label>
-                  <input type="file" id="photoUpload" name="photo" accept="image/*">
-                  <span id="fileName">No file chosen</span>
-                </div> -->
-
-                <button type="submit" class="submit-btn">Post</button>
-            </div>
-        </form>
-    @foreach (var post in Model.Posts)
+<header class="comm-page-header">
+    <div>
+        <span class="comm-page-badge">GROWING TOGETHER</span>
+        <h1 class="comm-page-title">Community Feed</h1>
+        <p class="comm-page-desc">
+            Share your garden journey with fellow growers
+        </p>
+    </div>
+</header>
+<!-- Alert -->
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+    @if (TempData["ErrorMessage"] != null)
     {
-        <article class="comm-card">
-            <div class="comm-card-header">
-                <img src="https://i.pravatar.cc/150?img=11" alt="@post.AuthorName" class="comm-avatar" />
-                <div class="comm-user-info">
-                    <div class="comm-name-badge">
-                        <span class="comm-user-name">@post.AuthorName</span>
-                    </div>
-                    <span class="comm-post-date">@post.FormattedDate</span>
-                </div>
-            </div>
-            <div class="comm-card-image">
-                <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?q=80&w=800&auto=format&fit=crop"
-                     alt="Tomatoes" class="comm-post-img" />
-            </div>
-            <div class="comm-card-body">
-                <div class="comm-interactions">
-                    <span class="comm-action">
-                        <i class="fa-regular fa-heart"></i> @post.Votes </span>
-                    <span class="comm-action">
-                        <i class="fa-regular fa-comment"></i>
-                    </span>
-                </div>
-                <p class="comm-post-text">
-                    @post.Content
-                </p>
-                @* <div class="comm-comments-section">
-                    <div class="comments-list">
-                        <div class="comment-item">
-                            <div class="comment-avatar">J</div>
-                            <div class="comment-content">
-                                <span class="comment-author">Jamie Rivera</span> Wow, these
-                                look incredible! What variety is this?
-                            </div>
-                        </div>
-                        <div class="comment-item">
-                            <div class="comment-avatar">S</div>
-                            <div class="comment-content">
-                                <span class="comment-author">Sara Bloom</span> Beautiful
-                                harvest Marcus! 😍 I can see why these sell out so fast.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment-input-area">
-                        <input type="text" placeholder="Add a comment..." class="comment-input" />
-                        <button class="comment-send-btn">
-                            <i class="fa-regular fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div> *@
-            </div>
-        </article>
+        <div class="alert alert-danger" style="padding: 12px; margin-bottom: 20px; border-radius: 8px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; width: 100%;">
+            <i class="fa-solid fa-triangle-exclamation"></i> @TempData["ErrorMessage"]
+        </div>
     }
-    
 
-    @*     <article class="comm-card">
-            <div class="comm-card-header">
-                <img src="https://i.pravatar.cc/150?img=11" alt="Marcus Green" class="comm-avatar" />
-                <div class="comm-user-info">
-                    <div class="comm-name-badge">
-                        <span class="comm-user-name">Marcus Green</span>
-                    </div>
-                    <span class="comm-post-date">Jul 12</span>
-                </div>
-            </div>
-            <div class="comm-card-image">
-                <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=800&auto=format&fit=crop"
-                     alt="Balcony Garden" class="comm-post-img" />
-            </div>
-            <div class="comm-card-body">
-                <div class="comm-interactions">
-                    <span class="comm-action"><i class="fa-regular fa-heart"></i> 98</span>
-                    <span class="comm-action">
-                        <i class="fa-regular fa-comment"></i>
-                    </span>
-                </div>
-                <p class="comm-post-text">
-                    Finally set up my balcony herb garden! 🌿 Ordered these pots from
-                    Marcus and they arrived in perfect condition. Growing basil, mint,
-                    parsley and cilantro. Small space, big flavor! Who else is doing
-                    urban gardening?
-                </p>
-                <div class="comm-comments-section">
-                    <div class="comments-list">
-                        <div class="comment-item">
-                            <div class="comment-avatar">J</div>
-                            <div class="comment-content">
-                                <span class="comment-author">Jamie Rivera</span> Wow, these
-                                look incredible! What variety is this?
-                            </div>
-                        </div>
-                        <div class="comment-item">
-                            <div class="comment-avatar">S</div>
-                            <div class="comment-content">
-                                <span class="comment-author">Sara Bloom</span> Beautiful
-                                harvest Marcus! 😍 I can see why these sell out so fast.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment-input-area">
-                        <input type="text" placeholder="Add a comment..." class="comment-input" />
-                        <button class="comment-send-btn">
-                            <i class="fa-regular fa-paper-plane"></i>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" style="padding: 12px; margin-bottom: 20px; border-radius: 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; width: 100%;">
+            <i class="fa-solid fa-circle-check"></i> @TempData["SuccessMessage"]
+        </div>
+    }
+</div>
+@* ---------------------------------------------------- *@
+
+@* Your grid starts fresh here, untouched by the banner layout *@
+<div class="container" style="display: flex; flex-direction: column; gap: 16px; max-width: 650px; padding: 0 15px; margin: 20px auto;">
+
+    <form class="comm-card" asp-controller="Post" asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="comm-card-body">
+            <textarea rows="4" asp-for="CreatePost.Content" placeholder="Share your Thoughts..."></textarea>
+            <button type="submit" class="submit-btn">Post</button>
+        </div>
+    </form>
+
+    @if (Model.Posts != null)
+    {
+        @foreach (var post in Model.Posts)
+        {
+            <article class="comm-card" style="display: flex; flex-direction: row; width: 100%; margin: 0; padding: 0; overflow: hidden; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; box-sizing: border-box;">
+    
+                @* 1. LEFT SIDEBAR: REDDIT UPVOTE/DOWNVOTE PANEL *@
+                <div class="reddit-voting" style="display: flex; flex-direction: column; align-items: center; width: 44px; background-color: #f8f9fa; padding: 12px 4px; gap: 4px; border-right: 1px solid #f1f1f1; flex-shrink: 0;">
+    
+                    @* --- UPVOTE FORM --- *@
+                    <form asp-controller="Vote" asp-action="UpVote" asp-route-id="@post.Id" method="post" style="margin: 0; padding: 0;">
+                        <button type="submit" class="vote-btn upvote" style="background: none; border: none; color: #878a8c; cursor: pointer; padding: 4px; font-size: 1.2rem; transition: color 0.2s;" onmouseover="this.style.color='#ff4500'" onmouseout="this.style.color='#878a8c'">
+                            <i class="fa-solid fa-arrow-up"></i>
                         </button>
-                    </div>
+                    </form>
+    
+                    @* Total Vote Score *@
+                    <span class="vote-score" style="font-size: 0.85rem; font-weight: 700; color: #1a1a1b; min-width: 24px; text-align: center; font-family: sans-serif; margin: 2px 0;">
+                        @post.Votes
+                    </span>
+    
+                    @* --- DOWNVOTE FORM --- *@
+                    <form asp-controller="Vote" asp-action="DownVote" asp-route-id="@post.Id" method="post" style="margin: 0; padding: 0;">
+                        <button type="submit" class="vote-btn downvote" style="background: none; border: none; color: #878a8c; cursor: pointer; padding: 4px; font-size: 1.2rem; transition: color 0.2s;" onmouseover="this.style.color='#7193ff'" onmouseout="this.style.color='#878a8c'">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </button>
+                    </form>
                 </div>
-            </div>
-        </article>
-    </div> *@
+
+                @* 2. RIGHT SIDEBAR: CONTENT & META PANEL *@
+                <div style="display: flex; flex-direction: column; flex: 1; padding: 12px; box-sizing: border-box; min-width: 0;">
+        
+                    @* HEADER ROW: User Meta *@
+                    <div class="comm-card-header" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 0; width: 100%;">
+                        <img src="https://i.pravatar.cc/150?img=11" alt="@post.AuthorName" class="comm-avatar" style="width: 28px; height: 28px; border-radius: 50%;" />
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                            <span class="comm-user-name" style="font-weight: 600; font-size: 0.85rem; color: #1a1a1b;">@post.AuthorName</span>
+                            <span style="color: #7c7c7c; font-size: 0.8rem;">•</span>
+                            <span class="comm-post-date" style="color: #7c7c7c; font-size: 0.8rem;">@post.FormattedDate</span>
+                        </div>
+                    </div>
+
+                    @* TEXT CONTENT *@
+                    <p class="comm-post-text" style="font-size: 0.95rem; color: #1a1a1b; line-height: 1.4; margin: 0 0 10px 0; word-break: break-word; text-align: left;">
+                        @post.Content
+                    </p>
+
+                    @* POST IMAGE *@
+                    <div class="comm-card-image" style="width: 100%; border-radius: 8px; overflow: hidden; margin-bottom: 10px; background-color: #f8f9fa;">
+                        <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?q=80&w=800&auto=format&fit=crop"
+                             alt="Tomatoes" class="comm-post-img" style="width: 100%; max-height: 380px; object-fit: cover; display: block;" />
+                    </div>
+        
+                    @* FOOTER ROW: Action Buttons Bar *@
+                    <div class="reddit-actions-bar" style="display: flex; align-items: center; justify-content: space-between; width: 100%; border-top: 1px solid #f1f1f1; padding-top: 8px; margin-top: auto;">
+            
+                        @* Comments Button Link *@
+                        <div style="display: flex; align-items: center;">
+                            <span class="comm-action" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 4px; cursor: pointer; color: #878a8c; font-size: 0.85rem; font-weight: 600; background-color: transparent; transition: background 0.1s;" onmouseover="this.style.backgroundColor='#f4f4f4'" onmouseout="this.style.backgroundColor='transparent'">
+                                <i class="fa-regular fa-comment" style="font-size: 1rem;"></i>
+                                <span>Comments</span>
+                            </span>
+                        </div>
+
+                        @* Secure Delete Button *@
+                        @if (User.Identity.IsAuthenticated && (User.FindFirstValue(ClaimTypes.NameIdentifier) == post.UserId || User.IsInRole("Admin")))
+                        {
+                            <form asp-controller="Post" asp-action="Delete" asp-route-id="@post.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this post?');" style="margin: 0; padding: 0; display: inline-flex;">
+                                <button type="submit" style="background: none; border: none; color: #dc3545; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; padding: 6px 10px; border-radius: 4px; font-family: inherit; transition: background 0.1s;" onmouseover="this.style.backgroundColor='#fff5f5'" onmouseout="this.style.backgroundColor='transparent'">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </form>
+                        }
+                    </div>
+
+                </div>
+            </article>
+        }
+    }
+</div>

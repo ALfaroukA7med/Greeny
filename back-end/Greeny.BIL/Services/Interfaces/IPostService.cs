@@ -13,6 +13,6 @@ namespace Greeny.BLL.Services.Interfaces
         Task<Result> AddAsync(PostCreateVM post);
 
         //Task<Result<string>> UpdateAsync(PostCreateVM post);
-        Task<Result> DeleteAsync(int id);
+        Task<Result> DeleteAsync(string userId, int id);
     }
 }

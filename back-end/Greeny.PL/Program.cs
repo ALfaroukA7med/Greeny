@@ -12,7 +12,7 @@ namespace Greeny.PL
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +47,8 @@ namespace Greeny.PL
             builder.Services.AddScoped<ICommentRepo, CommentRepo>();
             builder.Services.AddScoped<IPostRepo, PostRepo>();
             builder.Services.AddScoped<IUserRepo, UserRepo>();
+            builder.Services.AddScoped<IVoteRepo, VoteRepo>();
+            builder.Services.AddScoped<IPaymentRepo, PaymentRepo>();
 
 
 
@@ -60,8 +62,8 @@ namespace Greeny.PL
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<IUserService, UserService>();
-
-
+            builder.Services.AddScoped<IVoteService, VoteService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
 
             //AutoMapper
             builder.Services.AddAutoMapper(cfg =>
@@ -90,7 +92,7 @@ namespace Greeny.PL
 
             var app = builder.Build();
 
-
+            
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -112,8 +114,25 @@ namespace Greeny.PL
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
-
+            await SeedRolesAsync(app.Services);
             app.Run();
+        }
+        public static async Task SeedRolesAsync(IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string[] roleNames = { "Admin", "User", "USER" }; // Added 'USER' to safely match your current registration string
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await roleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    // Create the roles and seed them into the database
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
         }
     }
 }
