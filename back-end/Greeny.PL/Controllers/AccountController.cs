@@ -41,12 +41,12 @@ namespace Greeny.PL.Controllers
             if (ModelState.IsValid)
             {
                 var existingUser = await _userManager.FindByEmailAsync(vm.Email);
-
                 if (existingUser != null)
                 {
                     ModelState.AddModelError("Email", "Email is already in use");
                     return View("Register", vm);
                 }
+
                 var otp = RandomNumberGenerator.GetInt32(100000, 999999).ToString();
                 User user = new User
                 {

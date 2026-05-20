@@ -10,6 +10,9 @@ public class RefPlanet :Profile
                 CreateMap<UpdateRefPlanetVM, ReferencePlanet>();
 
                 CreateMap<ReferencePlanet, DetailsRefPlanetVM>();
+
+                CreateMap<ReferencePlanet, DetailsForDashboard>();
+
             }
      }
     

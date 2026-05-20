@@ -1,26 +1,10 @@
 ﻿@model Greeny.BLL.ModelVM.ReferencePlanet.UpdateRefPlanetVM
 
 @{
+    Layout = "_DashBoardLayout";
     ViewData["Title"] = "Edit Plant";
 }
-
-
-<div class="plant-container">
-
-    <div class="plant-card">
-
-        <div class="plant-image-side">
-
-            <div class="image-overlay">
-                <h1>🌿 Edit Plant</h1>
-
-                <p>
-                    Update plant information and keep your agricultural database accurate.
-                </p>
-
-            </div>
-
-        </div>
+    
 
         <div class="form-side">
 
@@ -128,31 +112,16 @@
             <div class="action-buttons">
 
                 <a asp-controller="ReferencePlanet"
-                       asp-action="Index"
+                       asp-action="IndexForDashboard"
                        class="custom-btn back-btn">
                     ← Back To Plants
                 </a>
-
-                <form asp-action="Delete"
-                      method="post"
-                      class="delete-form"
-                      onsubmit="return confirm('Are you sure you want to delete this plant?');">
-
-                    <input type="hidden" name="id" value="@Model.Id" />
-
-                    <button type="submit" class="custom-btn delete-btn">
-                        🗑 Delete
-                    </button>
-
-                </form>
 
             </div>
 
         </div>
 
-    </div>
 
-</div>
 
 
 

@@ -29,6 +29,18 @@ namespace Greeny.PL.Controllers
             return View("Index", result.Data);
         }
 
+        public async Task<IActionResult> IndexForDashboard()
+        {
+            var result = await _referencePlanetService.GetAllForDashboard();
+
+            if (!result.IsSuccess)
+            {
+                return View("IndexForDashboard", Enumerable.Empty<DetailsForDashboard>());
+            }
+
+            return View("IndexForDashboard", result.Data);
+        }
+
         // Details 
         public async Task<IActionResult> Details(int id)
         {
@@ -124,7 +136,7 @@ namespace Greeny.PL.Controllers
             if (!result.IsSuccess)
                 return NotFound();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexForDashboard));
         }
 
 

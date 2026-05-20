@@ -5,10 +5,7 @@ namespace Greeny.BLL.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<Response<IEnumerable<DetailsUserVM>>> GetAllActiveAsync();
-
-        Task<Response<IEnumerable<DetailsUserVM>>> GetAllDeletedAsync();
-
+        Task<Response<IEnumerable<DetailsUserVM>>> GetAllAsync();
         Task<Response<DetailsUserVM>> GetByIdAsync(string id);
 
         Task<Response<bool>> UpdateAsync(UpdateUserVM vm);
