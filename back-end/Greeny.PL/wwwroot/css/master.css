@@ -969,9 +969,10 @@ h2.title {
 }
 
 .comm-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .comm-card {

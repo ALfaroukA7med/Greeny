@@ -1,7 +1,10 @@
-﻿namespace Greeny.BLL.ModelVM.Post
+﻿using Org.BouncyCastle.Bcpg;
+
+namespace Greeny.BLL.ModelVM.Post
 {
     public class PostListVM
     {
+        public string UserId { get; set; }
         public int Id { get; set; }
         public string Content { get; set; } = string.Empty;
         public string? ImagePath { get; set; }

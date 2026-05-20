@@ -99,8 +99,8 @@ namespace Greeny.BLL.Services.Implementation
             var data = new DetailsUserVM{ 
                     Id = user.Id,
                     Email = user.Email,
-                     FirstName = user.FirstName,
-                     LastName = user.LastName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     Address = user.Address,
                     PhoneNumber = user.PhoneNumber,
                     ProfilePicture = user.ProfilePicture,

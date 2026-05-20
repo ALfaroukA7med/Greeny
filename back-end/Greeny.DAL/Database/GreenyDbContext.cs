@@ -18,6 +18,8 @@ namespace Greeny.DAL.Database
         public DbSet<Payment> Payments { get; set; }
         public DbSet<ReferencePlanet> ReferencePlanets { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Vote> Votes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
