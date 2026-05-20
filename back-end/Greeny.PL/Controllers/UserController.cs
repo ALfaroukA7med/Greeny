@@ -13,23 +13,16 @@ namespace Greeny.PL.Controllers
             _userService = userService;
         }
 
-        // ==========================
         // Get All Active Users
-        // ==========================
         public async Task<IActionResult> Index()
         {
-            var result = await _userService.GetAllActiveAsync();
-
-            return View(result.Data);
-        }
-
-        // ==========================
-        // Get Deleted Users
-        // ==========================
-        public async Task<IActionResult> DeletedUsers()
-        {
-            var result = await _userService.GetAllDeletedAsync();
-
+            var result = await _userService.GetAllAsync();
+            if (!result.IsSuccess)
+            {
+                return View("Index", Enumerable.Empty<DetailsUserVM>());
+            }
+            ViewBag.Active= result.Data?.Count(x => !x.IsDeleted) ?? 0;
+            ViewBag.All = result.Data?.Count() ?? 0;
             return View(result.Data);
         }
 
@@ -105,7 +98,7 @@ namespace Greeny.PL.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index");
         }
 
 

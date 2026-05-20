@@ -71,6 +71,22 @@ namespace Greeny.BLL.Services.Implementation
             return Response<IEnumerable<DetailsRefPlanetVM>>.Success(data);
         }
 
+
+        public async Task<Response<IEnumerable<DetailsForDashboard>>> GetAllForDashboard()
+        {
+            var Query = _referencePlanetRepo.GetAll();
+            var RefPlanets = await Query.ToListAsync();
+
+            if (RefPlanets == null || !RefPlanets.Any())
+            {
+                return Response<IEnumerable<DetailsForDashboard>>.Fail(RefPlanetError.NotFound);
+            }
+
+            var data = _mapper.Map<IEnumerable<DetailsForDashboard>>(RefPlanets);
+
+            return Response<IEnumerable<DetailsForDashboard>>.Success(data);
+        }
+
         public async Task<Response<DetailsRefPlanetVM>> GetByCommonNameAsync(string commonName)
         {
             var result = await _referencePlanetRepo.GetByCommonNameAsync(commonName);

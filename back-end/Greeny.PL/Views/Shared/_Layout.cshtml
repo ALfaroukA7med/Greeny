@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="~/css/community.css">
     <link rel="stylesheet" href="~/css/market.css">
     <link rel="stylesheet" href="~/css/refrence.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
           rel="stylesheet" />
     <link rel="stylesheet"
@@ -33,7 +34,7 @@
     <!-- Local CSS -->
     <link rel="stylesheet" href="~/css/master.css" />
     <link rel="stylesheet" href="~/css/community.css" />
-    @RenderSection("Styles", required: false)
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
 
@@ -140,12 +141,6 @@
         </div>
 
     </nav> 
-
-
-
-
-
-
 
 
 

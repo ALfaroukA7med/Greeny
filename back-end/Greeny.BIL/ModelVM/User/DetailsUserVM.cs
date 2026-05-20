@@ -11,5 +11,6 @@ namespace Greeny.BLL.ModelVM.User
         public string? PhoneNumber { get; set; } = string.Empty;
         public string? ProfilePicture { get; set; } = null;
         public string? Address { get; set; } = null;
+        public bool IsDeleted { get; set; }
     }
 }

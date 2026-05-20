@@ -1,6 +1,5 @@
 ﻿
-using Greeny.DAL.Database;
-using Greeny.DAL.Repository.Interfaces;
+
 
 namespace Greeny.DAL.Repository.Implementation
 {
@@ -19,10 +18,10 @@ namespace Greeny.DAL.Repository.Implementation
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<User> GetAll()
-        {
-            return _context.Users.Where(u=> !u.IsDeleted).AsNoTracking();
-        }
+        //public IQueryable<User> GetAll()
+        //{
+        //    return _context.Users.Where(u=> !u.IsDeleted).AsNoTracking();
+        //}
 
         public async Task<User?> GetByIdAsync(string id)
         {
@@ -45,14 +44,9 @@ namespace Greeny.DAL.Repository.Implementation
                  .ExecuteUpdateAsync(setter => setter.SetProperty(u => u.IsDeleted, true));
         }
 
-        public IQueryable<User> GetAllActive()
+        public IQueryable<User> GetAll()
         {
-            return _context.Users.Where(u=> !u.IsDeleted).AsNoTracking();
-        }
-
-        public IQueryable<User> GetAllDeleted()
-        {
-            return _context.Users.Where(u => u.IsDeleted).AsNoTracking();
+            return _context.Users.AsNoTracking();
         }
     }
 }
