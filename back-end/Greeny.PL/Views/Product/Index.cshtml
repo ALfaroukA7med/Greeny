@@ -1,0 +1,507 @@
+﻿@using Greeny.BLL.ModelVM.ProductVM
+@model MarketPlaceVM
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Products";
+}
+
+<div class="products-page">
+
+    <!-- Header -->
+    <div class="products-header">
+        <div>
+            <h1>Products</h1>
+            <p>Manage all marketplace products</p>
+        </div>
+
+        <a asp-action="Create" asp-controller="Product" class="add-btn">
+            <i class="fa-solid fa-plus"></i>
+            Add Product
+        </a>
+    </div>
+
+    <!-- Products Card -->
+    <div class="products-card">
+
+        <div class="card-header">
+            <h2>All Products</h2>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search products..." />
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="productsTable">
+                    @foreach (var item in Model.Products)
+                    {
+                        <tr>
+                            <td>#@item.ProudctId</td>
+
+                            <td>
+                                <img src="~/Files/@item.Image" class="product-img" alt="product" />
+                            </td>
+
+                            <td>@item.ProductName</td>
+                            <td>@item.CategoryName</td>
+                            <td>$@item.Price</td>
+
+                            <td>
+                                <span class="qty-badge" id="qty-@item.ProudctId">
+                                    @item.Quantity
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (item.Quantity > 10)
+                                {
+                                    <span class="status available">Available</span>
+                                }
+                                else if (item.Quantity > 0)
+                                {
+                                    <span class="status limited">Limited</span>
+                                }
+                                else
+                                {
+                                    <span class="status out">Out Stock</span>
+                                }
+                            </td>
+
+                            <!-- Actions -->
+                            <td>
+                                <div class="actions">
+                                    <!-- Edit -->
+                                    <a asp-action="Edit" asp-controller="Product"
+                                       asp-route-id="@item.ProudctId"
+                                       class="action-btn edit-btn">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+
+                                    <!-- Delete -->
+                                    <form asp-action="Delete"
+                                          asp-controller="Product"
+                                          asp-route-id="@item.ProudctId"
+                                          method="post"
+                                          style="display:inline;"
+                                          onsubmit="return confirm('Are you sure you want to delete this product?');">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit" class="action-btn delete-btn">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+
+                                    <button type="button" class="action-btn add-btn-small" onclick="openAmountModal('@item.ProudctId', @item.Quantity)">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Quantity Update Modal -->
+<div id="amountModal" class="custom-modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Update Product Quantity</h3>
+        <input type="hidden" id="modalProductId" />
+
+        <div class="input-group">
+            <label>Current Quantity:</label>
+            <span id="currentQuantityText" style="font-weight: bold; color: #1f7a4c;">0</span>
+        </div>
+
+        <div class="input-group">
+            <label>New Quantity:</label>
+            <input type="number" id="newQuantityInput" min="0" class="modal-input" />
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="btn-save" onclick="submitNewAmount()">Save</button>
+            <button type="button" class="btn-cancel" onclick="closeAmountModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+@section Styles {
+    <style>
+        body {
+            background: #f2f7f3;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .products-page {
+            padding: 40px;
+        }
+
+        /* Header */
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+            .products-header h1 {
+                font-size: 52px;
+                font-weight: bold;
+                color: #0b3d2c;
+                margin-bottom: 8px;
+            }
+
+            .products-header p {
+                color: #64748b;
+                font-size: 20px;
+            }
+
+        .add-btn {
+            background: #1f7a4c;
+            color: white;
+            padding: 16px 28px;
+            border-radius: 18px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: .3s;
+            box-shadow: 0 10px 20px rgba(31,122,76,.15);
+        }
+
+            .add-btn:hover {
+                transform: translateY(-2px);
+                background: #16643d;
+            }
+
+        /* Card */
+        .products-card {
+            background: white;
+            border-radius: 32px;
+            padding: 35px;
+            box-shadow: 0 10px 25px rgba(0,0,0,.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+            .card-header h2 {
+                font-size: 40px;
+                color: #0b3d2c;
+                font-weight: bold;
+            }
+
+        /* Search */
+        .search-box {
+            position: relative;
+            width: 340px;
+        }
+
+            .search-box i {
+                position: absolute;
+                left: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #94a3b8;
+            }
+
+            .search-box input {
+                width: 100%;
+                padding: 16px 18px 16px 50px;
+                border-radius: 18px;
+                border: 1px solid #dbe4dc;
+                outline: none;
+                font-size: 16px;
+            }
+
+        /* Table */
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .products-table thead th {
+                text-align: left;
+                padding: 18px 10px;
+                color: #64748b;
+                font-size: 22px;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .products-table tbody td {
+                padding: 18px 10px;
+                font-size: 22px;
+                border-bottom: 1px solid #edf2f7;
+                color: #0f172a;
+                vertical-align: middle;
+            }
+
+        /* Product Image */
+        .product-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+        }
+
+        /* Quantity */
+        .qty-badge {
+            background: #ecfdf3;
+            color: #15803d;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Status */
+        .status {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            display: inline-block;
+        }
+
+        .available {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .limited {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .out {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            transition: .3s;
+            border: none;
+            cursor: pointer;
+        }
+
+            .action-btn:hover {
+                transform: translateY(-2px);
+            }
+
+        .edit-btn {
+            background: #0ea5e9;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+        }
+
+        .add-btn-small {
+            background: #16a34a;
+        }
+
+        /* Modal Styles */
+        .custom-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 24px;
+            width: 420px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+            .modal-content h3 {
+                margin-bottom: 25px;
+                color: #0b3d2c;
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+        .input-group {
+            margin-bottom: 20px;
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #dbe4dc;
+            font-size: 18px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+            .modal-actions button {
+                flex: 1;
+                padding: 14px;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 18px;
+                transition: 0.3s;
+            }
+
+        .btn-save {
+            background: #1f7a4c;
+            color: white;
+        }
+
+            .btn-save:hover {
+                background: #16643d;
+            }
+
+        .btn-cancel {
+            background: #64748b;
+            color: white;
+        }
+
+            .btn-cancel:hover {
+                background: #475569;
+            }
+
+        /* Responsive */
+        @@media(max-width:1100px) {
+            .products-header {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+    </style>
+}
+
+
+@section Scripts {
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        searchInput.addEventListener("keyup", function () {
+            const filter = searchInput.value.toLowerCase();
+            const rows = document.querySelectorAll("#productsTable tr");
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(filter) ? "" : "none";
+            });
+        });
+
+        function openAmountModal(id, currentQty) {
+            document.getElementById("modalProductId").value = id;
+            document.getElementById("currentQuantityText").innerText = currentQty;
+            document.getElementById("newQuantityInput").value = currentQty;
+            document.getElementById("amountModal").style.display = "flex";
+        }
+
+        function closeAmountModal() {
+            document.getElementById("amountModal").style.display = "none";
+        }
+
+        function submitNewAmount() {
+            const productId = document.getElementById("modalProductId").value;
+            const newQty = document.getElementById("newQuantityInput").value;
+
+            if (newQty === "" || newQty < 0) {
+                alert("Please enter a valid quantity.");
+                return;
+            }
+
+            fetch(`/Product/UpdateQuantity`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({ id: parseInt(productId), quantity: parseInt(newQty) })
+            })
+            .then(response => {
+                if (response.ok) {
+                    
+                    location.reload();
+                } else {
+                    alert("Something went wrong while updating the quantity.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Connection error.");
+            });
+        }
+    </script>
+}

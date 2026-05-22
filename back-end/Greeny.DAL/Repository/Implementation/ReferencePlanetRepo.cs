@@ -26,13 +26,13 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<ReferencePlanet?> GetByIdAsync(int id)
         {
-            return await _context.ReferencePlanets.FirstOrDefaultAsync(rf => rf.Id == id && !rf.IsDeleted);
+            return await _context.ReferencePlanets.FirstOrDefaultAsync(rf => rf.Id == id );
         }
 
         public async Task UpdateAsync(ReferencePlanet newReferencePlanet)
         {
 
-            await _context.ReferencePlanets.Where(r => r.Id == newReferencePlanet.Id && !r.IsDeleted)
+            await _context.ReferencePlanets.Where(r => r.Id == newReferencePlanet.Id )
                 .ExecuteUpdateAsync(setter => setter
                 .SetProperty(r => r.TempReq, newReferencePlanet.TempReq)
                 .SetProperty(r => r.CommonName, newReferencePlanet.CommonName)
@@ -50,25 +50,25 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task DeleteAsync(int id)
         {
-            await _context.ReferencePlanets.Where(r => r.Id == id && !r.IsDeleted)
+            await _context.ReferencePlanets.Where(r => r.Id == id )
                .ExecuteUpdateAsync(setter => setter
                .SetProperty(r => r.IsDeleted, true));
         }
 
         public async Task<ReferencePlanet?> GetBySciNameAsync(string sciName)
         {
-            return await _context.ReferencePlanets.FirstOrDefaultAsync(rf => EF.Functions.Like(rf.SciName, $"%{sciName}%") && !rf.IsDeleted);
+            return await _context.ReferencePlanets.FirstOrDefaultAsync(rf => EF.Functions.Like(rf.SciName, $"%{sciName}%") );
         }
 
         public async Task<ReferencePlanet?> GetByCommonNameAsync(string commonName)
         {
-            return await _context.ReferencePlanets.FirstOrDefaultAsync(rf => EF.Functions.Like(rf.CommonName, $"%{commonName}%") && !rf.IsDeleted);
+            return await _context.ReferencePlanets.FirstOrDefaultAsync(rf => EF.Functions.Like(rf.CommonName, $"%{commonName}%") );
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
         {
             return await _context.ReferencePlanets
-           .AnyAsync(rf => rf.Id == id && !rf.IsDeleted);
+           .AnyAsync(rf => rf.Id == id);
         }
     }
 }
