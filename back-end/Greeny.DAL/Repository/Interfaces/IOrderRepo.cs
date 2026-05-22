@@ -18,5 +18,6 @@ namespace Greeny.DAL.Repository.Interfaces
         IQueryable<Order> GetRecentOrdersAsync();
         Task<bool> ExistsAsync(int id);
         Task<decimal> GetTotalSalesAsync();
+
     }
 }

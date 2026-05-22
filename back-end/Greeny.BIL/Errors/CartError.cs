@@ -6,5 +6,7 @@ namespace Greeny.BLL.Errors
     public class CartError
     {
         public static Error NotFound = new Error("Cart.NotFound", "Cart not found", ErrorType.NotFound);
+
+        public static Error Empty = new Error("Cart.Empty", "Cart Is Empty", ErrorType.NotFound);
     }
 }

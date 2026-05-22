@@ -1,0 +1,222 @@
+﻿@model Greeny.BLL.ModelVM.Cart.CartDetailsVM
+
+@{
+    ViewData["Title"] = "Cart";
+
+    decimal shipping;
+    int totalItems = ViewBag.CartCount != null ? (int)ViewBag.CartCount : 0;
+    if (Model.Total == 0 || totalItems == 0)
+    {
+        shipping = 0;
+    }
+    else if (Model.Total >= 40)
+    {
+        shipping = 0;
+    }
+    else
+    {
+        shipping = 4.99m;
+    }
+    decimal finalTotal = Model.Total + shipping;
+}
+
+<header class="cart-page-header">
+    <div class="container">
+        <h1 class="cart-title">Your Cart</h1>
+
+        <p class="cart-subtitle" id="cart-item-count">
+            @totalItems items ready to harvest
+        </p>
+    </div>
+</header>
+
+<section class="cart-section">
+    <div class="container cart-layout">
+
+        <!-- LEFT SIDE -->
+        <div class="cart-left-side">
+
+            <div class="cart-items-wrapper" id="cart-items-wrapper">
+
+                @if (Model.Items != null && Model.Items.Any())
+                {
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="cart-item-row" data-id="@item.Id">
+
+                            <img src="@item.ImageUrl"
+                                 alt="@item.ProductName"
+                                 class="cart-item-img">
+
+                            <div class="cart-item-details">
+
+                                <h3 class="cart-item-title">
+                                    @item.ProductName
+                                </h3>
+
+                                <p class="cart-item-cat">
+                                    @item.CategoryName
+                                </p>
+
+                                <div class="cart-item-price">
+                                    $@item.Price
+                                </div>
+
+                                <form asp-controller="CartItem"
+                                      asp-action="Delete"
+                                      method="post">
+
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="hidden" name="cartId" value="@Model.CartId" />
+
+                                    <button type="submit" class="delete-item-btn">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                            <div class="cart-item-actions">
+
+                                <div class="qty-control">
+
+                                    <form asp-controller="CartItem"
+                                          asp-action="Decrease"
+                                          method="post">
+
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="hidden" name="cartId" value="@Model.CartId" />
+
+                                        <button type="submit" class="qty-btn">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+
+                                    </form>
+
+                                    <span class="qty-value">
+                                        @item.Quantity
+                                    </span>
+
+                                    <form asp-controller="CartItem"
+                                          asp-action="Increase"
+                                          method="post">
+
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="hidden" name="cartId" value="@Model.CartId" />
+
+                                        <button type="submit" class="qty-btn">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                                <div class="item-total">
+                                    $@(item.Price * item.Quantity)
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="empty-cart">
+                        <h3>Your cart is empty</h3>
+                        <p>Add some products to continue shopping.</p>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="cart-right-side">
+
+            <div class="cart-summary-box">
+
+                <h2 class="summary-title">
+                    Order Summary
+                </h2>
+
+                <div class="summary-row">
+                    <span id="summary-subtotal-text">
+                        Subtotal (@totalItems items)
+                    </span>
+
+                    <span id="summary-subtotal-price">
+                        $@Model.Total
+                    </span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Shipping</span>
+
+                    <span id="summary-shipping-price">
+                        @(shipping == 0 ? "Free" : $"${shipping}")
+                    </span>
+                </div>
+
+                @if (shipping != 0)
+                {
+                    <div class="free-shipping-alert"
+                         id="free-shipping-alert">
+
+                        Add $@(40 - Model.Total) more for free shipping
+
+                    </div>
+                }
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-row total-row">
+
+                    <span>Total</span>
+
+                    <span id="summary-total-price">
+                        $@finalTotal
+                    </span>
+
+                </div>
+
+                <a asp-controller="Order"
+                       asp-action="Checkout"
+                       asp-route-cartId="@Model.CartId"
+                       class="btn-checkout">
+
+                    Proceed to Checkout
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+                <a asp-controller="Product"
+                       asp-action="Index"
+                       class="continue-shopping">
+                    Continue Shopping
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<div class="success-buttons-row">
+
+    <a asp-controller="Order"
+           asp-action="TrackOrders"
+           class="btn-track-order">
+        Track Your Orders
+    </a>
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cart.css" />
+}
+

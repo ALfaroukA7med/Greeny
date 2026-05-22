@@ -83,10 +83,19 @@
                     </div>
                 </div>
             </div>
-            <a href="cart.html" title="Go to Cart" class="cart-icon-container">
+            <a asp-controller="Cart"
+                   asp-action="Index"
+                   asp-route-cartId="@ViewBag.CartId"
+                   title="Go to Cart"
+                   class="cart-icon-container">
+
                 <img src="~/media/photos/cart.png" alt="Cart">
-                <span class="cart-badge">0</span>
+
+                <span class="cart-badge">
+                    @(ViewBag.CartCount ?? 0)
+                </span>
             </a>
+
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="user-profile-wrapper">

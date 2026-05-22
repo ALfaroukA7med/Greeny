@@ -70,13 +70,18 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<bool> ClearCartAsync(int cartId)
         {
-            int rowsAffected = await _context.CartItems
-            .Where(c => c.CartId == cartId && !c.IsDeleted)
-            .ExecuteUpdateAsync(setter => setter
-            .SetProperty(r => r.IsDeleted, true)
-            );
+            var cartItems = await _context.CartItems
+                .Where(c => c.CartId == cartId)
+                .ToListAsync();
 
-            return rowsAffected > 0;
+            if (!cartItems.Any())
+                return false;
+
+            _context.CartItems.RemoveRange(cartItems);
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
     }

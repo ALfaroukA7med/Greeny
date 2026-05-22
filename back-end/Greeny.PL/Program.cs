@@ -30,11 +30,11 @@ namespace Greeny.PL
 
             builder.Services.AddIdentity<User, IdentityRole>(options =>
             {
-                options.Password.RequireDigit = false;            
-                options.Password.RequireLowercase = false;       
-                options.Password.RequireUppercase = false;        
-                options.Password.RequireNonAlphanumeric = false; 
-                options.Password.RequiredLength = 6;              
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 6;
             })
             .AddEntityFrameworkStores<GreenyDbContext>();
 
@@ -42,11 +42,12 @@ namespace Greeny.PL
             // Repositories
             builder.Services.AddScoped<IProductRepo, ProductRepo>();
             builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
-            builder.Services.AddScoped<IReviewRepo,ReviewRepo>();
+            builder.Services.AddScoped<IReviewRepo, ReviewRepo>();
             builder.Services.AddScoped<IReferencePlanetRepo, ReferencePlanetRepo>();
             builder.Services.AddScoped<ICommentRepo, CommentRepo>();
             builder.Services.AddScoped<IPostRepo, PostRepo>();
             builder.Services.AddScoped<IUserRepo, UserRepo>();
+            builder.Services.AddScoped<ICartRepo, CartRepo>();
 
 
 
@@ -60,6 +61,7 @@ namespace Greeny.PL
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICartService, CartService>();
 
 
 
@@ -78,6 +80,10 @@ namespace Greeny.PL
             {
 
             }, typeof(ReviewProfile).Assembly);
+            builder.Services.AddAutoMapper(cfg =>
+            {
+
+            }, typeof(CartItemProfile).Assembly);
 
             builder.Services.AddAutoMapper(cfg =>
             {
