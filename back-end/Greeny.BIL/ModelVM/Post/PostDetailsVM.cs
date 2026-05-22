@@ -1,4 +1,5 @@
 ﻿using Greeny.BLL.ModelVM.Comment;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,6 @@ namespace Greeny.BLL.ModelVM.Post
         public string AuthorName { get; set; }
         public List<CommentListVM> Comments { get; set; }
         // for add comment
-        public CommentCreateVM NewComment { get; set; }
+        public CommentCreateVM NewComment { get; set; } = new CommentCreateVM();
     }
 }

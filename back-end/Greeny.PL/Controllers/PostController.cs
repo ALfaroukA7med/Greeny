@@ -1,4 +1,5 @@
 ﻿using Greeny.BLL.Errors;
+using Greeny.BLL.Helper;
 using Greeny.BLL.ModelVM.Post;
 using Greeny.BLL.ModelVM.Wrapper;
 using Greeny.BLL.Services.Implementation;
@@ -13,7 +14,7 @@ namespace Greeny.PL.Controllers
         private readonly IPostService _postService;
         private readonly ICommentService _commentService;
         //private readonly IUserService userService;
-        
+
         public PostController(IPostService postService, ICommentService commentservice)
         {
             _postService = postService;
@@ -34,8 +35,6 @@ namespace Greeny.PL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind(Prefix = "CreatePost")] PostCreateVM vm)
         {
-            ModelState.Remove("UserId");
-
             if (!ModelState.IsValid)
             {
                 TempData["ErrorMessage"] = "Please fill out the content before posting.";
@@ -43,7 +42,6 @@ namespace Greeny.PL.Controllers
             }
 
             vm.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var result = await _postService.AddAsync(vm);
 
             if (!result.IsSuccess)
@@ -54,15 +52,15 @@ namespace Greeny.PL.Controllers
 
             return RedirectToAction("Feed");
         }
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var post = await _postService.GetByIdAsync(id);
-            var comments = await _commentService.GetAllByPostId(id);
+            // i'm already getting all post comments in post.
 
-            return View("Post");
+            return View("Details", post);
         }
 
-        
 
         // Delete
         [HttpPost]

@@ -13,18 +13,6 @@ namespace Greeny.PL.Controllers
             _commentService = commentService;
         }
 
-        public async Task<IActionResult> Index(int postId)
-        {
-            var result = await _commentService.GetAllByPostId(postId);
-
-            if(!result.IsSuccess)
-                return View(Enumerable.Empty<CommentListVM>());
-
-            ViewBag.PostId = postId;
-            return View(result.Data);
-        }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CommentCreateVM vm)
@@ -61,20 +49,6 @@ namespace Greeny.PL.Controllers
 
             return RedirectToAction("Index", new { postId });
         }
-
-
-
-        public async Task<IActionResult> Details(int id)
-        {
-            var result = await _commentService.GetByIdAsync(id);
-
-            if (!result.IsSuccess)
-                return NotFound();
-
-            return View(result.Data);
-        }
-
-
 
     }
 }

@@ -17,8 +17,8 @@ likeIcons.forEach((icon) => {
     countNode.textContent = ` ${currentCount}`;
   });
 });
-<script>
-    async function handleVote(postId, voteType) {
+
+async function handleVote(postId, voteType) {
     // 1. Instantly target the elements for this specific post
     const scoreElement = document.getElementById(`score-${postId}`);
     const card = scoreElement?.closest('.comm-card');
@@ -91,17 +91,16 @@ likeIcons.forEach((icon) => {
     if (color === '#7193ff') return 'rgb(113, 147, 255)';
     return color;
 }
-</script>
 
-const upload = document.getElementById("photoUpload");
-const fileName = document.getElementById("fileName");
+const fileInput = document.getElementById('photoUpload');
+const fileSpan = document.getElementById('fileName');
 
-if (upload && fileName) {
-    upload.addEventListener("change", function () {
-        if (this.files.length > 0) {
-            fileName.textContent = this.files[0].name;
+if (fileInput && fileSpan) {
+    fileInput.addEventListener('change', function () {
+        if (fileInput.files.length > 0) {
+            fileSpan.textContent = fileInput.files[0].name;
         } else {
-            fileName.textContent = "No file chosen";
+            fileSpan.textContent = "No file chosen";
         }
     });
 }

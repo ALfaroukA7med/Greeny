@@ -1,11 +1,13 @@
 ﻿using Greeny.BLL.Abstraction;
-using Greeny.BLL.ModelVM.Comment;
 using Greeny.BLL.Errors;
 using Greeny.BLL.Extension;
+using Greeny.BLL.Helper;
+using Greeny.BLL.ModelVM.Comment;
 using Greeny.BLL.ModelVM.Post;
 using Greeny.BLL.Services.Interfaces;
-using System.Reflection.Metadata;
 using Org.BouncyCastle.Bcpg.Sig;
+using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 
 
 namespace Greeny.BLL.Services.Implementation
@@ -23,11 +25,36 @@ namespace Greeny.BLL.Services.Implementation
         }
         public async Task<Result> AddAsync(PostCreateVM post)
         {
+            string dbPath = "";
+            if (post.ImageFile != null)
+            {
+
+                string userId = post.UserId; // e.g., "0a770f42-b253-..."
+                string postId = Guid.NewGuid().ToString(); // e.g., "8616000a-..."
+
+                // 1. Define the relative inner folder path inside wwwroot
+                string relativeFolder = "Users/" + userId + "/Posts/" + postId;
+
+                // 2. CRITICAL FIX: Match exactly what your Upload helper expects!
+                // Since the helper appends Directory.GetCurrentDirectory() + "/wwwroot/" by itself,
+                // we must create the directory on the exact same full path structure.
+                string absolutePhysicalPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", relativeFolder);
+
+                // Create the full folder structure physically so the Stream doesn't crash
+                if (!Directory.Exists(absolutePhysicalPath))
+                {
+                    Directory.CreateDirectory(absolutePhysicalPath);
+                }
+
+                string savedFileName = Upload.UploadFile(relativeFolder, post.ImageFile);
+                dbPath = (relativeFolder + "/" + savedFileName).Replace("\\", "/");
+            }
+
             var npost = new Post()
             {
                 UserId = post.UserId,
                 Content = post.Content,
-                ImagePath = post.ImagePath
+                ImagePath = dbPath
             };
 
             await _postrepo.CreateAsync(npost);
@@ -55,11 +82,6 @@ namespace Greeny.BLL.Services.Implementation
             await _postrepo.DeleteAsync(id);
 
             return Result.Success();
-        }
-
-        public Task<Result<IEnumerable<PostListVM>>> Feed()
-        {
-            throw new NotImplementedException();
         }
         public async Task<Result<IEnumerable<PostListVM>>> GetAllAsync()
         {
