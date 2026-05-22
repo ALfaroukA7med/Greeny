@@ -74,7 +74,7 @@ namespace Greeny.PL.Controllers
                 Id = result.Data.Id,
                 Name = result.Data.Name,
                 Description = result.Data.Description,
-                Icon = result.Data.Icon,
+                IconUrl = result.Data.Icon,
             };
 
             return View(vm);
@@ -100,7 +100,7 @@ namespace Greeny.PL.Controllers
         }
 
         // DELETE
-        [HttpDelete]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {

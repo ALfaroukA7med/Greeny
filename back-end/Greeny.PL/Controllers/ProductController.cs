@@ -202,7 +202,6 @@ namespace Greeny.PL.Controllers
                 return BadRequest(new { message = "بيانات غير صالحة، يرجى إدخال كمية صحيحة." });
             }
 
-            // 2. جلب المنتج الحالي من السيرفس لملء باقي البيانات الأساسية كـ (Name, Price)
             var result = await _productService.GetByIdAsync(incomingVm.Id);
 
             if (!result.IsSuccess || result.Data == null)
@@ -210,17 +209,14 @@ namespace Greeny.PL.Controllers
                 return NotFound(new { message = "هذا المنتج غير موجود." });
             }
 
-            // 3. دمج الكمية الجديدة مع بيانات المنتج الأصلية في الـ VM القادم
             incomingVm.Name = result.Data.Name;
             incomingVm.Description = result.Data.Description;
             incomingVm.ImageUrl = result.Data.Image;
             incomingVm.Price = result.Data.Price;
             incomingVm.CategoryId = result.Data.CategoryId;
 
-            // تنظيف الأخطاء إن وجدت بسبب الحقول التي كانت فارغة في البداية عند وصولها من الـ AJAX
             ModelState.Clear();
 
-            // 4. إرسال الـ VM المعدل بالكامل إلى السيرفس للحفظ بنفس طريقة الـ Edit
             var updateResult = await _productService.UpdateAsync(incomingVm);
 
             if (!updateResult.IsSuccess)
