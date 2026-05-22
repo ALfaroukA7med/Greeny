@@ -1,0 +1,263 @@
+﻿@using Greeny.BLL.ModelVM.Category
+@model CreateCategoryVM
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Create Category";
+}
+
+<div class="form-side">
+
+    <h2 class="form-title">Category Information</h2>
+
+    <form asp-action="Create"
+          asp-controller="Category"
+          method="post"
+          enctype="multipart/form-data">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger validation-summary">
+        </div>
+
+        <!-- Name -->
+        <div class="form-group">
+
+            <label asp-for="Name">Category Name</label>
+
+            <input asp-for="Name"
+                   class="form-control"
+                   placeholder="Enter category name" />
+
+            <span asp-validation-for="Name"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+
+            <label asp-for="Description">Description</label>
+
+            <textarea asp-for="Description"
+                      class="form-control"
+                      placeholder="Write category description...">
+            </textarea>
+
+            <span asp-validation-for="Description"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <!-- Icon -->
+        <div class="form-group">
+
+            <img id="preview"
+                 style="max-width:200px;
+            margin-bottom:10px;
+            display:none;
+            border-radius:12px;" />
+
+            <label for="IconInput"
+                   class="file-label">
+
+                📤 Upload Category Icon
+
+            </label>
+
+            <input asp-for="Icon"
+                   type="file"
+                   id="IconInput"
+                   accept="image/*"
+                   style="display:none;" />
+
+            <span asp-validation-for="Icon"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <!-- Submit -->
+        <button type="submit"
+                class="submit-btn">
+
+            📂 Create Category
+
+        </button>
+
+    </form>
+
+    <!-- Back -->
+    <a asp-controller="Category"
+       asp-action="Index"
+       class="back-link">
+
+        ← Back To Categories
+
+    </a>
+
+</div>
+
+@section Styles {
+
+    <style>
+
+        body {
+            background: linear-gradient(to right, #edf7ed, #f4fff4);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        
+
+        .form-title {
+            color: #2d6a4f;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #1b4332;
+                font-weight: 600;
+            }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #d8e2dc;
+            transition: .3s;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+            .form-control:focus {
+                border-color: #40916c;
+                box-shadow: 0 0 0 4px rgba(64,145,108,.15);
+                outline: none;
+            }
+
+        textarea.form-control {
+            min-height: 130px;
+            resize: none;
+        }
+
+        .file-label {
+            display: block;
+            border: 2px dashed #95d5b2;
+            padding: 18px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8fff8;
+            color: #2d6a4f;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+            .file-label:hover {
+                background: #e9fbe9;
+                border-color: #40916c;
+            }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            background: linear-gradient(to right, #40916c, #2d6a4f);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            transition: .3s;
+            cursor: pointer;
+        }
+
+            .submit-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(45,106,79,.25);
+            }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2d6a4f;
+            font-weight: 600;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 6px;
+            display: block;
+        }
+
+        .validation-summary {
+            margin-bottom: 20px;
+        }
+
+        #preview {
+            border: 2px solid #95d5b2;
+            padding: 5px;
+            background: white;
+        }
+
+        @@media(max-width:900px) {
+
+            .form-side {
+                margin: 20px;
+                padding: 25px;
+            }
+        }
+
+    </style>
+}
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        document.getElementById("IconInput")
+            .addEventListener("change", function (event) {
+
+                const file = event.target.files[0];
+
+                if (file) {
+
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+
+                        const preview =
+                            document.getElementById("preview");
+
+                        preview.src = e.target.result;
+
+                        preview.style.display = "block";
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
+    </script>
+}
+
+
+
+
+

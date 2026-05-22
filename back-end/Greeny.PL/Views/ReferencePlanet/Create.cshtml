@@ -1,186 +1,120 @@
-﻿@using Greeny.BLL.ModelVM.ProductVM
-@model CreateProductVM
+﻿@model Greeny.BLL.ModelVM.ReferencePlanet.CreateRefPlanetVM
 
 @{
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
-    ViewData["Title"] = "Create Product";
+    ViewData["Title"] = "Create Plant";
 }
 
-<div class="product-container">
+<div class="form-side">
 
-    <div class="product-card">
+    <h2 class="form-title">
+        Plant Information
+    </h2>
 
-        <div class="product-image-side">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="image-overlay">
+        <div class="form-group">
+            <label asp-for="CommonName">Common Name</label>
+            <input asp-for="CommonName" class="form-control" />
+            <span asp-validation-for="CommonName" class="text-danger"></span>
+        </div>
 
-                <h1>Add Product</h1>
+        <div class="form-group">
+            <label asp-for="SciName">Sci Name</label>
+            <input asp-for="SciName" class="form-control" />
+            <span asp-validation-for="SciName" class="text-danger"></span>
+        </div>
 
-                <p>
-                    Add your agricultural products to the marketplace
-                    and make them available for customers.
-                </p>
+        <div class="form-group">
+            <label asp-for="Family">Family</label>
+            <input asp-for="Family" class="form-control" />
+            <span asp-validation-for="Family" class="text-danger"></span>
+        </div>
 
-            </div>
+        <div class="form-group">
+            <label asp-for="ShortDescription">Short Description</label>
+            <input asp-for="ShortDescription" class="form-control" />
+            <span asp-validation-for="ShortDescription" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PlanetType">Planet Type</label>
+            <input asp-for="PlanetType" class="form-control" />
+            <span asp-validation-for="PlanetType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GrowthSeason">Growth Season</label>
+            <input asp-for="GrowthSeason" class="form-control" />
+            <span asp-validation-for="GrowthSeason" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SunlightReq">Sunlight Req</label>
+            <input asp-for="SunlightReq" class="form-control" />
+            <span asp-validation-for="SunlightReq" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SolidType">Solid Type</label>
+            <input asp-for="SolidType" class="form-control" />
+            <span asp-validation-for="SolidType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="WaterReq">Water Req</label>
+            <input asp-for="WaterReq" class="form-control" />
+            <span asp-validation-for="WaterReq" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TempReq">Temp Req</label>
+            <input asp-for="TempReq" class="form-control" />
+            <span asp-validation-for="TempReq" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+
+            <img id="preview"
+                 style="max-width:200px; margin-bottom:10px; display:none; border-radius:10px;" />
+
+            <label for="PictureInput" class="file-label">
+                📤 Upload Plant Image
+            </label>
+
+            <input asp-for="UploadImage"
+                   type="file"
+                   id="PictureInput"
+                   accept="image/*"
+                   style="display:none;" />
+
+            <span asp-validation-for="UploadImage" class="text-danger"></span>
 
         </div>
 
-        <div class="form-side">
+        <button type="submit" class="submit-btn">
+            🌿 Create Plant
+        </button>
 
-            <h2 class="form-title">
-                Product Information
-            </h2>
+    </form>
 
-            <form asp-action="Create"
-                  method="post"
-                  enctype="multipart/form-data">
-
-                @Html.AntiForgeryToken()
-
-                <div asp-validation-summary="ModelOnly"
-                     class="text-danger validation-summary">
-                </div>
-
-                <!-- Product Name -->
-
-                <div class="form-group">
-
-                    <label asp-for="Name"></label>
-
-                    <input asp-for="Name"
-                           class="form-control"
-                           placeholder="Enter product name" />
-
-                    <span asp-validation-for="Name"
-                          class="text-danger"></span>
-
-                </div>
-
-                <!-- Price -->
-
-                <div class="form-group">
-
-                    <label asp-for="Price"></label>
-
-                    <input asp-for="Price"
-                           type="number"
-                           step="0.01"
-                           class="form-control"
-                           placeholder="0.00" />
-
-                    <span asp-validation-for="Price"
-                          class="text-danger"></span>
-
-                </div>
-
-                <!-- Category -->
-
-                <div class="form-group">
-
-                    <label asp-for="CategoryId"></label>
-
-                    <select asp-for="CategoryId"
-                            asp-items="ViewBag.Categories"
-                            class="form-control">
-
-                        <option value="">Select Category</option>
-
-                    </select>
-
-                    <span asp-validation-for="CategoryId"
-                          class="text-danger"></span>
-
-                </div>
-
-                <!-- Quantity -->
-
-                <div class="form-group">
-
-                    <label asp-for="Quantity"></label>
-
-                    <input asp-for="Quantity"
-                           type="number"
-                           class="form-control"
-                           placeholder="Quantity..." />
-
-                    <span asp-validation-for="Quantity"
-                          class="text-danger"></span>
-
-                </div>
-
-                <!-- Description -->
-
-                <div class="form-group">
-
-                    <label asp-for="Description"></label>
-
-                    <textarea asp-for="Description"
-                              class="form-control"
-                              placeholder="Write full product description...">
-                    </textarea>
-
-                    <span asp-validation-for="Description"
-                          class="text-danger"></span>
-
-                </div>
-
-                <!-- Product Image -->
-
-                <div class="form-group">
-
-                    <img id="preview"
-                         style="max-width:200px;
-                    margin-bottom:10px;
-                    display:none;
-                    border-radius:12px;" />
-
-                    <label for="PictureInput"
-                           class="file-label">
-
-                        📤 Upload Product Image
-
-                    </label>
-
-                    <input asp-for="Image"
-                           type="file"
-                           id="PictureInput"
-                           accept="image/*"
-                           style="display:none;" />
-
-                    <span asp-validation-for="Image"
-                          class="text-danger"></span>
-
-                </div>
-
-                <!-- Submit -->
-
-                <button type="submit"
-                        class="submit-btn">
-
-                    🛒 Create Product
-
-                </button>
-
-            </form>
-
-            <a asp-controller="Product"
-               asp-action="Index"
-               class="back-link">
-
-                ← Back To Products
-
-            </a>
-
-        </div>
-
-    </div>
+    <a asp-controller="ReferencePlanet" asp-action="IndexForDashboard" class="back-link">
+        ← Back To Plants
+    </a>
 
 </div>
 
 
 
 @section Styles {
-
     <style>
 
         body {
@@ -188,32 +122,33 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
-        .product-container {
+        .plant-container {
             width: 90%;
-            max-width: 1150px;
+            max-width: 1100px;
             margin: 40px auto;
         }
 
-        .product-card {
+        .plant-card {
             background: #fff;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 12px 30px rgba(0,0,0,.08);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
             display: grid;
             grid-template-columns: 1fr 1.3fr;
         }
 
-        .product-image-side {
+        .plant-image-side {
             background: linear-gradient(135deg, #2d6a4f, #40916c, #52b788);
+            min-height: 100%;
             position: relative;
             overflow: hidden;
         }
 
-            .product-image-side::before {
+            .plant-image-side::before {
                 content: "";
                 position: absolute;
                 inset: 0;
-                background: rgba(0,0,0,.15);
+                background: rgba(0,0,0,0.12);
             }
 
         .image-overlay {
@@ -250,21 +185,21 @@
         }
 
         .form-group {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
             .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                color: #1b4332;
                 font-weight: 600;
+                color: #1b4332;
+                margin-bottom: 8px;
+                display: block;
             }
 
         .form-control {
             width: 100%;
-            padding: 14px;
             border-radius: 12px;
             border: 1px solid #d8e2dc;
+            padding: 14px;
             transition: .3s;
             font-size: 15px;
         }
@@ -276,7 +211,7 @@
             }
 
         textarea.form-control {
-            min-height: 130px;
+            min-height: 120px;
             resize: none;
         }
 
@@ -284,13 +219,13 @@
             display: block;
             border: 2px dashed #95d5b2;
             padding: 18px;
-            border-radius: 16px;
             text-align: center;
+            border-radius: 16px;
             cursor: pointer;
             background: #f8fff8;
-            color: #2d6a4f;
-            font-weight: bold;
             transition: .3s;
+            font-weight: 600;
+            color: #2d6a4f;
         }
 
             .file-label:hover {
@@ -301,7 +236,7 @@
         .submit-btn {
             width: 100%;
             border: none;
-            padding: 16px;
+            padding: 15px;
             border-radius: 14px;
             background: linear-gradient(to right, #40916c, #2d6a4f);
             color: white;
@@ -324,34 +259,25 @@
         }
 
         .text-danger {
-            color: #dc3545;
             font-size: 14px;
-            margin-top: 6px;
+            margin-top: 5px;
             display: block;
-        }
-
-        .validation-summary {
-            margin-bottom: 20px;
         }
 
         #preview {
             border: 2px solid #95d5b2;
             padding: 5px;
-            background: white;
+            background: #fff;
         }
 
         @@media(max-width:900px) {
 
-            .product-card {
+            .plant-card {
                 grid-template-columns: 1fr;
             }
 
-            .product-image-side {
-                min-height: 240px;
-            }
-
-            .form-side {
-                padding: 25px;
+            .plant-image-side {
+                height: 250px;
             }
         }
 
@@ -359,37 +285,28 @@
 }
 
 
-
 @section Scripts {
-
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
     <script>
+        document.getElementById("PictureInput").addEventListener("change", function (event) {
 
-        document.getElementById("PictureInput")
-            .addEventListener("change", function (event) {
+            const file = event.target.files[0];
 
-                const file = event.target.files[0];
+            if (file) {
 
-                if (file) {
+                const reader = new FileReader();
 
-                    const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById("preview");
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
 
-                    reader.onload = function (e) {
-
-                        const preview =
-                            document.getElementById("preview");
-
-                        preview.src = e.target.result;
-
-                        preview.style.display = "block";
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            });
-
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 }
