@@ -2,6 +2,7 @@
 using Greeny.BLL.ModelVM.ProductVM;
 using Greeny.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Greeny.PL.Controllers
 {
@@ -14,6 +15,24 @@ namespace Greeny.PL.Controllers
         {
             _productService = productService;
             _categoryService = categoryService;
+        }
+
+
+        public async Task<IActionResult> Index()
+        {
+
+            var result = await _productService.GetAllAsync(null, null, null);
+
+            var empty = new MarketPlaceVM
+            {
+                Categories = new List<string>(),
+                Products = new List<ProductListVM>()
+            };
+
+            if (!result.IsSuccess)
+                return View("Index", empty);
+
+            return View("Index", result.Data);
         }
 
         // GET: All Products
@@ -47,6 +66,7 @@ namespace Greeny.PL.Controllers
         }
 
         // GET: Product Details
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var result = await _productService.GetByIdAsync(id);
@@ -58,51 +78,77 @@ namespace Greeny.PL.Controllers
         }
 
         // CREATE (GET) 
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var result = await _categoryService.GetAllAsync();
+            var vm = new CreateProductVM
+            {
+                Categories = await GetCategoriesAsync()
+            };
 
-            ViewBag.Categories = result.IsSuccess
-                ? result.Data
-                : new List<DetailsCategoryVM>();
-
-            return View(new CreateProductVM());
+            return View(vm);
         }
 
-        // CREATE (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateProductVM vm)
         {
+
+            vm.Categories = await GetCategoriesAsync();
+
             if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
                 return View(vm);
+            }
 
             var result = await _productService.CreateAsync(vm);
 
             if (!result.IsSuccess)
             {
-                ModelState.AddModelError("", "Failed to create product");
+
                 return View(vm);
             }
+
+            TempData["Success"] = "Product created successfully";
 
             return RedirectToAction(nameof(Index));
         }
 
+        private async Task<IEnumerable<SelectListItem>>
+            GetCategoriesAsync()
+        {
+            return (await _categoryService.GetAllAsync()).Data
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                });
+        }
+
+
         // EDIT (GET)
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var result = await _productService.GetByIdAsync(id);
 
-            if (!result.IsSuccess)
+            if (!result.IsSuccess || result.Data == null)
                 return NotFound();
+
             var vm = new UpdateProductVM
             {
-                Id =result.Data.Id,
+                Id = result.Data.Id,
                 Name = result.Data.Name,
                 Description = result.Data.Description,
-                Image = result.Data.Image,
+                ImageUrl = result.Data.Image,
                 Quantity = result.Data.Quantity,
                 Price = result.Data.Price,
+                CategoryId = result.Data.CategoryId,
+                Categories = await GetCategoriesAsync()
             };
 
             return View(vm);
@@ -113,6 +159,8 @@ namespace Greeny.PL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateProductVM vm)
         {
+            vm.Categories = await GetCategoriesAsync();
+
             if (!ModelState.IsValid)
                 return View(vm);
 
@@ -121,14 +169,18 @@ namespace Greeny.PL.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError("", "Failed to update product");
+
                 return View(vm);
             }
+
+            TempData["Success"] = "Product updated successfully";
 
             return RedirectToAction(nameof(Index));
         }
 
         // DELETE
-        [HttpDelete]
+       
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
@@ -137,8 +189,61 @@ namespace Greeny.PL.Controllers
             if (!result.IsSuccess)
                 return NotFound();
 
+            TempData["Success"] = "Product deleted successfully";
+
             return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateProductVM incomingVm)
+        {
+            if (incomingVm == null || incomingVm.Id <= 0 || incomingVm.Quantity < 0)
+            {
+                return BadRequest(new { message = "بيانات غير صالحة، يرجى إدخال كمية صحيحة." });
+            }
+
+            // 2. جلب المنتج الحالي من السيرفس لملء باقي البيانات الأساسية كـ (Name, Price)
+            var result = await _productService.GetByIdAsync(incomingVm.Id);
+
+            if (!result.IsSuccess || result.Data == null)
+            {
+                return NotFound(new { message = "هذا المنتج غير موجود." });
+            }
+
+            // 3. دمج الكمية الجديدة مع بيانات المنتج الأصلية في الـ VM القادم
+            incomingVm.Name = result.Data.Name;
+            incomingVm.Description = result.Data.Description;
+            incomingVm.ImageUrl = result.Data.Image;
+            incomingVm.Price = result.Data.Price;
+            incomingVm.CategoryId = result.Data.CategoryId;
+
+            // تنظيف الأخطاء إن وجدت بسبب الحقول التي كانت فارغة في البداية عند وصولها من الـ AJAX
+            ModelState.Clear();
+
+            // 4. إرسال الـ VM المعدل بالكامل إلى السيرفس للحفظ بنفس طريقة الـ Edit
+            var updateResult = await _productService.UpdateAsync(incomingVm);
+
+            if (!updateResult.IsSuccess)
+            {
+                return BadRequest(new { message = "فشل تحديث الكمية في قاعدة البيانات." });
+            }
+
+            return Ok(new { success = true, message = "تم تحديث الكمية بنجاح." });
+        }
+
+        private async Task LoadCategoriesAsync()
+        {
+            var result = await _categoryService.GetAllAsync();
+
+            ViewBag.Categories = result.Data
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                })
+                .ToList();
         }
 
     }
+
 }

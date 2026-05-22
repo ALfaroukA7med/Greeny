@@ -22,6 +22,7 @@ namespace Greeny.DAL.Repository.Implementation
         public IQueryable<Product> GetAll()
         {
             return _context.Products
+                .Where(p => !p.IsDeleted)
                 .Include(p => p.Category)
                 .Include(p => p.Reviews)
             .AsNoTracking();
@@ -30,7 +31,7 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<Product> GetByIdAsync(int id)
         {
             return await _context.Products
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
         }
 
         public async Task UpdateAsync(Product newProduct)

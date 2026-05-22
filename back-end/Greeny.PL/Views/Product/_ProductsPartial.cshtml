@@ -8,7 +8,10 @@
         <article class="product-card">
             <a asp-action="Details" asp-controller="Product"asp-route-id="@item.ProudctId" class="product-link">
                 <div class="card-image">
-                    <img src="~/media/photos/product-tomatoes.jpg" alt="@item.ProductName" />
+                    <img src="~/Files/@item.Image"
+                         class="product-img"
+                         alt="product" />
+                    <span class="badge badge-left badge-vegetables">@item.CategoryName</span>
                 </div>
                 <div class="card-content">
                     <div class="rating">
