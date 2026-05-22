@@ -9,5 +9,6 @@
         public string Message { get; set; }
 
         public DateTime CreateAt { get; set; }
+        public string? Url { get; set; }
     }
 }

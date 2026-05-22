@@ -1,6 +1,8 @@
 ﻿using Greeny.BLL.ModelVM.Notification;
 using Greeny.BLL.Services.Interfaces;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 
 namespace Greeny.PL.Controllers
 {
@@ -23,7 +25,13 @@ namespace Greeny.PL.Controllers
             return View(result.Data);
         }
 
-
+        public async Task<IActionResult>NotiNav(string userId)
+        {
+            var result = await _notificationService.GetUserNotificationsAsync(userId);
+            if (!result.IsSuccess)
+                return NotFound();
+            return View("_Layout", result.Data);
+        }
         // POST: Create Notification
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -58,6 +66,12 @@ namespace Greeny.PL.Controllers
             }
 
             return RedirectToAction("Index", new { userId });
+        }
+        public async Task<IActionResult> Read(int id, string? url)
+        {
+            var result = await _notificationService.MarkAsReadAsync(id);
+
+            return Redirect(url ?? "/");
         }
     }
 }
