@@ -49,7 +49,7 @@ namespace Greeny.DAL.Repository.Implementation
 
       public IQueryable<Review> GetAllByProductId(int productId)
         {
-            return _context.Reviews.Where(r => r.ProductId == productId).AsNoTracking();     
+            return _context.Reviews.Include(r => r.User).Include(r => r.Product).Where(r => r.ProductId == productId).AsNoTracking();     
         }
 
         public async Task<int> CountByProductIdAsync(int productId)
@@ -74,6 +74,13 @@ namespace Greeny.DAL.Repository.Implementation
            .Where(r => r.ProductId == productId)
            .Select(r => (double?)r.Stars)
            .AverageAsync() ?? 0;
+        }
+        public async Task<Review?> GetByUserAndProductAsync(string userId, int productId)
+        {
+            return await _context.Reviews
+                .FirstOrDefaultAsync(r =>
+                    r.UserId == userId &&
+                    r.ProductId == productId);
         }
 
 

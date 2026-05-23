@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Greeny.BLL.ModelVM.Review;
 using Greeny.BLL.Services.Interfaces;
+using System.Security.Claims;
 
 namespace Greeny.PL.Controllers
 {
@@ -36,33 +37,34 @@ namespace Greeny.PL.Controllers
         }
 
         // CREATE (GET)
-        public IActionResult Create(int productId)
-        {
-            var vm = new CreateReviewVM
-            {
-                ProductId = productId
-            };
-
-            return View(vm);
-        }
-
-        // CREATE (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateReviewVM vm)
         {
-            if (!ModelState.IsValid)
-                return View(vm);
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["Error"] = "You must be logged in to write a review.";
+                return RedirectToAction("Details", "Product", new { id = vm.ProductId });
+            }
 
+            if (vm.ProductId == 0 || vm.Stars < 1 || vm.Stars > 5 || string.IsNullOrWhiteSpace(vm.Content))
+            {
+                TempData["Error"] = "Please provide a valid rating and review content.";
+                return RedirectToAction("Details", "Product", new { id = vm.ProductId });
+            }
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            vm.UserId = currentUserId; 
             var result = await _reviewService.CreateAsync(vm);
 
             if (!result.IsSuccess)
             {
-                ModelState.AddModelError("", "Failed to add review");
-                return View(vm);
+                TempData["Error"] = result.Error.Description; 
+                return RedirectToAction("Details", "Product", new { id = vm.ProductId });
             }
 
-            return RedirectToAction("Index", new { productId = vm.ProductId });
+            TempData["Success"] = "Review added successfully!";
+            return RedirectToAction("Details", "Product", new { id = vm.ProductId });
         }
 
         // EDIT (GET)

@@ -2,18 +2,22 @@
 using Greeny.BLL.Errors;
 using Greeny.BLL.ModelVM.Review;
 using Greeny.BLL.Services.Interfaces;
+using Greeny.DAL.Repository.Implementation;
 
 namespace Greeny.BLL.Services.Implementation
 {
     public class ReviewService : IReviewService
     {
-
+        private readonly IProductRepo _productRepo;
         private readonly IReviewRepo _reviewRepo;
+        private readonly IUserRepo _userRepo;
         private readonly IMapper _mapper;
 
-        public ReviewService(IReviewRepo reviewRepo, IMapper mapper)
+        public ReviewService(IReviewRepo reviewRepo,IProductRepo productRepo, IUserRepo userRepo, IMapper mapper)
         {
             _reviewRepo = reviewRepo;
+            _productRepo = productRepo;
+            _userRepo = userRepo;
             _mapper = mapper;
         }
 
@@ -26,17 +30,59 @@ namespace Greeny.BLL.Services.Implementation
 
         public async Task<Response<bool>> CreateAsync(CreateReviewVM vm)
         {
-                if (vm == null)
-                {
-                    return Response<bool>.Fail(ReviewError.InvalidData);
-                }
+            if (vm == null)
+            {
+                return Response<bool>.Fail(ReviewError.InvalidData);
+            }
 
-                var review = _mapper.Map<Review>(vm);
+            if (vm.Stars < 1 || vm.Stars > 5)
+            {
+                return Response<bool>.Fail(ReviewError.InvalidData);
+            }
+
+            var product = await _productRepo.GetByIdAsync(vm.ProductId);
+
+            if (product == null)
+            {
+                return Response<bool>.Fail(ReviewError.NotFound);
+            }
+
+            var user = await _userRepo.GetByIdAsync(vm.UserId);
+
+            if (user == null)
+            {
+                return Response<bool>.Fail(ReviewError.UserNotFound);
+            }
+
+            var existingReview = await _reviewRepo.GetByUserAndProductAsync(vm.UserId, vm.ProductId);
+
+            if (existingReview != null)
+            {
+                // Update Existing Review
+
+                existingReview.Stars = vm.Stars;
+                existingReview.Content = vm.Content;
+                existingReview.Date = DateTime.UtcNow;
+
+                await _reviewRepo.UpdateAsync(existingReview);
+            }
+            else
+            {
+                // Create New Review
+
+                var review = new Review
+                {
+                    ProductId = vm.ProductId,
+                    UserId = vm.UserId,
+                    Stars = vm.Stars,
+                    Content = vm.Content,
+                    Date = DateTime.UtcNow
+                };
 
                 await _reviewRepo.CreateAsync(review);
+            }
 
             return Response<bool>.Success(true);
-               
         }
 
         public async Task<Response<bool>> DeleteAsync(int id)

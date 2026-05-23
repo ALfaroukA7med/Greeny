@@ -6,74 +6,68 @@
     ViewData["Title"] = "Create Product";
 }
 
-<div class="product-container">
-    <div class="product-card">
+<div class="form-side">
+    <h2 class="form-title">Product Information</h2>
 
-        <div class="form-side">
-            <h2 class="form-title">Product Information</h2>
+    <form asp-action="Create" asp-controller="Product" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
 
-            <form asp-action="Create" asp-controller="Product" method="post" enctype="multipart/form-data">
-                @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
 
-                <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
-
-                <div class="form-group">
-                    <label asp-for="Name">Product Name</label>
-                    <input asp-for="Name" class="form-control" placeholder="Enter product name" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Price">Price</label>
-                    <input asp-for="Price" type="number" step="0.01" class="form-control" placeholder="0.00" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="CategoryId">Category</label>
-                    <select asp-for="CategoryId"
-                            asp-items="Model.Categories"
-                            class="form-control">
-
-                        <option value="">Select Category</option>
-
-                    </select>
-                    <span asp-validation-for="CategoryId" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Quantity">Quantity</label>
-                    <input asp-for="Quantity" type="number" class="form-control" placeholder="Quantity..." />
-                    <span asp-validation-for="Quantity" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Description">Description</label>
-                    <textarea asp-for="Description" class="form-control" placeholder="Write full product description..."></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <img id="preview" style="max-width:200px; margin-bottom:10px; display:none; border-radius:12px;" />
-
-                    <label for="PictureInput" class="file-label">
-                        📤 Upload Product Image
-                    </label>
-                    <input asp-for="Image" type="file" id="PictureInput" accept="image/*" style="display:none;" />
-                    <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    🛒 Create Product
-                </button>
-            </form>
-
-            <a asp-controller="Product" asp-action="Index" class="back-link">
-                ← Back To Products
-            </a>
+        <div class="form-group">
+            <label asp-for="Name">Product Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Enter product name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
-    </div>
+        <div class="form-group">
+            <label asp-for="Price">Price</label>
+            <input asp-for="Price" type="number" step="0.01" class="form-control" placeholder="0.00" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CategoryId">Category</label>
+            <select asp-for="CategoryId"
+                    asp-items="Model.Categories"
+                    class="form-control">
+
+                <option value="">Select Category</option>
+
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Quantity">Quantity</label>
+            <input asp-for="Quantity" type="number" class="form-control" placeholder="Quantity..." />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" placeholder="Write full product description..."></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <img id="preview" style="max-width:200px; margin-bottom:10px; display:none; border-radius:12px;" />
+
+            <label for="PictureInput" class="file-label">
+                📤 Upload Product Image
+            </label>
+            <input asp-for="Image" type="file" id="PictureInput" accept="image/*" style="display:none;" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            🛒 Create Product
+        </button>
+    </form>
+
+    <a asp-controller="Product" asp-action="Index" class="back-link">
+        ← Back To Products
+    </a>
 </div>
 
 @section Styles {
@@ -82,6 +76,7 @@
             background: linear-gradient(to right, #edf7ed, #f4fff4);
             font-family: 'Segoe UI', sans-serif;
         }
+
 
         .product-container {
             width: 90%;

@@ -17,5 +17,6 @@
         IQueryable<Review> GetByUserId(string userId);
         Task<bool> ExistsAsync(string userId, int productId);
         Task<double> GetAverageRatingForProductAsync(int productId);
+        Task<Review?> GetByUserAndProductAsync(string userId, int productId);
     }
 }
