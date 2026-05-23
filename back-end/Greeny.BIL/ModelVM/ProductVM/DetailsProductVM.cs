@@ -15,6 +15,9 @@ namespace Greeny.BLL.ModelVM.ProductVM
         public double averageRating { get; set; } = 0;
         public int totalReviews { get; set; } = 0;
 
-        public List<DetailsReviewVM> Reviews { get; set; }
-    }
+        public List<DetailsReviewVM> Reviews { get; set; } = new();
+
+        public DetailsReviewVM? UserReview;
+
+}
 }
