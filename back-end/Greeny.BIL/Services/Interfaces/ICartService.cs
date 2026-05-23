@@ -5,6 +5,6 @@ namespace Greeny.BLL.Services.Interfaces
 {
     public interface ICartService
     {
-        public Task<Response<CartDetailsVM>> GetAllItem(int Id);
+        public Task<Response<CartDetailsVM>> GetAllItem(string userId);
     }
 }

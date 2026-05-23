@@ -1,6 +1,8 @@
-﻿using Greeny.BLL.ModelVM.CartItem;
+﻿using Greeny.BLL.ModelVM.Cart;
 using Greeny.BLL.Services.Interfaces;
+using Greeny.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Greeny.PL.Controllers
 {
@@ -13,13 +15,18 @@ namespace Greeny.PL.Controllers
             _cartService = cartService;
         }
 
-        public async Task<IActionResult> Index(int cartId)
+        public async Task<IActionResult> Index()
         {
-            var result = await _cartService.GetAllItem(cartId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (!result.IsSuccess)
-                return View(Enumerable.Empty<DetailsCartItemVM>());
+            var result = await _cartService.GetAllItem(userId);
+            if (!result.IsSuccess || result.Data == null)
+            {
+                ViewBag.CartCount = 0;
+                return View(new CartDetailsVM());
+            }
 
+            ViewBag.TotalItems = result.Data.Items.Sum(i => i.Quantity);
             return View(result.Data);
         }
     }

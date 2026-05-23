@@ -1,4 +1,6 @@
 ﻿
+using Greeny.BLL.ModelVM.Order;
+using Greeny.BLL.Services.Implementation;
 using Greeny.BLL.Services.Interfaces;
 using Greeny.DAL.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -14,34 +16,35 @@ namespace Greeny.PL.Controllers
             _service = service;
         }
 
-        #region Create
-
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Checkout(int cartId)
         {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(OrderCreateVM vm)
-        {
-            if (!ModelState.IsValid)
-                return View(vm);
-
-            var result = await _service.CreateAsync(vm);
+            var result = await _service.CheckoutAsync(cartId);
 
             if (!result.IsSuccess)
-            {
-                ModelState.AddModelError("", "Failed To Create");
-                return View(vm);
-            }
+                if (!result.IsSuccess)
+                    return NotFound();
 
-            return RedirectToAction(nameof(GetAll));
+            decimal shipping;
+            if (result.Data.TotalPrice == 0)
+            {
+                shipping = 0;
+            }
+            else if (result.Data.TotalPrice >= 40)
+            {
+                shipping = 0;
+            }
+            else
+            {
+                shipping = 4.99m;
+            }
+            ViewBag.Shipping = shipping;
+            return View(result.Data);
         }
 
-        #endregion
 
-        #region Get All
+
+
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -50,10 +53,6 @@ namespace Greeny.PL.Controllers
 
             return View(result.Data);
         }
-
-        #endregion
-
-        #region Get By Id
 
         [HttpGet]
         public async Task<IActionResult> GetById(int id)
@@ -65,50 +64,8 @@ namespace Greeny.PL.Controllers
 
             return View(result.Data);
         }
+      
 
-        #endregion
-
-        #region Update
-
-        [HttpGet]
-        public async Task<IActionResult> Update(int id)
-        {
-            var result = await _service.GetByIdAsync(id);
-
-            if (!result.IsSuccess)
-                return NotFound();
-
-            var vm = new OrderUpdateVM
-            {
-                Id = result.Data.Id,
-                Address = result.Data.Address,
-                Status = result.Data.Status,
-                TotalPrice = result.Data.TotalPrice
-            };
-
-            return View(vm);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Update(OrderUpdateVM vm)
-        {
-            if (!ModelState.IsValid)
-                return View(vm);
-
-            var result = await _service.UpdateAsync(vm);
-
-            if (!result.IsSuccess)
-            {
-                ModelState.AddModelError("", "Failed To Update");
-                return View(vm);
-            }
-
-            return RedirectToAction(nameof(GetById), new { id = vm.Id });
-        }
-
-        #endregion
-
-        #region Delete
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
@@ -121,10 +78,6 @@ namespace Greeny.PL.Controllers
             return RedirectToAction(nameof(GetAll));
         }
 
-        #endregion
-
-        #region Get By UserId
-
         [HttpGet]
         public async Task<IActionResult> GetByUserId(string userId)
         {
@@ -132,10 +85,6 @@ namespace Greeny.PL.Controllers
 
             return View(result.Data);
         }
-
-        #endregion
-
-        #region Get By Status
 
         [HttpGet]
         public async Task<IActionResult> GetByStatus(Status status)
@@ -145,21 +94,6 @@ namespace Greeny.PL.Controllers
             return View(result.Data);
         }
 
-        #endregion
-
-        #region Get By UserId And Status
-
-        [HttpGet]
-        public async Task<IActionResult> GetByUserIdAndStatus(string userId, Status status)
-        {
-            var result = await _service.GetByUserIdAndStatusAsync(userId, status);
-
-            return View(result.Data);
-        }
-
-        #endregion
-
-        #region Recent Orders
 
         [HttpGet]
         public async Task<IActionResult> RecentOrders()
@@ -169,10 +103,6 @@ namespace Greeny.PL.Controllers
             return View(result.Data);
         }
 
-        #endregion
-
-        #region Total Sales
-
         [HttpGet]
         public async Task<IActionResult> TotalSales()
         {
@@ -181,6 +111,5 @@ namespace Greeny.PL.Controllers
             return View(result.Data);
         }
 
-        #endregion
     }
 }

@@ -23,17 +23,21 @@ namespace Greeny.DAL.Repository.Implementation
         public IQueryable<Order> GetAllAsync()
         {
             return _context.Orders
-                .Where(o=>!o.IsDeleted)
-                .AsNoTracking();
+        .Where(o => !o.IsDeleted)
+        .Include(o => o.OrderItems)
+        .ThenInclude(i => i.Product)
+        .AsNoTracking();
         }
 
         public IQueryable<Order> GetByIdAsync(int id)
         {
             return _context.Orders
                 .AsNoTracking()
-                .Where(o => o.Id == id && !o.IsDeleted);
+                .Where(o => o.Id == id && !o.IsDeleted)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ThenInclude(p => p.Category);
         }
-
         public async Task UpdateAsync(Order newOrder)
         {
             await _context.Orders
@@ -54,39 +58,45 @@ namespace Greeny.DAL.Repository.Implementation
         }
 
 
-      public IQueryable<Order> GetOrdersByUserIdAsync(string userId)
+        public IQueryable<Order> GetOrdersByUserIdAsync(string userId)
         {
             return _context.Orders
-                //.Include(o => o.OrderItems)
-                //.ThenInclude(oi => oi.Product)
+                .AsNoTracking()
                 .Where(o => o.UserId == userId && !o.IsDeleted)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product);
+        }
+
+        public IQueryable<Order> GetOrdersByUserIdAndStatusAsync(string userId, Status status)
+        {
+            return _context.Orders
+                .Where(o => o.UserId == userId && o.Status == status && !o.IsDeleted)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
                 .AsNoTracking();
         }
 
-       public IQueryable<Order> GetOrdersByUserIdAndStatusAsync(string userId, Status status)
-        {
-            return _context.Orders
-            .Where(o => o.UserId == userId &&  o.Status==status && !o.IsDeleted)
-            .AsNoTracking();
-        }
-
-       public IQueryable<Order> GetOrdersByStatusAsync(Status status)
+        public IQueryable<Order> GetOrdersByStatusAsync(Status status)
         {
             return _context.Orders
                 .Where(o => o.Status == status && !o.IsDeleted)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
                 .AsNoTracking();
         }
 
-       public IQueryable<Order> GetRecentOrdersAsync()
+        public IQueryable<Order> GetRecentOrdersAsync()
         {
             return _context.Orders
-            .Where(o=> !o.IsDeleted)
-            .OrderByDescending(o => o.Date)
-            .Take(10)
-            .AsNoTracking();
+           .Where(o => !o.IsDeleted)
+           .Include(o => o.OrderItems)
+           .ThenInclude(oi => oi.Product)
+           .OrderByDescending(o => o.Date)
+           .Take(10)
+           .AsNoTracking();
         }
 
-       public async Task<bool> ExistsAsync(int id)
+        public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Orders
                 .AnyAsync(o => o.Id == id && !o.IsDeleted);

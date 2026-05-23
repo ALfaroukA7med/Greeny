@@ -1,4 +1,4 @@
-﻿@using Greeny.DAL.Entities
+﻿﻿@using Greeny.DAL.Entities
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<User> UserManager
 
@@ -40,11 +40,11 @@
             <a asp-controller="Home" asp-action="Index" class="active-link">home</a>
             <a asp-controller="Product" asp-action="MarketPlace">marketplace</a>
             <a asp-controller="Post" asp-action="Feed">community</a>
-            <a asp-controller="ReferencePlanet" asp-action="Index">reference</a>
+            <a asp-controller="ReferencePlanet" asp-action="Index">refrence</a>
         </div>
 
         <div class="right-nav">
-            @* <div class="notification-wrapper">
+            <div class="notification-wrapper">
                 <a href="#" class="bell-button">
                     <i class="fa-regular fa-bell"></i>
                     <span class="notif-badge">2</span>
@@ -75,24 +75,43 @@
                         <a href="notifications.html">Show All</a>
                     </div>
                 </div>
-            </div> *@
-            <a href="cart" title="Go to Cart" class="cart-icon-container">
+            </div>
+            <a asp-controller="Cart"
+                   asp-action="Index"
+                   title="Go to Cart"
+                   class="cart-icon-container">
+
                 <img src="~/media/photos/cart.png" alt="Cart">
-                <span class="cart-badge">0</span>
+
+                <span class="cart-badge">
+                    @(ViewBag.CartCount ?? 0)
+                </span>
+
             </a>
+
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="user-profile-wrapper">
                     <button class="profile-dropdown-btn" id="profile-dropdown-btn">
                         <img src="@(string.IsNullOrEmpty(user?.ProfilePicture)
-                                ? Url.Content("~/media/photos/default-user.jpg")
-                              : Url.Content("~/Files/" + user.ProfilePicture))"
+                          ? Url.Content("~/media/photos/default-user.jpg")
+                           : Url.Content("~/Files/" + user.ProfilePicture))"
                              class="profile-avatar" />
                         <span class="profile-name">@user?.FirstName @user?.LastName</span>
                         <i class="fa-solid fa-chevron-down profile-chevron"></i>
                     </button>
 
                     <div class="profile-menu" id="profile-menu">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="User" asp-action="Index" class="profile-menu-item">
+                                <i class="fa-solid fa-gauge-high"></i>
+                                Dashboard
+                            </a>
+
+                            <div class="profile-menu-divider"></div>
+                        }
+
                         <a asp-controller="User" asp-action="Details" asp-route-id="@user?.Id" class="profile-menu-item">
                             <i class="fa-regular fa-user"></i>
                             My Profile
@@ -136,13 +155,13 @@
     </nav>
      
     <div class="menu">
-      <a href="index.html" class="active-link">home</a>
-      <a href="market.html">marketplace</a>
-      <a href="community.html">community</a>
-      <a href="refrence.html">refrence</a>
-      <a href="profile.html">profile</a>
-      <a href="logIn.html" class="logIn">log in</a>
-      <a href="signUp.html" class="signUp">join us</a>
+        <a href="index.html" class="active-link">home</a>
+        <a href="market.html">marketplace</a>
+        <a href="community.html">community</a>
+        <a href="refrence.html">refrence</a>
+        <a href="profile.html">profile</a>
+        <a href="logIn.html" class="logIn">log in</a>
+        <a href="signUp.html" class="signUp">join us</a>
     </div>
 
     @RenderBody()

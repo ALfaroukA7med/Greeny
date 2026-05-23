@@ -30,11 +30,11 @@ namespace Greeny.PL
 
             builder.Services.AddIdentity<User, IdentityRole>(options =>
             {
-                options.Password.RequireDigit = false;            
-                options.Password.RequireLowercase = false;       
-                options.Password.RequireUppercase = false;        
-                options.Password.RequireNonAlphanumeric = false; 
-                options.Password.RequiredLength = 6;              
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 6;
             })
             .AddEntityFrameworkStores<GreenyDbContext>();
 
@@ -42,7 +42,7 @@ namespace Greeny.PL
             // Repositories
             builder.Services.AddScoped<IProductRepo, ProductRepo>();
             builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
-            builder.Services.AddScoped<IReviewRepo,ReviewRepo>();
+            builder.Services.AddScoped<IReviewRepo, ReviewRepo>();
             builder.Services.AddScoped<IReferencePlanetRepo, ReferencePlanetRepo>();
             builder.Services.AddScoped<ICommentRepo, CommentRepo>();
             builder.Services.AddScoped<INotificationRepo, NotificationRepo>();
@@ -51,6 +51,10 @@ namespace Greeny.PL
             builder.Services.AddScoped<ICartRepo, CartRepo>();
             builder.Services.AddScoped<IVoteRepo, VoteRepo>();
             builder.Services.AddScoped<IPaymentRepo, PaymentRepo>();
+            builder.Services.AddScoped <ICartRepo, CartRepo>();
+            builder.Services.AddScoped <IOrderRepo, OrderRepo>();
+            builder.Services.AddScoped<ICartItemRepo, CartItemRepo>();
+            builder.Services.AddScoped<IOrderItemRepo, OrderItemRepo>();
 
 
 
@@ -67,7 +71,13 @@ namespace Greeny.PL
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IVoteService, VoteService>();
+            builder.Services.AddScoped<ICartItemService, CartItemService>();
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IOrderItemService, OrderItemService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
+
+
 
             //AutoMapper
             builder.Services.AddAutoMapper(cfg =>
@@ -84,6 +94,10 @@ namespace Greeny.PL
             {
 
             }, typeof(ReviewProfile).Assembly);
+            builder.Services.AddAutoMapper(cfg =>
+            {
+
+            }, typeof(CartItemProfile).Assembly);
 
             builder.Services.AddAutoMapper(cfg =>
             {
@@ -93,7 +107,7 @@ namespace Greeny.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddHttpContextAccessor();
             var app = builder.Build();
 
             
@@ -126,17 +140,19 @@ namespace Greeny.PL
             using var scope = serviceProvider.CreateScope();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string[] roleNames = { "Admin", "User", "USER" }; // Added 'USER' to safely match your current registration string
+            //string[] roleNames = { "Admin", "User", "USER" }; // Added 'USER' to safely match your current registration string
 
-            foreach (var roleName in roleNames)
-            {
-                var roleExist = await roleManager.RoleExistsAsync(roleName);
-                if (!roleExist)
-                {
-                    // Create the roles and seed them into the database
-                    await roleManager.CreateAsync(new IdentityRole(roleName));
-                }
-            }
+            //foreach (var roleName in roleNames)
+            //{
+            //    var roleExist = await roleManager.RoleExistsAsync(roleName);
+            //    if (!roleExist)
+            //    {
+            //        // Create the roles and seed them into the database
+            //        await roleManager.CreateAsync(new IdentityRole(roleName));
+            //    }
+            //}
+
+
         }
     }
 }

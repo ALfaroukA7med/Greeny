@@ -3,6 +3,7 @@ using Greeny.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Greeny.PL.Controllers
 {
@@ -75,18 +76,22 @@ namespace Greeny.PL.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","User");
         }
 
 
 
         [HttpGet]
         [Authorize]
-        public IActionResult RegisterWithRole()
+        public async Task<IActionResult> RegisterWithRole()
         {
+            var roles = await _roleManager.Roles
+                .Select(r => r.Name)
+                .ToListAsync();
+
             RegisterWithRoleVM vm = new RegisterWithRoleVM()
             {
-                Roles = _roleManager.Roles.ToList()
+                Roles = roles
             };
 
             return View(vm);
@@ -115,7 +120,7 @@ namespace Greeny.PL.Controllers
                   
                 };
                 user.EmailConfirmed = true;
-
+                user.OTP = "0000000";
                 IdentityResult result = await _userManager.CreateAsync(user, vm.Password);
 
                 if (result.Succeeded)

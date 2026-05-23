@@ -47,12 +47,7 @@ namespace Greeny.DAL.Repository.Implementation
                 //.Include(o => o.Product)
         }
 
-      public async Task<decimal> GetTotalPriceByOrderIdAsync(int orderId)
-        {
-            return await _context.OrderItems
-            .Where(o => o.OrderId == orderId && !o.IsDeleted)
-            .SumAsync(o => (decimal?)o.UnitPrice * o.Quantity) ?? 0;
-        }
+
 
        public async Task<int> GetItemsCountByOrderIdAsync(int orderId)
         {

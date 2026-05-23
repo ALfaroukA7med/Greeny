@@ -10,10 +10,10 @@ namespace Greeny.BLL.Services.Interfaces
         Task<Response<bool>> UpdateAsync(PaymentUpdateVM vm);
         Task<Response<bool>> DeleteAsync(int id);
 
-        Task<Response<PaymentVM>> GetByIdAsync(int id);
-        Task<Response<IEnumerable<PaymentVM>>> GetAllAsync();
+        //Task<Response<PaymentVM>> GetByIdAsync(int id);
+        //Task<Response<IEnumerable<PaymentVM>>> GetAllAsync();
 
-        Task<Response<IEnumerable<PaymentVM>>> GetByUserIdAsync(string userId);
-        Task<Response<IEnumerable<PaymentVM>>> GetByStatusAsync(string status);
+        //Task<Response<IEnumerable<PaymentVM>>> GetByUserIdAsync(string userId);
+        //Task<Response<IEnumerable<PaymentVM>>> GetByStatusAsync(string status);
     }
 }

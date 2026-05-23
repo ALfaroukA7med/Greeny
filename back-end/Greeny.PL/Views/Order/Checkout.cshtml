@@ -1,0 +1,172 @@
+﻿@model OrderDetailsVM
+
+@{
+    ViewData["Title"] = "Checkout";
+    decimal orderTotal = Model.Items.Sum(i => i.Quantity * i.UnitPrice);
+
+    decimal FinalPrice = @orderTotal + @ViewBag.Shipping;
+}
+
+<style>
+    body {
+        background: #f4f7f2;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .checkout-container {
+        max-width: 900px;
+        margin: auto;
+        padding: 30px 15px;
+    }
+
+    .page-title {
+        text-align: center;
+        color: #2f5d3a;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    .order-card {
+        display: flex;
+        gap: 15px;
+        background: #fff;
+        border-radius: 14px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: 0.3s;
+        border-left: 5px solid #4a8f55;
+    }
+
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        .order-card img {
+            width: 140px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+    .order-info {
+        flex: 1;
+    }
+
+    .product-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #2f5d3a;
+        margin-bottom: 5px;
+    }
+
+    .meta {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 4px;
+    }
+
+    .total {
+        font-weight: bold;
+        color: #1e7e34;
+        margin-top: 8px;
+    }
+
+    .order-summary {
+        margin-top: 30px;
+        padding: 20px;
+        background: #e9f5ec;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+        .order-summary h3 {
+            color: #2f5d3a;
+        }
+
+    .info-box {
+        margin-top: 20px;
+        background: #ffffff;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .btn-back {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 18px;
+        background: #4a8f55;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .btn-back:hover {
+            background: #3b6f43;
+        }
+</style>
+
+<div class="checkout-container">
+
+    <h2 class="page-title">🌿 Order Summary</h2>
+
+    @foreach (var item in Model.Items)
+    {
+        <div class="order-card">
+
+            <img src="@Url.Content("~/Files/" + item.ProductImage)" alt="@item.ProductName" />
+
+            <div class="order-info">
+
+                <div class="product-name">
+                    @item.ProductName
+                </div>
+                <div class="product-image">
+                    @item.ProductImage
+                </div>
+                
+
+                <div class="meta">
+                    🌱 Category: @item.CategoryName
+                </div>
+
+                <div class="meta">
+                    📦 Quantity: @item.Quantity
+                </div>
+
+                <div class="meta">
+                    💰 Unit Price: @item.UnitPrice
+                </div>
+
+                <div class="total">
+                    Total: @(item.UnitPrice * item.Quantity)
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+    @* <div class="order-summary">
+        <h3>Order Total: @orderTotal</h3>
+    </div> *@
+
+    <div class="info-box">
+        <p><strong>Order Id :</strong> @Model.Id</p>
+        <p><strong>Status : </strong> @Model.Status</p>
+        <p><strong>Date : </strong> @Model.Date</p>
+        <p><strong>Total Price : </strong> @FinalPrice</p>
+    </div>
+
+    <a asp-controller="Payment"
+           asp-action="Create"
+           asp-route-orderId="@Model.Id"
+           
+           class="btn custom-black">
+        Continue To Payment
+    </a>
+
+</div>

@@ -6,7 +6,7 @@ namespace Greeny.DAL.Entities
     {
         public int Id { get; set; }
         public decimal TotalPrice { get; set; } = 0.0m;
-        public string Address { get; set; } = string.Empty;
+        public string? Address { get; set; } = "Egypt";
         public Status Status { get; set; } = Status.Pending;
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; } = false;

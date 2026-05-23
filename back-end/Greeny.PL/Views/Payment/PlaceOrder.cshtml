@@ -1,0 +1,28 @@
+﻿
+
+
+<div class="order-success-modal" id="order-success-modal">
+    <div class="success-content">
+        <div class="success-icon">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <h2>Order Placed Successfully!</h2>
+        <p>
+            Thank you for your purchase. Your organic goodies will be on their way
+            soon.
+        </p>
+    </div>
+    <div class="success-buttons-row">
+        <a href="track.html" class="btn-track-order">Track Order</a>
+        <a asp-controller="Home" asp-action="Index" class="btn-continue-shopping-outline">Back to Home</a>
+    </div>
+</div>
+
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/OrderPlaced.css" />
+}
+
+@section Scripts {
+    <script src="~/js/home.js"></script>
+}

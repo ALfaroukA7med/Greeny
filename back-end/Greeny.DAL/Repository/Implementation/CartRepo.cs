@@ -22,18 +22,17 @@ namespace Greeny.DAL.Repository.Implementation
         public IQueryable<Cart> GetAll()
         {
             return _context.Carts
-                .Where(c=>!c.IsDeleted)
+                .Where(c => !c.IsDeleted)
                 .AsNoTracking();
         }
 
-        public IQueryable<Cart> GetById(int id)
+        public async Task<Cart?> GetByIdAsync(int cartId)
         {
-            return _context.Carts
-            .Where(c => c.Id == id && !c.IsDeleted)
-            .Include(c => c.CartItems)
-                .ThenInclude(ci => ci.Product)
-                .ThenInclude(p => p.Category)
-            .AsNoTracking();
+            return await _context.Carts
+                .Include(c => c.CartItems)
+                 .ThenInclude(ci => ci.Product)
+                 .ThenInclude(p => p.Category)
+                .FirstOrDefaultAsync(c => c.Id == cartId);
         }
 
         public async Task DeleteAsync(int id)
@@ -46,14 +45,14 @@ namespace Greeny.DAL.Repository.Implementation
                 );
         }
 
-        public IQueryable<Cart> GetByUserId(string userId)
+        public async Task<Cart?> GetByUserId(string userId)
         {
-            return _context.Carts
-            //.Include(c => c.CartItems)
-            .Where(c => c.UserId == userId && !c.IsDeleted)
-            .AsNoTracking();
+            return await _context.Carts
+                .Include(c => c.CartItems)
+                 .ThenInclude(ci => ci.Product)
+                 .ThenInclude(p => p.Category)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
         }
-
 
         public async Task<bool> ExistsByUserIdAsync(string userId)
         {
@@ -74,10 +73,10 @@ namespace Greeny.DAL.Repository.Implementation
             // above is more optimized.
 
             //return await _context.CartItems
-           //.Where(c => c.CartId == cartId && !c.IsDeleted)
-           //.SumAsync(c => c.Quantity * c.Product.Price);
-           
-            
+            //.Where(c => c.CartId == cartId && !c.IsDeleted)
+            //.SumAsync(c => c.Quantity * c.Product.Price);
+
+
             //.Include(c => c.Product)
         }
 

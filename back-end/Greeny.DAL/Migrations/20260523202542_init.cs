@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Greeny.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Databaseupdated : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -105,9 +105,8 @@ namespace Greeny.DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PostId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsUpvote = table.Column<bool>(type: "bit", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -275,6 +274,7 @@ namespace Greeny.DAL.Migrations
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SenderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -328,8 +328,8 @@ namespace Greeny.DAL.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
                     Votes = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -440,6 +440,11 @@ namespace Greeny.DAL.Migrations
                     PaidAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TransactionRef = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MethodImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false)
@@ -609,6 +614,12 @@ namespace Greeny.DAL.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_UserId_PostId",
+                table: "Votes",
+                columns: new[] { "UserId", "PostId" },
+                unique: true);
         }
 
         /// <inheritdoc />

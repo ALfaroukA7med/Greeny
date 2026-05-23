@@ -59,7 +59,7 @@ namespace Greeny.BLL.Services.Implementation
             var products = await query
                 .Select(p => new ProductListVM
                 {
-                    ProudctId = p.Id,
+                    ProductId = p.Id,
                     ProductName = p.Name,
                     Price = p.Price,
 

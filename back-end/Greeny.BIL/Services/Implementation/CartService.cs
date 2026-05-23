@@ -14,29 +14,31 @@ namespace Greeny.BLL.Services.Implementation
             _repo = repo;
         }
 
-        public async Task<Response<CartDetailsVM>> GetAllItem(int cartId)
+        public async Task<Response<CartDetailsVM>> GetAllItem(string userId)
         {
 
-            var items = _repo.GetById(cartId);
+            var items = await _repo.GetByUserId(userId);
 
-            if (items == null || !items.Any())
+            if (items == null)
             {
                 return Response<CartDetailsVM>.Fail(CartError.NotFound);
             }
 
-            var itemsVM = items.SelectMany(cart => cart.CartItems.Select(ci => new DetailsCartItemVM
+            var itemsVM = items.CartItems.Where(c => !c.IsDeleted).Select(ci => new DetailsCartItemVM
             {
+                Id = ci.Id,
                 ProductName = ci.Product.Name,
                 CategoryName = ci.Product.Category.Name,
                 ImageUrl = ci.Product.Image,
                 Price = ci.Product.Price,
                 Quantity = ci.Quantity
-            }));
+            }).ToList();
 
             var totalPrice = itemsVM.Sum(item => item.Price * item.Quantity);
-            
+
             CartDetailsVM Result = new CartDetailsVM
             {
+                CartId = items.Id,
                 Items = itemsVM,
                 Total = totalPrice
             };

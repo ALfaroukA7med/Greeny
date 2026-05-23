@@ -2,7 +2,7 @@
 {
     public class ProductListVM
     {
-        public int ProudctId { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; }
         public string CategoryName { get; set; }
         public decimal Price { get; set; }

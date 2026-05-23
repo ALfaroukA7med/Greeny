@@ -12,54 +12,25 @@ namespace Greeny.BLL.Services.Implementation
             _repo = repo;
         }
 
-        public async Task<Response<bool>> CreateAsync(OrderItemCreateVM vm)
-        {
-            var entity = new OrderItem
-            {
-                OrderId = vm.OrderId,
-                ProductId = vm.ProductId,
-                Quantity = vm.Quantity,
-                UnitPrice = vm.UnitPrice
-            };
+        //public async Task<Response<bool>> RemoveProductFromOrderAsync(int orderId, int productId)
+        //{
+        //    var result = await _repo.RemoveProductFromOrderAsync(orderId, productId);
 
-            await _repo.CreateAsync(entity);
+        //    if (!result)
+        //        return Response<bool>.Fail(OrderItemError.NotFound);
 
-            return Response<bool>.Success(true);
-        }
+        //    return Response<bool>.Success(true);
+        //}
 
-        public async Task<Response<bool>> UpdateAsync(OrderItemUpdateVM vm)
-        {
-            var entity = new OrderItem
-            {
-                Id = vm.Id,
-                Quantity = vm.Quantity,
-                UnitPrice = vm.UnitPrice
-            };
-
-            await _repo.UpdateAsync(entity);
-
-            return Response<bool>.Success(true);
-        }
-
-        public async Task<Response<bool>> RemoveProductFromOrderAsync(int orderId, int productId)
-        {
-            var result = await _repo.RemoveProductFromOrderAsync(orderId, productId);
-
-            if (!result)
-                return Response<bool>.Fail(OrderItemError.NotFound);
-
-            return Response<bool>.Success(true);
-        }
-
-        public async Task<Response<OrderItemVM>> GetByIdAsync(int id)
+        public async Task<Response<OrderItemDetailsVM>> GetByIdAsync(int id)
         {
             var item = await _repo.GetById(id)
                 .FirstOrDefaultAsync();
 
             if (item == null)
-                return Response<OrderItemVM>.Fail(OrderItemError.NotFound);
+                return Response<OrderItemDetailsVM>.Fail(OrderItemError.NotFound);
 
-            var vm = new OrderItemVM
+            var vm = new OrderItemDetailsVM
             {
                 Id = item.Id,
                 OrderId = item.OrderId,
@@ -68,13 +39,13 @@ namespace Greeny.BLL.Services.Implementation
                 UnitPrice = item.UnitPrice
             };
 
-            return Response<OrderItemVM>.Success(vm);
+            return Response<OrderItemDetailsVM>.Success(vm);
         }
 
-        public async Task<Response<IEnumerable<OrderItemVM>>> GetByOrderIdAsync(int orderId)
+        public async Task<Response<IEnumerable<OrderItemDetailsVM>>> GetByOrderIdAsync(int orderId)
         {
             var items = await _repo.GetByOrderId(orderId)
-                .Select(i => new OrderItemVM
+                .Select(i => new OrderItemDetailsVM
                 {
                     Id = i.Id,
                     OrderId = i.OrderId,
@@ -84,28 +55,28 @@ namespace Greeny.BLL.Services.Implementation
                 })
                 .ToListAsync();
 
-            return Response<IEnumerable<OrderItemVM>>.Success(items);
+            return Response<IEnumerable<OrderItemDetailsVM>>.Success(items);
         }
 
-        public async Task<Response<decimal>> GetTotalPriceByOrderIdAsync(int orderId)
-        {
-            var total = await _repo.GetTotalPriceByOrderIdAsync(orderId);
+        //public async Task<Response<decimal>> GetTotalPriceByOrderIdAsync(int orderId)
+        //{
+        //    var total = await _repo.GetTotalPriceByOrderIdAsync(orderId);
 
-            return Response<decimal>.Success(total);
-        }
+        //    return Response<decimal>.Success(total);
+        //}
 
-        public async Task<Response<int>> GetItemsCountByOrderIdAsync(int orderId)
-        {
-            var count = await _repo.GetItemsCountByOrderIdAsync(orderId);
+        //public async Task<Response<int>> GetItemsCountByOrderIdAsync(int orderId)
+        //{
+        //    var count = await _repo.GetItemsCountByOrderIdAsync(orderId);
 
-            return Response<int>.Success(count);
-        }
+        //    return Response<int>.Success(count);
+        //}
 
-        public async Task<Response<bool>> ProductExistsInOrderAsync(int orderId, int productId)
-        {
-            var exists = await _repo.ProductExistsInOrderAsync(orderId, productId);
+        //public async Task<Response<bool>> ProductExistsInOrderAsync(int orderId, int productId)
+        //{
+        //    var exists = await _repo.ProductExistsInOrderAsync(orderId, productId);
 
-            return Response<bool>.Success(exists);
-        }
+        //    return Response<bool>.Success(exists);
+        //}
     }
 }

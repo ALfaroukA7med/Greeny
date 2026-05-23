@@ -14,7 +14,7 @@ namespace Greeny.DAL.Repository.Implementation
         {
             _context = context;
         }
-        
+
 
         public async Task CreateAsync(CartItem cartItem)
         {
@@ -28,29 +28,32 @@ namespace Greeny.DAL.Repository.Implementation
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task UpdateAsync(CartItem newCartItem)
+        public async Task UpdateAsync(CartItem newCartItem, int cartId)
         {
             await _context.CartItems
-                .Where(c => c.Id == newCartItem.Id)
+                .Where(c => c.Id == newCartItem.Id && c.CartId == cartId)
                 .ExecuteUpdateAsync(setter => setter
                 .SetProperty(r => r.Quantity, newCartItem.Quantity)
                 );
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int cartId)
         {
-            await _context.CartItems
-                .Where(c => c.Id == id)
-                .ExecuteUpdateAsync(setter => setter
-                .SetProperty(r => r.IsDeleted, true)
-                );
+            var cartItem = await _context.CartItems
+                .FirstOrDefaultAsync(c => c.Id == id && c.CartId == cartId);
+
+            if (cartItem == null)
+                return;
+
+            _context.CartItems.Remove(cartItem);
+            await _context.SaveChangesAsync();
         }
         public IQueryable<CartItem> GetByCartId(int cartId)
         {
             return _context.CartItems
             .Where(c => c.CartId == cartId && !c.IsDeleted)
-            .Include(p=>p.Product)
-            .ThenInclude(pi=>pi.Category)
+            .Include(p => p.Product)
+            .ThenInclude(pi => pi.Category)
             .AsNoTracking();
         }
 
@@ -70,13 +73,18 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task<bool> ClearCartAsync(int cartId)
         {
-            int rowsAffected = await _context.CartItems
-            .Where(c => c.CartId == cartId && !c.IsDeleted)
-            .ExecuteUpdateAsync(setter => setter
-            .SetProperty(r => r.IsDeleted, true)
-            );
+            var cartItems = await _context.CartItems
+                .Where(c => c.CartId == cartId)
+                .ToListAsync();
 
-            return rowsAffected > 0;
+            if (!cartItems.Any())
+                return false;
+
+            _context.CartItems.RemoveRange(cartItems);
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
     }

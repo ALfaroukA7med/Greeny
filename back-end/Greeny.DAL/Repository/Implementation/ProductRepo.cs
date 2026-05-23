@@ -28,7 +28,7 @@ namespace Greeny.DAL.Repository.Implementation
             .AsNoTracking();
         }
 
-        public async Task<Product> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(int id)
         {
             return await _context.Products
         .Include(p => p.Reviews)

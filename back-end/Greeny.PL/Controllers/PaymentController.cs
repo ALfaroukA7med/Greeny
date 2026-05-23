@@ -13,20 +13,26 @@ namespace Greeny.PL.Controllers
             _service = service;
         }
 
-        #region Create
+
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(int orderId)
         {
-            return View();
+            return View(new PaymentCreateVM
+            {
+                OrderId = orderId
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(PaymentCreateVM vm)
         {
             if (!ModelState.IsValid)
+            {
+                vm.OrderId = vm.OrderId;
                 return View(vm);
-
+            }
+            vm.OrderId = vm.OrderId;
             var result = await _service.CreateAsync(vm);
 
             if (!result.IsSuccess)
@@ -35,118 +41,105 @@ namespace Greeny.PL.Controllers
                 return View(vm);
             }
 
-            return RedirectToAction(nameof(GetAll));
+            return RedirectToAction(nameof(PlaceOrder));
         }
 
-        #endregion
 
-        #region Update
-
-        [HttpGet]
-        public async Task<IActionResult> Update(int id)
-        {
-            var result = await _service.GetByIdAsync(id);
-
-            if (!result.IsSuccess)
-                return NotFound();
-
-            var payment = result.Data;
-
-            var vm = new PaymentUpdateVM
-            {
-                Id = payment.Id,
-                TransactionRef = payment.TransactionRef,
-                Method = payment.Method,
-                Amount = payment.Amount,
-                Status = payment.Status
-            };
-
-            return View(vm);
+        public IActionResult PlaceOrder()
+        {       
+            return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update(PaymentUpdateVM vm)
-        {
-            if (!ModelState.IsValid)
-                return View(vm);
 
-            var result = await _service.UpdateAsync(vm);
+        //[HttpGet]
+        //public async Task<IActionResult> Update(int id)
+        //{
+        //    var result = await _service.GetByIdAsync(id);
 
-            if (!result.IsSuccess)
-            {
-                ModelState.AddModelError("", "Failed To Update");
-                return View(vm);
-            }
+        //    if (!result.IsSuccess)
+        //        return NotFound();
 
-            return RedirectToAction(nameof(GetById), new { id = vm.Id });
-        }
+        //    var payment = result.Data;
 
-        #endregion
+        //    var vm = new PaymentUpdateVM
+        //    {
+        //        Id = payment.Id,
+        //        TransactionRef = payment.TransactionRef,
+        //        Method = payment.Method,
+        //        Amount = payment.Amount,
+        //        Status = payment.Status
+        //    };
 
-        #region Delete
+        //    return View(vm);
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _service.DeleteAsync(id);
+        //[HttpPost]
+        //public async Task<IActionResult> Update(PaymentUpdateVM vm)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return View(vm);
 
-            if (!result.IsSuccess)
-                return NotFound();
+        //    var result = await _service.UpdateAsync(vm);
 
-            return RedirectToAction(nameof(GetAll));
-        }
+        //    if (!result.IsSuccess)
+        //    {
+        //        ModelState.AddModelError("", "Failed To Update");
+        //        return View(vm);
+        //    }
 
-        #endregion
+        //    return RedirectToAction(nameof(GetById), new { id = vm.Id });
+        //}
 
-        #region Get By Id
 
-        [HttpGet]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var result = await _service.GetByIdAsync(id);
+        //[HttpPost]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var result = await _service.DeleteAsync(id);
 
-            if (!result.IsSuccess)
-                return NotFound();
+        //    if (!result.IsSuccess)
+        //        return NotFound();
 
-            return View(result.Data);
-        }
+        //    return RedirectToAction(nameof(GetAll));
+        //}
 
-        #endregion
 
-        #region Get All
+        //[HttpGet]
+        //public async Task<IActionResult> GetById(int id)
+        //{
+        //    var result = await _service.GetByIdAsync(id);
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _service.GetAllAsync();
+        //    if (!result.IsSuccess)
+        //        return NotFound();
 
-            return View(result.Data);
-        }
+        //    return View(result.Data);
+        //}
 
-        #endregion
+        //[HttpGet]
+        //public async Task<IActionResult> GetAll()
+        //{
+        //    var result = await _service.GetAllAsync();
 
-        #region Get By User Id
+        //    return View(result.Data);
+        //}
 
-        [HttpGet]
-        public async Task<IActionResult> GetByUserId(string userId)
-        {
-            var result = await _service.GetByUserIdAsync(userId);
 
-            return View(result.Data);
-        }
 
-        #endregion
+        //[HttpGet]
+        //public async Task<IActionResult> GetByUserId(string userId)
+        //{
+        //    var result = await _service.GetByUserIdAsync(userId);
 
-        #region Get By Status
+        //    return View(result.Data);
+        //}
 
-        [HttpGet]
-        public async Task<IActionResult> GetByStatus(string status)
-        {
-            var result = await _service.GetByStatusAsync(status);
 
-            return View(result.Data);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> GetByStatus(string status)
+        //{
+        //    var result = await _service.GetByStatusAsync(status);
 
-        #endregion
+        //    return View(result.Data);
+        //}
+
     }
 }
