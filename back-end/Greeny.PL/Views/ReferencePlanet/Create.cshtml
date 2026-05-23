@@ -5,112 +5,112 @@
     ViewData["Title"] = "Create Plant";
 }
 
-        <div class="form-side">
+<div class="form-side">
 
-            <h2 class="form-title">
-                Plant Information
-            </h2>
+    <h2 class="form-title">
+        Plant Information
+    </h2>
 
-            <form asp-action="Create" method="post" enctype="multipart/form-data">
-                @Html.AntiForgeryToken()
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <div class="form-group">
-                    <label asp-for="CommonName">Common Name</label>
-                    <input asp-for="CommonName" class="form-control" />
-                    <span asp-validation-for="CommonName" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="CommonName">Common Name</label>
+            <input asp-for="CommonName" class="form-control" />
+            <span asp-validation-for="CommonName" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="SciName">Sci Name</label>
-                    <input asp-for="SciName" class="form-control" />
-                    <span asp-validation-for="SciName" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="SciName">Sci Name</label>
+            <input asp-for="SciName" class="form-control" />
+            <span asp-validation-for="SciName" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="Family">Family</label>
-                    <input asp-for="Family" class="form-control" />
-                    <span asp-validation-for="Family" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="Family">Family</label>
+            <input asp-for="Family" class="form-control" />
+            <span asp-validation-for="Family" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="ShortDescription">Short Description</label>
-                    <input asp-for="ShortDescription" class="form-control" />
-                    <span asp-validation-for="ShortDescription" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="ShortDescription">Short Description</label>
+            <input asp-for="ShortDescription" class="form-control" />
+            <span asp-validation-for="ShortDescription" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="Description">Description</label>
-                    <textarea asp-for="Description" class="form-control"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="PlanetType">Planet Type</label>
-                    <input asp-for="PlanetType" class="form-control" />
-                    <span asp-validation-for="PlanetType" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="PlanetType">Planet Type</label>
+            <input asp-for="PlanetType" class="form-control" />
+            <span asp-validation-for="PlanetType" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="GrowthSeason">Growth Season</label>
-                    <input asp-for="GrowthSeason" class="form-control" />
-                    <span asp-validation-for="GrowthSeason" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="GrowthSeason">Growth Season</label>
+            <input asp-for="GrowthSeason" class="form-control" />
+            <span asp-validation-for="GrowthSeason" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="SunlightReq">Sunlight Req</label>
-                    <input asp-for="SunlightReq" class="form-control" />
-                    <span asp-validation-for="SunlightReq" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="SunlightReq">Sunlight Req</label>
+            <input asp-for="SunlightReq" class="form-control" />
+            <span asp-validation-for="SunlightReq" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="SolidType">Solid Type</label>
-                    <input asp-for="SolidType" class="form-control" />
-                    <span asp-validation-for="SolidType" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="SolidType">Solid Type</label>
+            <input asp-for="SolidType" class="form-control" />
+            <span asp-validation-for="SolidType" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="WaterReq">Water Req</label>
-                    <input asp-for="WaterReq" class="form-control" />
-                    <span asp-validation-for="WaterReq" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="WaterReq">Water Req</label>
+            <input asp-for="WaterReq" class="form-control" />
+            <span asp-validation-for="WaterReq" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
-                    <label asp-for="TempReq">Temp Req</label>
-                    <input asp-for="TempReq" class="form-control" />
-                    <span asp-validation-for="TempReq" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="TempReq">Temp Req</label>
+            <input asp-for="TempReq" class="form-control" />
+            <span asp-validation-for="TempReq" class="text-danger"></span>
+        </div>
 
-                <div class="form-group">
+        <div class="form-group">
 
-                    <img id="preview"
-                         style="max-width:200px; margin-bottom:10px; display:none; border-radius:10px;" />
+            <img id="preview"
+                 style="max-width:200px; margin-bottom:10px; display:none; border-radius:10px;" />
 
-                    <label for="PictureInput" class="file-label">
-                        📤 Upload Plant Image
-                    </label>
+            <label for="PictureInput" class="file-label">
+                📤 Upload Plant Image
+            </label>
 
-                    <input asp-for="UploadImage"
-                           type="file"
-                           id="PictureInput"
-                           accept="image/*"
-                           style="display:none;" />
+            <input asp-for="UploadImage"
+                   type="file"
+                   id="PictureInput"
+                   accept="image/*"
+                   style="display:none;" />
 
-                    <span asp-validation-for="UploadImage" class="text-danger"></span>
-
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    🌿 Create Plant
-                </button>
-
-            </form>
-
-            <a asp-controller="ReferencePlanet" asp-action="IndexForDashboard" class="back-link">
-                ← Back To Plants
-            </a>
+            <span asp-validation-for="UploadImage" class="text-danger"></span>
 
         </div>
+
+        <button type="submit" class="submit-btn">
+            🌿 Create Plant
+        </button>
+
+    </form>
+
+    <a asp-controller="ReferencePlanet" asp-action="IndexForDashboard" class="back-link">
+        ← Back To Plants
+    </a>
+
+</div>
 
 
 

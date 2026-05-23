@@ -6,14 +6,11 @@ namespace Greeny.DAL.Repository.Interfaces
     {
 
         Task<CartItem> GetById(int id);
-
-
-
         Task CreateAsync(CartItem cartItem);
 
-        Task UpdateAsync(CartItem cartItem);
+        Task UpdateAsync(CartItem cartItem, int cartId);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id,int cartId);
 
         IQueryable<CartItem> GetByCartId(int cartId);
 

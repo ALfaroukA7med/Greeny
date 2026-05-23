@@ -40,8 +40,14 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task DeleteAsync(string id)
         {
-            var result = await _context.Users.Where(u => u.Id == id && !u.IsDeleted)
-                 .ExecuteUpdateAsync(setter => setter.SetProperty(u => u.IsDeleted, true));
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+                return;
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
         }
 
         public IQueryable<User> GetAll()

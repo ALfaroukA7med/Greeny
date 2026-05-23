@@ -2,6 +2,8 @@
 using Greeny.BLL.ModelVM.OrderItem;
 using Greeny.DAL.Enums;
 using MailKit.Search;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 
 namespace Greeny.BLL.Services.Implementation
@@ -11,30 +13,31 @@ namespace Greeny.BLL.Services.Implementation
         private readonly IOrderRepo _orderRepo;
         private readonly ICartItemRepo _cartItemRepo;
         private readonly ICartRepo _cartRepo;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public OrderService(IOrderRepo orderRepo,ICartItemRepo cartItemRepo, ICartRepo cartRepo)
+
+        public OrderService(IOrderRepo orderRepo,ICartItemRepo cartItemRepo, IHttpContextAccessor httpContextAccessor, ICartRepo cartRepo)
         {
             _orderRepo = orderRepo;
             _cartItemRepo = cartItemRepo;
             _cartRepo = cartRepo;
+            _httpContextAccessor = httpContextAccessor;
         }
-
-        public async Task<Response<int>> CheckoutAsync(int cartId, string address)
+        public async Task<Response<OrderDetailsVM>> CheckoutAsync(int cartId)
         {
-            var cartItems = await _cartItemRepo.GetByCartId(cartId)
-                .Include(c => c.Product)
-                .ToListAsync();
+            var cartItems = await _cartItemRepo.GetByCartId(cartId).ToListAsync();
 
             if (!cartItems.Any())
-                return Response<int>.Fail(CartError.Empty);
-
+                return Response<OrderDetailsVM>.Fail(CartError.Empty);
+            var userId = _httpContextAccessor.HttpContext.User
+              .FindFirst(ClaimTypes.NameIdentifier)?.Value;
             decimal total = 0;
 
             var order = new Order
             {
-                Address = address,
                 Status = Status.Pending,
                 Date = DateTime.UtcNow,
+                UserId= userId,
                 OrderItems = new List<OrderItem>()
             };
 
@@ -58,7 +61,25 @@ namespace Greeny.BLL.Services.Implementation
 
             await _cartItemRepo.ClearCartAsync(cartId);
 
-            return Response<int>.Success(order.Id);
+            var resultVm = new OrderDetailsVM
+            {
+                Id = order.Id,
+                TotalPrice = order.TotalPrice,
+                Address = "Egypt",
+                Status = order.Status,
+                Date = order.Date,
+                UserId = order.UserId,
+                Items = order.OrderItems.Select(i => new OrderItemDetailsVM
+                {
+                    ProductId = i.ProductId,
+                    ProductName = i.Product?.Name,
+                    CategoryName = i.Product?.Category?.Name,
+                    ProductImage = i.Product?.Image,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice
+                }).ToList()
+            };
+            return Response<OrderDetailsVM>.Success(resultVm);
         }
 
         //public async Task<Response<bool>> CreateAsync(OrderCreateVM order)

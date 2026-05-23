@@ -5,6 +5,7 @@ using Greeny.BLL.Extension;
 using Greeny.BLL.ModelVM.Post;
 using Greeny.BLL.Services.Interfaces;
 using System.Reflection.Metadata;
+using Org.BouncyCastle.Bcpg.Sig;
 
 
 namespace Greeny.BLL.Services.Implementation
@@ -13,15 +14,18 @@ namespace Greeny.BLL.Services.Implementation
     {
         private readonly IPostRepo _postrepo;
         private readonly ICommentRepo _commentrepo;
-        public PostService(IPostRepo postrepo, ICommentRepo commentrepo)
+        private readonly IUserRepo _userrepo;
+        public PostService(IPostRepo postrepo, ICommentRepo commentrepo, IUserRepo userrepo)
         {
             _postrepo = postrepo;
             _commentrepo = commentrepo;
+            _userrepo = userrepo;
         }
         public async Task<Result> AddAsync(PostCreateVM post)
         {
             var npost = new Post()
             {
+                UserId = post.UserId,
                 Content = post.Content,
                 ImagePath = post.ImagePath
             };
@@ -31,12 +35,23 @@ namespace Greeny.BLL.Services.Implementation
             return Result.Success();
         }
 
-        public async Task<Result> DeleteAsync(int id)
+        public async Task<Result> DeleteAsync(string userId, int id)
         {
             var post = await _postrepo.GetByIdAsync(id).FirstOrDefaultAsync();
 
             if (post == null) return Result.Failure(PostError.NotFound);
+            var currentUser = await _userrepo.GetByIdAsync(userId);
 
+            if (currentUser == null)
+            {
+                return Result.Failure(UserError.NotFound); // Or a generic unauthorized error
+            }
+            if (currentUser.Id != userId)
+            {
+                return Result.Failure(UserError.Unauthorized);
+            }
+
+            // implement user admin can delete too..
             await _postrepo.DeleteAsync(id);
 
             return Result.Success();
@@ -46,12 +61,16 @@ namespace Greeny.BLL.Services.Implementation
         {
             throw new NotImplementedException();
         }
-
         public async Task<Result<IEnumerable<PostListVM>>> GetAllAsync()
         {
             var posts = await _postrepo
-                .GetAll()
-                .Select(p => new PostListVM{
+                .GetAll().OrderByDescending(p => p.Date)
+                .Select(p => new PostListVM {
+                    Id = p.Id,
+                    UserId = p.UserId,
+                    Votes = p.Votes,
+                    FormattedDate = DateTimeExtensions.ToTimeAgo(p.Date),
+                    AuthorName = $"{p.User.FirstName} {p.User.LastName}",
                     ImagePath = p.ImagePath,
                     Content = p.Content
                 })

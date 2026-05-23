@@ -4,8 +4,7 @@
     ViewData["Title"] = "Cart";
 
     decimal shipping;
-    int totalItems = ViewBag.CartCount != null ? (int)ViewBag.CartCount : 0;
-    if (Model.Total == 0 || totalItems == 0)
+    if (Model.Total == 0)
     {
         shipping = 0;
     }
@@ -25,7 +24,7 @@
         <h1 class="cart-title">Your Cart</h1>
 
         <p class="cart-subtitle" id="cart-item-count">
-            @totalItems items ready to harvest
+            @ViewBag.TotalItems items ready to harvest
         </p>
     </div>
 </header>
@@ -44,9 +43,9 @@
                     {
                         <div class="cart-item-row" data-id="@item.Id">
 
-                            <img src="@item.ImageUrl"
+                            <img src="~/Files/@item.ImageUrl"
                                  alt="@item.ProductName"
-                                 class="cart-item-img">
+                                 class="cart-item-img" />
 
                             <div class="cart-item-details">
 
@@ -64,10 +63,11 @@
 
                                 <form asp-controller="CartItem"
                                       asp-action="Delete"
+                                      asp-route-id="@item.Id"
+                                      asp-route-cartId="@Model.CartId"
                                       method="post">
 
-                                    <input type="hidden" name="id" value="@item.Id" />
-                                    <input type="hidden" name="cartId" value="@Model.CartId" />
+                                    @Html.AntiForgeryToken()
 
                                     <button type="submit" class="delete-item-btn">
                                         <i class="fa-solid fa-trash-can"></i>
@@ -83,10 +83,10 @@
 
                                     <form asp-controller="CartItem"
                                           asp-action="Decrease"
+                                          asp-route-id="@item.Id"
+                                          asp-route-cartId="@Model.CartId"
                                           method="post">
-
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                        <input type="hidden" name="cartId" value="@Model.CartId" />
+                                        @Html.AntiForgeryToken()
 
                                         <button type="submit" class="qty-btn">
                                             <i class="fa-solid fa-minus"></i>
@@ -100,10 +100,10 @@
 
                                     <form asp-controller="CartItem"
                                           asp-action="Increase"
+                                          asp-route-id="@item.Id"
+                                          asp-route-cartId="@Model.CartId"
                                           method="post">
-
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                        <input type="hidden" name="cartId" value="@Model.CartId" />
+                                        @Html.AntiForgeryToken()
 
                                         <button type="submit" class="qty-btn">
                                             <i class="fa-solid fa-plus"></i>
@@ -145,7 +145,7 @@
 
                 <div class="summary-row">
                     <span id="summary-subtotal-text">
-                        Subtotal (@totalItems items)
+                        Subtotal (@ViewBag.TotalItems items)
                     </span>
 
                     <span id="summary-subtotal-price">
@@ -194,7 +194,7 @@
                 </a>
 
                 <a asp-controller="Product"
-                       asp-action="Index"
+                       asp-action="MarketPlace"
                        class="continue-shopping">
                     Continue Shopping
                 </a>

@@ -18,7 +18,7 @@ namespace Greeny.PL.Controllers
         public async Task<IActionResult> Create(CreateCartItemVM vm)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("Index", "Products");
+                return RedirectToAction("Index", "Product");
 
             var result = await _cartItemService.CreateAsync(vm);
 
@@ -30,24 +30,26 @@ namespace Greeny.PL.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id, int cartId)
         {
-            var result= await _cartItemService.DeleteAsync(id);
+            var result= await _cartItemService.DeleteAsync(id, cartId);
             if (!result.IsSuccess)
+            {
                 return NotFound();
-            return RedirectToAction("Index", new { cartId });
+            }
+            return RedirectToAction("Index", "Cart", new { cartId });
         }
 
         // Increase 1 
         public async Task<IActionResult> Increase(int id, int cartId)
         {
-            await _cartItemService.IncreaseQuantityAsync(id);
-            return RedirectToAction("Index", new { cartId });
+            await _cartItemService.IncreaseQuantityAsync(id, cartId);
+            return RedirectToAction("Index", "Cart", new { cartId });
         }
 
         // decrease 1
         public async Task<IActionResult> Decrease(int id, int cartId)
         {
-            await _cartItemService.DecreaseQuantityAsync(id);
-            return RedirectToAction("Index", new { cartId });
+            await _cartItemService.DecreaseQuantityAsync(id, cartId);
+            return RedirectToAction("Index", "Cart", new { cartId });
         }
 
 

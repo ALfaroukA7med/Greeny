@@ -12,15 +12,15 @@ namespace Greeny.BLL.Services.Implementation
             _repo = repo;
         }
 
-        public async Task<Response<bool>> RemoveProductFromOrderAsync(int orderId, int productId)
-        {
-            var result = await _repo.RemoveProductFromOrderAsync(orderId, productId);
+        //public async Task<Response<bool>> RemoveProductFromOrderAsync(int orderId, int productId)
+        //{
+        //    var result = await _repo.RemoveProductFromOrderAsync(orderId, productId);
 
-            if (!result)
-                return Response<bool>.Fail(OrderItemError.NotFound);
+        //    if (!result)
+        //        return Response<bool>.Fail(OrderItemError.NotFound);
 
-            return Response<bool>.Success(true);
-        }
+        //    return Response<bool>.Success(true);
+        //}
 
         public async Task<Response<OrderItemDetailsVM>> GetByIdAsync(int id)
         {

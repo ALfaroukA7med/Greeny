@@ -1,0 +1,173 @@
+﻿@model Greeny.BLL.ModelVM.Payment.PaymentCreateVM
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<section class="checkout-section">
+    <div class="container">
+
+        <div class="checkout-header-nav">
+            <a asp-controller="Cart"
+                   asp-action="Index"
+                   class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                Return to Cart
+            </a>
+
+            <h1 class="checkout-title">Checkout</h1>
+        </div>
+
+        <div class="checkout-layout">
+
+            <div class="checkout-form-column">
+
+                <form asp-controller="Payment" asp-action="Create"
+                      method="post"
+                      enctype="multipart/form-data"
+                      class="checkout-form">
+
+                    <input type="hidden" asp-for="OrderId" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger">
+                    </div>                    
+
+                    <!-- Contact -->
+                    <div class="checkout-block">
+
+                        <h2 class="checkout-block-title">
+                            1. Contact Information
+                        </h2>
+
+                        <div class="form-group">
+                            <input asp-for="Email"
+                                   class="form-control"
+                                   placeholder="Email Address" />
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <input asp-for="Phone"
+                                   class="form-control"
+                                   placeholder="Phone Number" />
+
+                            <span asp-validation-for="Phone"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <!-- Shipping -->
+                    <div class="checkout-block">
+
+                        <h2 class="checkout-block-title">
+                            2. Shipping Address
+                        </h2>
+
+                        <div class="form-group">
+                            <input asp-for="FullName"
+                                   class="form-control"
+                                   placeholder="Full Name" />
+
+                            <span asp-validation-for="FullName"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <input asp-for="Address"
+                                   class="form-control"
+                                   placeholder="Street Address" />
+
+                            <span asp-validation-for="Address"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <input asp-for="City"
+                                   class="form-control"
+                                   placeholder="City" />
+
+                            <span asp-validation-for="City"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <!-- Payment -->
+                    <div class="checkout-block">
+
+                        <h2 class="checkout-block-title">
+                            3. Payment Proof
+                        </h2>
+
+                        <div class="form-group">
+
+                            <img id="preview"
+                                 style="max-width:200px; margin-bottom:10px; display:none; border-radius:10px;" />
+
+                            <label for="PictureInput" class="file-label">
+                                 Upload Image
+                            </label>
+
+                            <input asp-for="ImageFile"
+                                   type="file"
+                                   id="PictureInput"
+                                   accept="image/*"
+                                   style="opacity:0; position:absolute;" />
+
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn-place-order">
+                        Place Order
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+@section Styles{
+    <link rel="stylesheet" href="~/css/checkout.css" />
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/checkout.js"></script>
+    <script>
+        document.getElementById("PictureInput").addEventListener("change", function (event) {
+
+            const file = event.target.files[0];
+
+            if (file) {
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const preview = document.getElementById("preview");
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+}

@@ -9,6 +9,9 @@ namespace Greeny.BLL.Errors
             = new Error("User.NotFound", "User not found", ErrorType.NotFound);
 
         public static Error InvalidData
-   = new Error("User.InvalidData", "Invalid User data", ErrorType.BadRequest);
+           = new Error("User.InvalidData", "Invalid User data", ErrorType.BadRequest);
+
+        public static Error Unauthorized
+           = new Error("User.InvalidData", "Invalid User data", ErrorType.Unauthorized);
     }
 }

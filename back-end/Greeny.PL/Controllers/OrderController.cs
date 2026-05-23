@@ -1,4 +1,6 @@
 ﻿
+using Greeny.BLL.ModelVM.Order;
+using Greeny.BLL.Services.Implementation;
 using Greeny.BLL.Services.Interfaces;
 using Greeny.DAL.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +15,34 @@ namespace Greeny.PL.Controllers
         {
             _service = service;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Checkout(int cartId)
+        {
+            var result = await _service.CheckoutAsync(cartId);
+
+            if (!result.IsSuccess)
+                if (!result.IsSuccess)
+                    return NotFound();
+
+            decimal shipping;
+            if (result.Data.TotalPrice == 0)
+            {
+                shipping = 0;
+            }
+            else if (result.Data.TotalPrice >= 40)
+            {
+                shipping = 0;
+            }
+            else
+            {
+                shipping = 4.99m;
+            }
+            ViewBag.Shipping = shipping;
+            return View(result.Data);
+        }
+
+
 
 
 
@@ -36,7 +66,6 @@ namespace Greeny.PL.Controllers
         }
       
 
-        #region Delete
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
@@ -49,10 +78,6 @@ namespace Greeny.PL.Controllers
             return RedirectToAction(nameof(GetAll));
         }
 
-        #endregion
-
-        #region Get By UserId
-
         [HttpGet]
         public async Task<IActionResult> GetByUserId(string userId)
         {
@@ -60,10 +85,6 @@ namespace Greeny.PL.Controllers
 
             return View(result.Data);
         }
-
-        #endregion
-
-        #region Get By Status
 
         [HttpGet]
         public async Task<IActionResult> GetByStatus(Status status)
@@ -73,7 +94,6 @@ namespace Greeny.PL.Controllers
             return View(result.Data);
         }
 
-        #endregion
 
         [HttpGet]
         public async Task<IActionResult> RecentOrders()

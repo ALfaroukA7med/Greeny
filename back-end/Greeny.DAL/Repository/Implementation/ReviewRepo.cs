@@ -49,7 +49,11 @@ namespace Greeny.DAL.Repository.Implementation
 
       public IQueryable<Review> GetAllByProductId(int productId)
         {
-            return _context.Reviews.Where(r => r.ProductId == productId).AsNoTracking();     
+            return _context.Reviews
+           .Where(r => r.ProductId == productId)
+           .Include(r => r.User)
+           .Include(r => r.Product)
+           .AsNoTracking();
         }
 
         public async Task<int> CountByProductIdAsync(int productId)

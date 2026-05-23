@@ -6,7 +6,7 @@ namespace Greeny.BLL.Services.Interfaces
     public interface IOrderItemService
     {
         //Task<Response<bool>> CreateAsync(OrderItemCreateVM vm);
-        Task<Response<bool>> RemoveProductFromOrderAsync(int orderId, int productId);
+        //Task<Response<bool>> RemoveProductFromOrderAsync(int orderId, int productId);
         Task<Response<OrderItemDetailsVM>> GetByIdAsync(int id);
         Task<Response<IEnumerable<OrderItemDetailsVM>>> GetByOrderIdAsync(int orderId);
 

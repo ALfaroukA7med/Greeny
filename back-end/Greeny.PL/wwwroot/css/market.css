@@ -166,3 +166,30 @@
     transform: translateY(-2px);
     color: white;
 }
+
+/* ======================= Products Grid ======================== */
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+.product-card {
+    width: 100%;
+}
+
+/* ======================= Responsive ======================== */
+
+@media (max-width: 992px) {
+    .product-card {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 576px) {
+    .product-card {
+        width: 100%;
+    }
+}

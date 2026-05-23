@@ -1,8 +1,10 @@
-﻿using Greeny.BLL.ModelVM.Post;
+﻿using Greeny.BLL.Errors;
+using Greeny.BLL.ModelVM.Post;
 using Greeny.BLL.ModelVM.Wrapper;
 using Greeny.BLL.Services.Implementation;
 using Greeny.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Greeny.PL.Controllers
 {
@@ -23,24 +25,31 @@ namespace Greeny.PL.Controllers
             var posts = await _postService.GetAllAsync();
             var commvm = new CommunityVM()
             {
-                Posts = posts.Value.ToList(),
+                Posts = posts?.Value.ToList(),
                 CreatePost = new PostCreateVM()
             };
             return View("Feed", commvm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostCreateVM vm)
+        public async Task<IActionResult> Create([Bind(Prefix = "CreatePost")] PostCreateVM vm)
         {
+            ModelState.Remove("UserId");
+
             if (!ModelState.IsValid)
-                return View("Feed");
+            {
+                TempData["ErrorMessage"] = "Please fill out the content before posting.";
+                return RedirectToAction("Feed");
+            }
+
+            vm.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var result = await _postService.AddAsync(vm);
 
             if (!result.IsSuccess)
             {
-                ModelState.AddModelError("", "Failed to create post");
-                return View("Feed");
+                TempData["ErrorMessage"] = "Failed to create post.";
+                return RedirectToAction("Feed");
             }
 
             return RedirectToAction("Feed");
@@ -60,18 +69,31 @@ namespace Greeny.PL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _postService.DeleteAsync(id);
 
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Challenge(); // Forces the browser to redirect to the Login page
+            }
+
+            var result = await _postService.DeleteAsync(currentUserId, id);
             if (!result.IsSuccess)
             {
-                TempData["Error"] = "Post not found";
+                if (result.Error == UserError.Unauthorized)
+                {
+                    TempData["ErrorMessage"] = "You do not have permission to delete this post.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Post not found or has already been deleted.";
+                }
             }
             else
             {
-                TempData["Success"] = "Post deleted successfully";
+                TempData["SuccessMessage"] = "Post deleted successfully!";
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Feed");
         }
 
     }

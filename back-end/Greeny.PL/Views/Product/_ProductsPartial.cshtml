@@ -6,9 +6,12 @@
     @foreach (var item in Model)
     {
         <article class="product-card">
-            <a asp-action="Details" asp-controller="Product"asp-route-id="@item.ProudctId" class="product-link">
+            <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="product-link">
                 <div class="card-image">
-                    <img src="~/media/photos/product-tomatoes.jpg" alt="@item.ProductName" />
+                    <img src="~/Files/@item.Image"
+                         class="product-img"
+                         alt="product" />
+                    <span class="badge badge-left badge-vegetables">@item.CategoryName</span>
                 </div>
                 <div class="card-content">
                     <div class="rating">
@@ -21,9 +24,18 @@
                             <span class="amount">$@item.Price.ToString("F2")</span>
                             <span class="unit">per kg</span>
                         </div>
-                        <button class="add-btn">
-                            <i class="fa-solid fa-cart-shopping"></i> Add
-                        </button>
+                        <form asp-controller="CartItem"
+                              asp-action="Create"
+                              method="post">
+
+                            <input type="hidden" name="ProductId" value="@item.ProductId" />
+                            <input type="hidden" name="Quantity" value="1" />
+
+                            <button type="submit" class="add-btn">
+                                <i class="fa-solid fa-cart-shopping"></i> Add
+                            </button>
+
+                        </form>
                     </div>
                 </div>
             </a>

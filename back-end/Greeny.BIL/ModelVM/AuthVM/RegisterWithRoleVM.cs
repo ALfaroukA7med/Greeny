@@ -28,7 +28,7 @@ namespace Greeny.BLL.ModelVM.AuthVM
 
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
-        public List<IdentityRole> Roles { get; set; }
+        public List<string> Roles { get; set; } = new();
 
 
     }

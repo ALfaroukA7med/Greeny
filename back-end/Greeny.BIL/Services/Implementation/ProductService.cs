@@ -1,4 +1,5 @@
 ﻿using Greeny.BLL.Abstraction;
+using Greeny.BLL.Helper;
 
 namespace Greeny.BLL.Services.Implementation
 {
@@ -46,7 +47,7 @@ namespace Greeny.BLL.Services.Implementation
 
                 "priceDesc" => query.OrderByDescending(p => p.Price),
 
-                "rating" =>query.OrderByDescending(p => p.Reviews.Any() ? p.Reviews.Average(r => r.Stars) : 0),
+                "rating" => query.OrderByDescending(p => p.Reviews.Any() ? p.Reviews.Average(r => r.Stars) : 0),
 
                 _ => query.OrderByDescending(p => p.Id)
             };
@@ -54,18 +55,18 @@ namespace Greeny.BLL.Services.Implementation
             var products = await query
                 .Select(p => new ProductListVM
                 {
-                    ProudctId = p.Id,
+                    ProductId = p.Id,
                     ProductName = p.Name,
                     Price = p.Price,
 
                     Rating = p.Reviews.Any() ? p.Reviews.Average(r => r.Stars) : 0,
-
+                    Quantity = p.Quantity,
                     TotalReviews = p.Reviews.Count(),
-
+                    CategoryName = p.Category.Name,
                     Image = p.Image
                 })
                 .ToListAsync();
-            var categories =  _categoryRepo.GetAll().Select(c => c.Name).ToList();
+            var categories = _categoryRepo.GetAll().Select(c => c.Name).ToList();
 
             var vm = new MarketPlaceVM
             {
@@ -105,16 +106,29 @@ namespace Greeny.BLL.Services.Implementation
         // Create
         public async Task<Response<bool>> CreateAsync(CreateProductVM vm)
         {
+
             if (vm == null)
             {
                 return Response<bool>.Fail(ProductError.InvalidData);
             }
 
+
+            string? imagePath = null;
+
+            if (vm.Image != null)
+            {
+                imagePath = Upload.UploadFile("Files", vm.Image);
+            }
+
             var product = _mapper.Map<Product>(vm);
+
+            product.Image = imagePath;
 
             await _productRepo.CreateAsync(product);
 
             return Response<bool>.Success(true);
+
+
         }
 
         // Update
@@ -126,8 +140,16 @@ namespace Greeny.BLL.Services.Implementation
             {
                 return Response<bool>.Fail(ProductError.InvalidData);
             }
+            string? imagePath = null;
+
+            if (vm.Image != null)
+            {
+                imagePath = Upload.UploadFile("Files", vm.Image);
+            }
 
             _mapper.Map(vm, product);
+
+            product.Image = imagePath;
             await _productRepo.UpdateAsync(product);
 
             return Response<bool>.Success(true);

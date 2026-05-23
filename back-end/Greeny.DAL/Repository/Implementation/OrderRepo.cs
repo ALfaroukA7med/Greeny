@@ -35,7 +35,8 @@ namespace Greeny.DAL.Repository.Implementation
                 .AsNoTracking()
                 .Where(o => o.Id == id && !o.IsDeleted)
                 .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product);
+                .ThenInclude(oi => oi.Product)
+                .ThenInclude(p => p.Category);
         }
         public async Task UpdateAsync(Order newOrder)
         {

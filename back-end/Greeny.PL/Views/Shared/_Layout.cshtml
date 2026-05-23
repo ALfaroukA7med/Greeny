@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/css/community.css">
     <link rel="stylesheet" href="~/css/market.css">
     <link rel="stylesheet" href="~/css/refrence.css">
-
+    <link rel="stylesheet" href="~/css/master.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap"
           rel="stylesheet" />
     <link rel="stylesheet"
@@ -25,17 +25,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- Local CSS -->
-    <link rel="stylesheet" href="~/css/master.css" />
-    <link rel="stylesheet" href="~/css/community.css" />
-    @await RenderSectionAsync("Styles", required: false)
+    @RenderSection("Styles", required: false)
 </head>
+
+
 <body>
 
     <nav>
@@ -45,7 +38,7 @@
         </a>
         <div class="middle-nav">
             <a asp-controller="Home" asp-action="Index" class="active-link">home</a>
-            <a href="market.html">marketplace</a>
+            <a asp-controller="Product" asp-action="MarketPlace">marketplace</a>
             <a asp-controller="Post" asp-action="Feed">community</a>
             <a asp-controller="ReferencePlanet" asp-action="Index">refrence</a>
         </div>
@@ -53,7 +46,7 @@
         <div class="right-nav">
             <div class="notification-wrapper">
                 <a href="#" class="bell-button">
-                    <i class="fa-regular fa-bell"></i> <!-- استخدمت أيقونة FontAwesome عشان تليق مع المشروع -->
+                    <i class="fa-regular fa-bell"></i>
                     <span class="notif-badge">2</span>
                 </a>
 
@@ -85,7 +78,6 @@
             </div>
             <a asp-controller="Cart"
                    asp-action="Index"
-                   asp-route-cartId="@ViewBag.CartId"
                    title="Go to Cart"
                    class="cart-icon-container">
 
@@ -94,6 +86,7 @@
                 <span class="cart-badge">
                     @(ViewBag.CartCount ?? 0)
                 </span>
+
             </a>
 
             @if (User.Identity.IsAuthenticated)
@@ -101,7 +94,7 @@
                 <div class="user-profile-wrapper">
                     <button class="profile-dropdown-btn" id="profile-dropdown-btn">
                         <img src="@(string.IsNullOrEmpty(user?.ProfilePicture)
-                               ? Url.Content("~/images/default-user.png")
+                                ? Url.Content("~/media/photos/default-user.jpg")
                               : Url.Content("~/Files/" + user.ProfilePicture))"
                              class="profile-avatar" />
                         <span class="profile-name">@user?.FirstName @user?.LastName</span>
@@ -109,6 +102,16 @@
                     </button>
 
                     <div class="profile-menu" id="profile-menu">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Dashboard" asp-action="Index" class="profile-menu-item">
+                                <i class="fa-solid fa-gauge-high"></i>
+                                Dashboard
+                            </a>
+
+                            <div class="profile-menu-divider"></div>
+                        }
+
                         <a asp-controller="User" asp-action="Details" asp-route-id="@user?.Id" class="profile-menu-item">
                             <i class="fa-regular fa-user"></i>
                             My Profile
@@ -149,11 +152,17 @@
         
         </div>
 
-    </nav> 
-
-
-
-
+    </nav>
+     
+    <div class="menu">
+      <a href="index.html" class="active-link">home</a>
+      <a href="market.html">marketplace</a>
+      <a href="community.html">community</a>
+      <a href="refrence.html">refrence</a>
+      <a href="profile.html">profile</a>
+      <a href="logIn.html" class="logIn">log in</a>
+      <a href="signUp.html" class="signUp">join us</a>
+    </div>
 
     @RenderBody()
 

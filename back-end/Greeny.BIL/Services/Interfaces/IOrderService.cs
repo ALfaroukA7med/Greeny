@@ -14,6 +14,6 @@ namespace Greeny.BLL.Services.Interfaces
         Task<Response<bool>> DeleteAsync(int id);
         Task<Response<IEnumerable<OrderDetailsVM>>> GetRecentOrdersAsync();
         Task<Response<decimal>> GetTotalSalesAsync();
-        Task<Response<int>> CheckoutAsync(int cartId, string address);
+        Task<Response<OrderDetailsVM>> CheckoutAsync(int cartId);
     }
 }

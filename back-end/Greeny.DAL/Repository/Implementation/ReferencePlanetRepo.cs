@@ -19,9 +19,9 @@ namespace Greeny.DAL.Repository.Implementation
             await _context.SaveChangesAsync();
         }
 
-        public  IQueryable<ReferencePlanet> GetAll()
+        public IQueryable<ReferencePlanet> GetAll()
         {
-            return _context.ReferencePlanets.Where(rf=> !rf.IsDeleted).AsNoTracking();
+            return _context.ReferencePlanets.Where(rf => !rf.IsDeleted).AsNoTracking();
         }
 
         public async Task<ReferencePlanet?> GetByIdAsync(int id)

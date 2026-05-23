@@ -8,6 +8,7 @@ namespace Greeny.BLL.ModelVM.Post
     public class PostDetailsVM
     {
         // The Post Data
+        public string UserId { get; set; }
         public int Id { get; set; }
         public string Content { get; set; }
         public string? ImagePath { get; set; }

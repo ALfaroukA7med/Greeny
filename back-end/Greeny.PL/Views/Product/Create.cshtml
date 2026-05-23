@@ -1,0 +1,268 @@
+﻿@using Greeny.BLL.ModelVM.ProductVM
+@model CreateProductVM
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Create Product";
+}
+
+<div class="form-side">
+    <h2 class="form-title">Product Information</h2>
+
+    <form asp-action="Create" asp-controller="Product" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
+
+        <div class="form-group">
+            <label asp-for="Name">Product Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Enter product name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Price">Price</label>
+            <input asp-for="Price" type="number" step="0.01" class="form-control" placeholder="0.00" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CategoryId">Category</label>
+            <select asp-for="CategoryId"
+                    asp-items="Model.Categories"
+                    class="form-control">
+
+                <option value="">Select Category</option>
+
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Quantity">Quantity</label>
+            <input asp-for="Quantity" type="number" class="form-control" placeholder="Quantity..." />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" placeholder="Write full product description..."></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <img id="preview" style="max-width:200px; margin-bottom:10px; display:none; border-radius:12px;" />
+
+            <label for="PictureInput" class="file-label">
+                📤 Upload Product Image
+            </label>
+            <input asp-for="Image" type="file" id="PictureInput" accept="image/*" style="display:none;" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            🛒 Create Product
+        </button>
+    </form>
+
+    <a asp-controller="Product" asp-action="Index" class="back-link">
+        ← Back To Products
+    </a>
+</div>
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(to right, #edf7ed, #f4fff4);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+
+        .product-container {
+            width: 90%;
+            max-width: 1150px;
+            margin: 40px auto;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,.08);
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+        }
+
+        .product-image-side {
+            background: linear-gradient(135deg, #2d6a4f, #40916c, #52b788);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .product-image-side::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: rgba(0,0,0,.15);
+            }
+
+        .image-overlay {
+            position: relative;
+            z-index: 2;
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+            .image-overlay h1 {
+                font-size: 42px;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+
+            .image-overlay p {
+                line-height: 1.8;
+                font-size: 17px;
+            }
+
+        .form-side {
+            padding: 40px;
+        }
+
+        .form-title {
+            color: #2d6a4f;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #1b4332;
+                font-weight: 600;
+            }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #d8e2dc;
+            transition: .3s;
+            font-size: 15px;
+        }
+
+            .form-control:focus {
+                border-color: #40916c;
+                box-shadow: 0 0 0 4px rgba(64,145,108,.15);
+                outline: none;
+            }
+
+        textarea.form-control {
+            min-height: 130px;
+            resize: none;
+        }
+
+        .file-label {
+            display: block;
+            border: 2px dashed #95d5b2;
+            padding: 18px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8fff8;
+            color: #2d6a4f;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+            .file-label:hover {
+                background: #e9fbe9;
+                border-color: #40916c;
+            }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            background: linear-gradient(to right, #40916c, #2d6a4f);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+            .submit-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(45,106,79,.25);
+            }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2d6a4f;
+            font-weight: 600;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 6px;
+            display: block;
+        }
+
+        .validation-summary {
+            margin-bottom: 20px;
+        }
+
+        #preview {
+            border: 2px solid #95d5b2;
+            padding: 5px;
+            background: white;
+        }
+
+        @@media(max-width:900px) {
+            .product-card {
+                grid-template-columns: 1fr;
+            }
+
+            .product-image-side {
+                min-height: 240px;
+            }
+
+            .form-side {
+                padding: 25px;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById("PictureInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById("preview");
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}
