@@ -15,9 +15,9 @@ namespace Greeny.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(5000); 
 
-            builder.Property(p => p.ImagePath)
-                .HasMaxLength(255)
-                .IsRequired(false);
+            //builder.Property(p => p.ImageFile)
+            //    .HasMaxLength(255)
+            //    .IsRequired(false);
 
             builder.Property(p => p.Votes)
                 .HasDefaultValue(0);

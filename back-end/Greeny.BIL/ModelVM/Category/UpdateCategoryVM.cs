@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Greeny.BLL.ModelVM.Category
 {
@@ -13,6 +14,8 @@ namespace Greeny.BLL.ModelVM.Category
         [Required]
         public string Description { get; set; }
 
-        public string? Icon { get; set; }
+        public string? IconUrl { get; set; }
+        public IFormFile Icon { get; set; }
+
     }
 }

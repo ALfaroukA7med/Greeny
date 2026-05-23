@@ -33,16 +33,21 @@
 .product-image-wrapper {
     border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    height: 500px;
+    background: #f8f8f8;
 }
 
 .main-product-img {
     width: 100%;
-    height: auto;
-    aspect-ratio: 4/3;
+    height: 100%;
     object-fit: cover;
-    display: block;
+    transition: .3s;
 }
+
+    .main-product-img:hover {
+        transform: scale(1.03);
+    }
 
 .product-tags {
     display: flex;

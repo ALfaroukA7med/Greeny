@@ -1,0 +1,349 @@
+﻿@using Greeny.BLL.ModelVM.ProductVM
+@model UpdateProductVM
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="product-container">
+    <div class="product-card">
+
+        <!-- Form Side -->
+        <div class="form-side">
+
+            <h2 class="form-title">Update Product</h2>
+
+            <form asp-action="Edit"
+                  asp-controller="Product"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ImageUrl" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger validation-summary"></div>
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Enter product name" />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger"></span>
+                </div>
+
+                <!-- Price -->
+                <div class="form-group">
+                    <label asp-for="Price"></label>
+
+                    <input asp-for="Price"
+                           type="number"
+                           step="0.01"
+                           class="form-control" />
+
+                    <span asp-validation-for="Price"
+                          class="text-danger"></span>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label asp-for="CategoryId"></label>
+
+                    <select asp-for="CategoryId"
+                            asp-items="Model.Categories"
+                            class="form-control">
+
+                        <option value="">Select Category</option>
+
+                    </select>
+
+                    <span asp-validation-for="CategoryId"
+                          class="text-danger"></span>
+                </div>
+
+                <!-- Quantity -->
+                <div class="form-group">
+                    <label asp-for="Quantity"></label>
+
+                    <input asp-for="Quantity"
+                           type="number"
+                           class="form-control" />
+
+                    <span asp-validation-for="Quantity"
+                          class="text-danger"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              placeholder="Write product description"></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger"></span>
+                </div>
+
+                <!-- Current Image -->
+                <div class="form-group">
+
+                    <label>Current Image</label>
+
+                    <img id="preview"
+                         src="~/Files/@Model.Image"
+                         class="preview-image" />
+
+                </div>
+
+                <!-- Upload New Image -->
+                <div class="form-group">
+
+                    <label for="PictureInput" class="file-label">
+                        📤 Upload New Image
+                    </label>
+
+                    <input asp-for="Image"
+                           type="file"
+                           id="PictureInput"
+                           accept="image/*"
+                           style="display:none;" />
+
+                    <span asp-validation-for="Image"
+                          class="text-danger"></span>
+
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="submit-btn">
+                    ✏️ Update Product
+                </button>
+
+            </form>
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="back-link">
+
+                ← Back To Products
+
+            </a>
+
+        </div>
+    </div>
+</div>
+
+@section Styles {
+
+    <style>
+
+        body {
+            background: linear-gradient(to right, #edf7ed, #f4fff4);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .product-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,.08);
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+        }
+
+        .product-image-side {
+            position: relative;
+            min-height: 100%;
+            overflow: hidden;
+        }
+
+        .side-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+        }
+
+        .product-image-side::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1;
+        }
+
+        .image-overlay {
+            position: relative;
+            z-index: 2;
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+            .image-overlay h1 {
+                font-size: 45px;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+
+            .image-overlay p {
+                font-size: 17px;
+                line-height: 1.8;
+            }
+
+        .form-side {
+            padding: 40px;
+        }
+
+        .form-title {
+            color: #2d6a4f;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #1b4332;
+                font-weight: 600;
+            }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #d8e2dc;
+            transition: .3s;
+            font-size: 15px;
+        }
+
+            .form-control:focus {
+                border-color: #40916c;
+                box-shadow: 0 0 0 4px rgba(64,145,108,.15);
+                outline: none;
+            }
+
+        textarea.form-control {
+            min-height: 130px;
+            resize: none;
+        }
+
+        .preview-image {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 3px solid #95d5b2;
+        }
+
+        .file-label {
+            display: block;
+            border: 2px dashed #95d5b2;
+            padding: 18px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8fff8;
+            color: #2d6a4f;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+            .file-label:hover {
+                background: #e9fbe9;
+                border-color: #40916c;
+            }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            background: linear-gradient(to right, #40916c, #2d6a4f);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+            .submit-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(45,106,79,.25);
+            }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2d6a4f;
+            font-weight: 600;
+        }
+
+        @@media(max-width:900px) {
+
+            .product-card {
+                grid-template-columns: 1fr;
+            }
+
+            .product-image-side {
+                height: 300px;
+            }
+
+            .form-side {
+                padding: 25px;
+            }
+        }
+
+    </style>
+}
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        document.getElementById("PictureInput")
+            .addEventListener("change", function (event) {
+
+            const file = event.target.files[0];
+
+            if (file) {
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+
+                    document.getElementById("preview").src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+    </script>
+}

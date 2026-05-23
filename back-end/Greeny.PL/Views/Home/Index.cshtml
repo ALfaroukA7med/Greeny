@@ -1,4 +1,8 @@
-﻿
+﻿@using Greeny.BLL.ModelVM.Post
+@using System.Security.Claims
+@* @model PostDetailsVM *@
+
+
 @{
     ViewData["Title"] = "Home Page";
     Layout = "_Layout";
@@ -21,15 +25,15 @@
         <div class="hero-btns">
             <button class="btn btn-primary">
                 <i class="fa-solid fa-bag-shopping"></i>
-                <a href="market.html"> Shop the Market </a>
+                <a asp-controller="Product" asp-action="MarketPlace"> Shop the Market </a>
             </button>
             <button class="btn btn-secondary">
                 <i class="fa-solid fa-user-group"></i>
-                <a href="community.html"> Join Community </a>
+                <a asp-controller="Post" asp-action="Feed"> Join the Community </a>
             </button>
         </div>
 
-        <div class="stats-container">
+        @* <div class="stats-container">
             <div class="stat-box">
                 <h3 class="stat-number">120+</h3>
                 <p class="stat-label">Local Farmers</p>
@@ -42,7 +46,7 @@
                 <h3 class="stat-number">8,500+</h3>
                 <p class="stat-label">Community Members</p>
             </div>
-        </div>
+        </div> *@
     </div>
 </section>
 
@@ -55,7 +59,7 @@
                 <span class="subtitle">FRESH PICKS</span>
                 <h2 class="title">Featured Products</h2>
             </div>
-            <a href="#" class="view-all">
+            <a asp-controller="Product" asp-action="MarketPlace" class="view-all">
                 View All <i class="fa-solid fa-chevron-right"></i>
             </a>
         </div>
@@ -123,7 +127,7 @@
                     </div>
                 </div>
             </article>
-            <article class="product-card">
+            @* <article class="product-card">
                 <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800"
                          alt="Tomatoes" />
@@ -153,7 +157,7 @@
                         </button>
                     </div>
                 </div>
-            </article>
+            </article>  *@
         </div>
     </div>
 </section>
@@ -166,126 +170,15 @@
                 <span class="comm-subtitle">GROWING TOGETHER</span>
                 <h2 class="comm-title">From the Community</h2>
             </div>
-            <a href="community.html" class="comm-view-all">
+            <a asp-controller="Post" asp-action="Feed" class="comm-view-all">
                 See All Posts <i class="fa-solid fa-chevron-right"></i>
             </a>
         </div>
 
         <div class="comm-grid">
-            <article class="comm-card">
-                <div class="comm-card-header">
-                    <img src="https://i.pravatar.cc/150?img=11"
-                         alt="Marcus Green"
-                         class="comm-avatar" />
-                    <div class="comm-user-info">
-                        <div class="comm-name-badge">
-                            <span class="comm-user-name">Marcus Green</span>
-                        </div>
-                        <span class="comm-post-date">Jul 12</span>
-                    </div>
-                </div>
-                <div class="comm-card-image">
-                    <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?q=80&w=800&auto=format&fit=crop"
-                         alt="Tomatoes"
-                         class="comm-post-img" />
-                </div>
-                <div class="comm-card-body">
-                    <div class="comm-interactions">
-                        <span class="comm-action"><i class="fa-regular fa-heart"></i> 142</span>
-                        <span class="comm-action"><i class="fa-regular fa-comment"></i> </span>
-                    </div>
-                    <p class="comm-post-text">
-                        My cherry tomatoes are absolutely thriving this season! 🍅
-                        Planted these babies back in March and now look at them — rows
-                        of red, golden, and orange beauties. The key is consistent
-                        watering and bamboo staking. Anyone else growing tomatoes this
-                        summer?
-                    </p>
-                    <div class="comm-comments-section">
-                        <div class="comments-list">
-                            <div class="comment-item">
-                                <div class="comment-avatar">J</div>
-                                <div class="comment-content">
-                                    <span class="comment-author">Jamie Rivera</span> Wow, these
-                                    look incredible! What variety is this?
-                                </div>
-                            </div>
-                            <div class="comment-item">
-                                <div class="comment-avatar">S</div>
-                                <div class="comment-content">
-                                    <span class="comment-author">Sara Bloom</span> Beautiful
-                                    harvest Marcus! 😍 I can see why these sell out so fast.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-input-area">
-                            <input type="text"
-                                   placeholder="Add a comment..."
-                                   class="comment-input" />
-                            <button class="comment-send-btn">
-                                <i class="fa-regular fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </article>
 
-            <article class="comm-card">
-                <div class="comm-card-header">
-                    <img src="https://i.pravatar.cc/150?img=11"
-                         alt="Marcus Green"
-                         class="comm-avatar" />
-                    <div class="comm-user-info">
-                        <div class="comm-name-badge">
-                            <span class="comm-user-name">Marcus Green</span>
-                        </div>
-                        <span class="comm-post-date">Jul 12</span>
-                    </div>
-                </div>
-                <div class="comm-card-image">
-                    <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=800&auto=format&fit=crop"
-                         alt="Balcony Garden"
-                         class="comm-post-img" />
-                </div>
-                <div class="comm-card-body">
-                    <div class="comm-interactions">
-                        <span class="comm-action"><i class="fa-regular fa-heart"></i> 98</span>
-                        <span class="comm-action"><i class="fa-regular fa-comment"></i></span>
-                    </div>
-                    <p class="comm-post-text">
-                        Finally set up my balcony herb garden! 🌿 Ordered these pots
-                        from Marcus and they arrived in perfect condition. Growing
-                        basil, mint, parsley and cilantro. Small space, big flavor! Who
-                        else is doing urban gardening?
-                    </p>
-                    <div class="comm-comments-section">
-                        <div class="comments-list">
-                            <div class="comment-item">
-                                <div class="comment-avatar">J</div>
-                                <div class="comment-content">
-                                    <span class="comment-author">Jamie Rivera</span> Wow, these
-                                    look incredible! What variety is this?
-                                </div>
-                            </div>
-                            <div class="comment-item">
-                                <div class="comment-avatar">S</div>
-                                <div class="comment-content">
-                                    <span class="comment-author">Sara Bloom</span> Beautiful
-                                    harvest Marcus! 😍 I can see why these sell out so fast.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-input-area">
-                            <input type="text"
-                                   placeholder="Add a comment..."
-                                   class="comment-input" />
-                            <button class="comment-send-btn">
-                                <i class="fa-regular fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </article>
+
+            
         </div>
     </div>
 </section>
@@ -298,8 +191,8 @@
             growing.
         </p>
         <div class="cta-btns">
-            <a href="log.html" class="btn btn-cta-yellow">Get Started Free</a>
-            <a href="market.html" class="btn btn-cta-dark">Browse Market</a>
+            <a asp-controller="Account" asp-action="Login" class="btn btn-cta-yellow">Get Started Free</a>
+            <a asp-controller="Product" asp-action="MarketPlace" class="btn btn-cta-dark">Browse Market</a>
         </div>
     </div>
 </section>

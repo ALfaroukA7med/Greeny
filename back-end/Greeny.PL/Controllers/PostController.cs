@@ -1,8 +1,12 @@
-﻿using Greeny.BLL.ModelVM.Post;
+﻿using Greeny.BLL.Errors;
+using Greeny.BLL.Helper;
+using Greeny.BLL.ModelVM.Post;
 using Greeny.BLL.ModelVM.Wrapper;
 using Greeny.BLL.Services.Implementation;
 using Greeny.BLL.Services.Interfaces;
+using Greeny.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Greeny.PL.Controllers
 {
@@ -10,12 +14,14 @@ namespace Greeny.PL.Controllers
     {
         private readonly IPostService _postService;
         private readonly ICommentService _commentService;
+        private readonly IVoteService _voteservice;
         //private readonly IUserService userService;
-        
-        public PostController(IPostService postService, ICommentService commentservice)
+
+        public PostController(IPostService postService, ICommentService commentservice, IVoteService voteService)
         {
             _postService = postService;
             _commentService = commentservice;
+            _voteservice = voteService;
         }
         [HttpGet]
         public async Task<IActionResult> Feed()
@@ -23,56 +29,87 @@ namespace Greeny.PL.Controllers
             var posts = await _postService.GetAllAsync();
             var commvm = new CommunityVM()
             {
-                Posts = posts.Value.ToList(),
+                Posts = posts?.Value.ToList(),
                 CreatePost = new PostCreateVM()
             };
             return View("Feed", commvm);
         }
+        public async Task<IActionResult> Dashboard()
+        {
+            var result = await _postService.GetAllAsync();
+            var posts = result?.Value.ToList();
+            ViewBag.SumVotes = await _postService.GetVotes();
+            return View("Dashboard", posts);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostCreateVM vm)
+        public async Task<IActionResult> Create([Bind(Prefix = "CreatePost")] PostCreateVM vm)
         {
             if (!ModelState.IsValid)
-                return View("Feed");
+            {
+                TempData["ErrorMessage"] = "Please fill out the content before posting.";
+                return RedirectToAction("Feed");
+            }
 
+            vm.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _postService.AddAsync(vm);
 
             if (!result.IsSuccess)
             {
-                ModelState.AddModelError("", "Failed to create post");
-                return View("Feed");
+                TempData["ErrorMessage"] = "Failed to create post.";
+                return RedirectToAction("Feed");
             }
 
             return RedirectToAction("Feed");
         }
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var post = await _postService.GetByIdAsync(id);
-            var comments = await _commentService.GetAllByPostId(id);
+            
+            // i'm already getting all post comments in post.
 
-            return View("Post");
+            return View("Details", post.Value);
         }
 
-        
 
         // Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _postService.DeleteAsync(id);
 
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Challenge(); // Forces the browser to redirect to the Login page
+            }
+
+            var result = await _postService.DeleteAsync(currentUserId, id);
             if (!result.IsSuccess)
             {
-                TempData["Error"] = "Post not found";
+                if (result.Error == UserError.Unauthorized)
+                {
+                    TempData["ErrorMessage"] = "You do not have permission to delete this post.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Post not found or has already been deleted.";
+                }
             }
             else
             {
-                TempData["Success"] = "Post deleted successfully";
+                TempData["SuccessMessage"] = "Post deleted successfully!";
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Feed");
         }
+        public async Task<IActionResult> Index()
+        {
+            var post = _postService.GetByIdAsync(26);
+            var res = post.Result;
 
+            return View("~/Views/Home/Index.cshtml", res);
+        }
     }
 }

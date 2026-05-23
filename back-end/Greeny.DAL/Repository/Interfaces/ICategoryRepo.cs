@@ -17,6 +17,8 @@ namespace Greeny.DAL.Repository.Interfaces
 
         Task<bool> ExistsByIdAsync(int id);
 
+        Task<int> GetProductsCountByCategoryId(int categoryId);
 
+        Task<string> GetCategoryIconById(int categoryId);
     }
 }

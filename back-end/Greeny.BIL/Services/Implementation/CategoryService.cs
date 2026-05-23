@@ -1,5 +1,6 @@
 ﻿using Greeny.BLL.Abstraction;
 using Greeny.BLL.Errors;
+using Greeny.BLL.Helper;
 using Greeny.BLL.ModelVM.Category;
 using Greeny.BLL.Services.Interfaces;
 
@@ -19,78 +20,95 @@ namespace Greeny.BLL.Services.Implementation
 
         public async Task<Response<bool>> CreateAsync(CreateCategoryVM vm)
         {
-                if (vm == null)
-                {
-                    return Response<bool>.Fail(CategoryError.InvalidData);
-                }
+            if (vm == null)
+            {
+                return Response<bool>.Fail(CategoryError.InvalidData);
+            }
+            string? IconPath = null;
 
-                var category = _mapper.Map<Category>(vm);
+            if (vm.Icon != null)
+            {
+                IconPath = Upload.UploadFile("Files", vm.Icon);
+            }
 
-                await _categoryRepo.CreateAsync(category);
+            var category = _mapper.Map<Category>(vm);
+            category.Icon = IconPath;
+
+            await _categoryRepo.CreateAsync(category);
 
             return Response<bool>.Success(true);
         }
 
         public async Task<Response<bool>> DeleteAsync(int id)
         {
-                var Query = _categoryRepo.GetById(id);
-                var category = await Query.FirstOrDefaultAsync();
+            var Query = _categoryRepo.GetById(id);
+            var category = await Query.FirstOrDefaultAsync();
 
-                if (category == null || category.IsDeleted)
-                {
+            if (category == null || category.IsDeleted)
+            {
                 return Response<bool>.Fail(CategoryError.NotFound);
-                }
+            }
 
-                await _categoryRepo.DeleteAsync(id);
+            await _categoryRepo.DeleteAsync(id);
 
             return Response<bool>.Success(true);
         }
 
         public async Task<Response<bool>> ExistsByIdAsync(int id)
         {
-                var exists = await _categoryRepo.ExistsByIdAsync(id);
+            var exists = await _categoryRepo.ExistsByIdAsync(id);
 
-                return Response<bool>.Success(exists);
+            return Response<bool>.Success(exists);
         }
 
         public async Task<Response<IEnumerable<DetailsCategoryVM>>> GetAllAsync()
         {
-                var Query = _categoryRepo.GetAll();
-                var categories = await Query.ToListAsync();
+            var categories = await _categoryRepo
+                .GetAll()
+                .ToListAsync();
 
-                if (categories == null || !categories.Any())
-                {
-                    return Response<IEnumerable<DetailsCategoryVM>>.Fail(CategoryError.NotFound);
-                }
+            if (!categories.Any())
+            {
+                return Response<IEnumerable<DetailsCategoryVM>>
+                    .Fail(CategoryError.NotFound);
+            }
 
-                var data = _mapper.Map<IEnumerable<DetailsCategoryVM>>(categories);
+            var data = _mapper.Map<List<DetailsCategoryVM>>(categories);
 
-                return Response<IEnumerable<DetailsCategoryVM>>.Success(data);
+            foreach (var item in data)
+            {
+                item.NumberOfProducts =
+                    await _categoryRepo.GetProductsCountByCategoryId(item.Id);
+                item.Icon = await _categoryRepo.GetCategoryIconById(item.Id);
+            }
+
+            return Response<IEnumerable<DetailsCategoryVM>>
+                .Success(data);
         }
 
         public async Task<Response<DetailsCategoryVM>> GetByIdAsync(int id)
         {
-                var Query= _categoryRepo.GetById(id);
-                var category = await Query.FirstOrDefaultAsync();
-                if (category == null)
-                {
-                    return Response<DetailsCategoryVM>.Fail(CategoryError.NotFound);
-                }
-                var data = _mapper.Map<DetailsCategoryVM>(category);
-                return Response<DetailsCategoryVM>.Success(data);
+            var Query = _categoryRepo.GetById(id);
+            var category = await Query.FirstOrDefaultAsync();
+            if (category == null)
+            {
+                return Response<DetailsCategoryVM>.Fail(CategoryError.NotFound);
+            }
+            var data = _mapper.Map<DetailsCategoryVM>(category);
+            return Response<DetailsCategoryVM>.Success(data);
         }
 
         public async Task<Response<IEnumerable<DetailsCategoryVM>>> SearchByNameAsync(string name)
         {
-                var Query = _categoryRepo.SearchByName(name);
+            var Query = _categoryRepo.SearchByName(name);
             var categories = await Query.ToListAsync();
 
-                if (categories == null || !categories.Any())
-                {
+            if (categories == null || !categories.Any())
+            {
                 return Response<IEnumerable<DetailsCategoryVM>>.Fail(CategoryError.NotFound);
-                }
+            }
 
-                var data = _mapper.Map<IEnumerable<DetailsCategoryVM>>(categories);
+            var data = _mapper.Map<IEnumerable<DetailsCategoryVM>>(categories);
 
             return Response<IEnumerable<DetailsCategoryVM>>.Success(data);
         }
@@ -105,9 +123,18 @@ namespace Greeny.BLL.Services.Implementation
             {
                 return Response<bool>.Fail(CategoryError.NotFound);
             }
+            string? IconPath = null;
+
+            if (vm.Icon != null)
+            {
+                IconPath = Upload.UploadFile("Files", vm.Icon);
+            }
 
             _mapper.Map(vm, category);
-             await _categoryRepo.UpdateAsync(category);
+
+            category.Icon = IconPath;
+
+            await _categoryRepo.UpdateAsync(category);
 
             return Response<bool>.Success(true);
         }

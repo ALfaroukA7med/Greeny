@@ -3,14 +3,14 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface IPostRepo
     {
+        Task<int> GetVotes();
         IQueryable<Post> GetAll();
 
         IQueryable<Post> GetByIdAsync(int id);
 
         Task CreateAsync(Post post);
+        Task UpdateAsync(Post post);
 
-        //Task UpdateAsync(Post post);
-         
         Task DeleteAsync(int id);
 
         //IQueryable<Post> SearchByKeyword(string keyword);

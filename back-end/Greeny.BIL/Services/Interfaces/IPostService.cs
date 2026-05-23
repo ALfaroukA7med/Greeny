@@ -7,12 +7,12 @@ namespace Greeny.BLL.Services.Interfaces
 {
     public interface IPostService
     {
-        Task<Result<IEnumerable<PostListVM>>> Feed();
+        Task<int> GetVotes();
         Task<Result<IEnumerable<PostListVM>>> GetAllAsync();
         Task<Result<PostDetailsVM>> GetByIdAsync(int id);
         Task<Result> AddAsync(PostCreateVM post);
 
         //Task<Result<string>> UpdateAsync(PostCreateVM post);
-        Task<Result> DeleteAsync(int id);
+        Task<Result> DeleteAsync(string userId, int id);
     }
 }

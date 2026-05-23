@@ -1,36 +1,31 @@
 ﻿using Greeny.BLL.ModelVM.Comment;
 using Greeny.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Greeny.PL.Controllers
 {
     public class CommentController : Controller
     {
         private readonly ICommentService _commentService;
+        private readonly IPostService _postService;
 
-        public CommentController(ICommentService commentService)
+        public CommentController(ICommentService commentService, IPostService postService)
         {
             _commentService = commentService;
+            _postService = postService;
         }
-
-        public async Task<IActionResult> Index(int postId)
-        {
-            var result = await _commentService.GetAllByPostId(postId);
-
-            if(!result.IsSuccess)
-                return View(Enumerable.Empty<CommentListVM>());
-
-            ViewBag.PostId = postId;
-            return View(result.Data);
-        }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CommentCreateVM vm)
+        public async Task<IActionResult> Create([Bind(Prefix = "NewComment")] CommentCreateVM vm)
         {
+            vm.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
             if (!ModelState.IsValid)
-                return RedirectToAction("Index", new { postId = vm.PostId });
+                return RedirectToAction("Details", "Post", new {id = vm.PostId});
+
 
             var result = await _commentService.AddAsync(vm);
 
@@ -39,7 +34,7 @@ namespace Greeny.PL.Controllers
                 TempData["Error"] = "Failed to add comment";
             }
 
-            return RedirectToAction("Index", new { postId = vm.PostId });
+            return RedirectToAction("Details", "Post", new {id = vm.PostId });
         }
 
 
@@ -59,22 +54,8 @@ namespace Greeny.PL.Controllers
                 TempData["Success"] = "Comment deleted successfully";
             }
 
-            return RedirectToAction("Index", new { postId });
+            return RedirectToAction("Details", "Post",  new { id = postId });
         }
-
-
-
-        public async Task<IActionResult> Details(int id)
-        {
-            var result = await _commentService.GetByIdAsync(id);
-
-            if (!result.IsSuccess)
-                return NotFound();
-
-            return View(result.Data);
-        }
-
-
 
     }
 }

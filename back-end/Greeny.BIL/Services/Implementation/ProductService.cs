@@ -1,4 +1,7 @@
 ﻿using Greeny.BLL.Abstraction;
+using Greeny.BLL.Helper;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Greeny.BLL.Services.Implementation
 {
@@ -7,13 +10,15 @@ namespace Greeny.BLL.Services.Implementation
         private readonly IProductRepo _productRepo;
         private readonly IReviewRepo _reviewRepo;
         private readonly ICategoryRepo _categoryRepo;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public ProductService(IProductRepo productRepo, IReviewRepo reviewRepo, ICategoryRepo categoryRepo, IMapper mapper)
+        public ProductService(IProductRepo productRepo, IReviewRepo reviewRepo, ICategoryRepo categoryRepo, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _productRepo = productRepo;
             _reviewRepo = reviewRepo;
             _categoryRepo = categoryRepo;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
@@ -46,7 +51,7 @@ namespace Greeny.BLL.Services.Implementation
 
                 "priceDesc" => query.OrderByDescending(p => p.Price),
 
-                "rating" =>query.OrderByDescending(p => p.Reviews.Any() ? p.Reviews.Average(r => r.Stars) : 0),
+                "rating" => query.OrderByDescending(p => p.Reviews.Any() ? p.Reviews.Average(r => r.Stars) : 0),
 
                 _ => query.OrderByDescending(p => p.Id)
             };
@@ -59,13 +64,13 @@ namespace Greeny.BLL.Services.Implementation
                     Price = p.Price,
 
                     Rating = p.Reviews.Any() ? p.Reviews.Average(r => r.Stars) : 0,
-
+                    Quantity = p.Quantity,
                     TotalReviews = p.Reviews.Count(),
-
+                    CategoryName = p.Category.Name,
                     Image = p.Image
                 })
                 .ToListAsync();
-            var categories =  _categoryRepo.GetAll().Select(c => c.Name).ToList();
+            var categories = _categoryRepo.GetAll().Select(c => c.Name).ToList();
 
             var vm = new MarketPlaceVM
             {
@@ -80,41 +85,82 @@ namespace Greeny.BLL.Services.Implementation
         public async Task<Response<DetailsProductVM>> GetByIdAsync(int id)
         {
             var product = await _productRepo.GetByIdAsync(id);
+
             if (product == null)
             {
-                return Response<DetailsProductVM>.Fail(ProductError.NotFound);
+                return Response<DetailsProductVM>
+                    .Fail(ProductError.NotFound);
             }
+
             var data = _mapper.Map<DetailsProductVM>(product);
-            data.averageRating = await _reviewRepo.GetAverageRatingForProductAsync(id);
-            data.totalReviews = await _reviewRepo.CountByProductIdAsync(id);
-            data.Reviews = _reviewRepo.GetAllByProductId(id).Select(r => new DetailsReviewVM
-            {
-                Id = r.Id,
-                Content = r.Content,
-                Stars = r.Stars,
-                Date = r.Date,
-                UserId = r.UserId,
-                UserName = r.User.FirstName + " " + r.User.LastName,
-                ProductId = r.ProductId,
-                ProductName = r.Product.Name,
-                UserImage = r.User.ProfilePicture
-            }).ToList();
+
+            data.averageRating =
+                await _reviewRepo.GetAverageRatingForProductAsync(id);
+
+            data.totalReviews =
+                await _reviewRepo.CountByProductIdAsync(id);
+
+            data.Reviews = _reviewRepo.GetAllByProductId(id)
+                .Select(r => new DetailsReviewVM
+                {
+                    Id = r.Id,
+                    Content = r.Content,
+                    Stars = r.Stars,
+                    Date = r.Date,
+                    UserId = r.UserId,
+                    UserName = r.User.FirstName + " " + r.User.LastName,
+                    ProductId = r.ProductId,
+                    ProductName = r.Product.Name,
+                    UserImage = r.User.ProfilePicture
+                })
+                .ToList();
+
+            var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            data.UserReview = _productRepo.GetByIdAsync(id).Result.Reviews
+                .Select(r => new DetailsReviewVM
+                {
+                    Id = r.Id,
+                    Content = r.Content,
+                    Stars = r.Stars,
+                    Date = r.Date,
+                    UserId = r.UserId,
+                    UserName = r.User.FirstName + " " + r.User.LastName,
+                    ProductId = r.ProductId,
+                    ProductName = r.Product.Name,
+                    UserImage = r.User.ProfilePicture
+                })
+                .FirstOrDefault();
+
             return Response<DetailsProductVM>.Success(data);
         }
 
         // Create
         public async Task<Response<bool>> CreateAsync(CreateProductVM vm)
         {
+
             if (vm == null)
             {
                 return Response<bool>.Fail(ProductError.InvalidData);
             }
 
+
+            string? imagePath = null;
+
+            if (vm.Image != null)
+            {
+                imagePath = Upload.UploadFile("Files", vm.Image);
+            }
+
             var product = _mapper.Map<Product>(vm);
+
+            product.Image = imagePath;
 
             await _productRepo.CreateAsync(product);
 
             return Response<bool>.Success(true);
+
+
         }
 
         // Update
@@ -126,8 +172,16 @@ namespace Greeny.BLL.Services.Implementation
             {
                 return Response<bool>.Fail(ProductError.InvalidData);
             }
+            string? imagePath = null;
+
+            if (vm.Image != null)
+            {
+                imagePath = Upload.UploadFile("Files", vm.Image);
+            }
 
             _mapper.Map(vm, product);
+
+            product.Image = imagePath;
             await _productRepo.UpdateAsync(product);
 
             return Response<bool>.Success(true);

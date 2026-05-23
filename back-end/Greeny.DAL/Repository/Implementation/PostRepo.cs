@@ -12,6 +12,7 @@ namespace Greeny.DAL.Repository.Implementation
             _context = context;
         }
 
+        public async Task<int> GetVotes() => _context.Posts.Where(v => !v.IsDeleted).Sum(v => v.Votes);
         public async Task CreateAsync(Post post)
         {
                 await _context.Posts.AddAsync(post);
