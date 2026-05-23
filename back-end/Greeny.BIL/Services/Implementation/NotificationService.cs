@@ -26,7 +26,8 @@ namespace Greeny.BLL.Services.Implementation
                 Content = model.Message,
                 ReceiverId = model.ReceiverId,
                 SenderId = model.SenderId,
-                Date = model.CreateAt
+                Date = model.CreateAt,
+                Url = model.Url
             };
 
             await _notificationRepo.CreateAsync(Notification);
@@ -38,10 +39,12 @@ namespace Greeny.BLL.Services.Implementation
             var Notifications = await _notificationRepo.GetByUserId(userId)
                 .Select(n => new DetailsNotificationVM
                 {
+                    Id = n.Id,
                     SenderName = n.Sender.FirstName + " " + n.Sender.LastName,
                     Content = n.Content,
                     IsRead = false,
-                    CreatedAt = n.Date
+                    CreatedAt = n.Date,
+                    Url = n.Url
                 })
                 .ToListAsync();
                

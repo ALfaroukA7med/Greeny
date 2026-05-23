@@ -1,0 +1,33 @@
+﻿@foreach (var item in Model)
+{
+    <a asp-controller="Notification"
+           asp-action="Read"
+           asp-route-id="@item.Id"
+           asp-route-url="@item.Url"
+           class="dropdown-item text-decoration-none">
+
+        <div class="d-flex align-items-center p-2">
+
+            <div class="me-2">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+
+            <div>
+
+                <div>
+                    <strong>
+                        @item.SenderName
+                    </strong>
+
+                    @item.Content
+                </div>
+
+                <small class="text-muted">
+                    @item.Date.ToLocalTime()
+                </small>
+
+            </div>
+
+        </div>
+    </a>
+}
