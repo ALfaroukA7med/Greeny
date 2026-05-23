@@ -3,7 +3,22 @@
 @using System.Security.Claims
 
 @model CommunityVM
+@section Scripts {
+    <script>
+        const fileInput = document.getElementById('photoUpload');
+        const fileSpan = document.getElementById('fileName');
 
+        if (fileInput && fileSpan) {
+            fileInput.addEventListener('change', function () {
+                if (fileInput.files.length > 0) {
+                    fileSpan.textContent = fileInput.files[0].name;
+                } else {
+                    fileSpan.textContent = "No file chosen";
+                }
+            });
+        }
+    </script>
+}
 <header class="comm-page-header">
     <div>
         <span class="comm-page-badge">GROWING TOGETHER</span>
@@ -34,12 +49,27 @@
 @* Your grid starts fresh here, untouched by the banner layout *@
 <div class="container" style="display: flex; flex-direction: column; gap: 16px; max-width: 650px; padding: 0 15px; margin: 20px auto;">
 
-    <form class="comm-card" asp-controller="Post" asp-action="Create" method="post" enctype="multipart/form-data">
-        <div class="comm-card-body">
-            <textarea rows="4" asp-for="CreatePost.Content" placeholder="Share your Thoughts..."></textarea>
-            <button type="submit" class="submit-btn">Post</button>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form class="comm-card" asp-controller="Post" asp-action="Create" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div class="comm-card-body">
+                <textarea rows="4" asp-for="CreatePost.Content" placeholder="Share your Thoughts..."></textarea>
+                <div class="upload-section">
+                    <label for="photoUpload"  class="upload-label">📷 Add Photo</label>
+                    <input type="file" asp-for="CreatePost.ImageFile" id="photoUpload" accept="image/*" />
+                    <span id="fileName">No file chosen</span>
+                </div>
+                <button type="submit" class="submit-btn">Post</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Please Log In to Make a Post.
         </div>
-    </form>
+    }
 
     @if (Model.Posts != null)
     {
@@ -89,21 +119,29 @@
                     </p>
 
                     @* POST IMAGE *@
-                    <div class="comm-card-image" style="width: 100%; border-radius: 8px; overflow: hidden; margin-bottom: 10px; background-color: #f8f9fa;">
-                        <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?q=80&w=800&auto=format&fit=crop"
-                             alt="Tomatoes" class="comm-post-img" style="width: 100%; max-height: 380px; object-fit: cover; display: block;" />
-                    </div>
+                    @if (!string.IsNullOrEmpty(post.ImagePath))
+                    {
+
+                        <div class="comm-card-image" style="width: 100%; border-radius: 8px; overflow: hidden; margin-bottom: 10px; background-color: #f8f9fa;">
+                            <img src="/@post.ImagePath"
+                                 class="comm-post-img" style="cursor: pointer;width: 100%; max-height: 380px; object-fit: cover; display: block;" />
+                        </div>
+                    }
         
                     @* FOOTER ROW: Action Buttons Bar *@
                     <div class="reddit-actions-bar" style="display: flex; align-items: center; justify-content: space-between; width: 100%; border-top: 1px solid #f1f1f1; padding-top: 8px; margin-top: auto;">
             
                         @* Comments Button Link *@
-                        <div style="display: flex; align-items: center;">
-                            <span class="comm-action" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 4px; cursor: pointer; color: #878a8c; font-size: 0.85rem; font-weight: 600; background-color: transparent; transition: background 0.1s;" onmouseover="this.style.backgroundColor='#f4f4f4'" onmouseout="this.style.backgroundColor='transparent'">
-                                <i class="fa-regular fa-comment" style="font-size: 1rem;"></i>
-                                <span>Comments</span>
-                            </span>
-                        </div>
+                        <form asp-controller="Post" asp-action="Details" asp-route-id="@post.Id" method="get">
+                            <button type="submit" style="border: none; background: none;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="comm-action" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 4px; cursor: pointer; color: #878a8c; font-size: 0.85rem; font-weight: 600; background-color: transparent; transition: background 0.1s;" onmouseover="this.style.backgroundColor='#f4f4f4'" onmouseout="this.style.backgroundColor='transparent'">
+                                        <i class="fa-regular fa-comment" style="font-size: 1rem;"></i>
+                                        <span>Comments</span>
+                                    </span>
+                                </div>
+                            </button>
+                        </form>
 
                         @* Secure Delete Button *@
                         @if (User.Identity.IsAuthenticated && (User.FindFirstValue(ClaimTypes.NameIdentifier) == post.UserId || User.IsInRole("Admin")))

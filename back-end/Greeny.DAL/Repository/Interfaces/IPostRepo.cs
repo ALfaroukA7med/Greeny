@@ -3,6 +3,7 @@ namespace Greeny.DAL.Repository.Interfaces
 {
     public interface IPostRepo
     {
+        Task<int> GetVotes();
         IQueryable<Post> GetAll();
 
         IQueryable<Post> GetByIdAsync(int id);

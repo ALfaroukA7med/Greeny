@@ -28,6 +28,7 @@ namespace Greeny.BLL.Services.Implementation
             if (post == null) return Response<bool>.Fail(PostError.NotFound);
             var c = new Comment
             {
+                UserId = comment.UserId,
                 Content = comment.Content,
                 PostId = comment.PostId
             };
@@ -57,6 +58,8 @@ namespace Greeny.BLL.Services.Implementation
                 .GetAllByPostId(postid)
                 .Select(p => new CommentListVM
                 {
+                    Id = p.Id,
+                    UserId = p.UserId,
                     Content = p.Content,
                     AuthorName = p.User.FirstName + ' ' + p.User.LastName,
                     TimeAgo = DateTimeExtensions.ToTimeAgo(p.Date)
@@ -80,6 +83,8 @@ namespace Greeny.BLL.Services.Implementation
 
             var clist = new CommentListVM
             {
+                Id = comment.Id,
+                UserId = comment.UserId,
                 Content = comment.Content,
                 AuthorName = comment.User.FirstName + " " + comment.User.LastName,
                 TimeAgo = DateTimeExtensions.ToTimeAgo(comment.Date)
