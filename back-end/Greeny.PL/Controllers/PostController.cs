@@ -65,9 +65,10 @@ namespace Greeny.PL.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var post = await _postService.GetByIdAsync(id);
+            
             // i'm already getting all post comments in post.
 
-            return View("Details", post);
+            return View("Details", post.Value);
         }
 
 

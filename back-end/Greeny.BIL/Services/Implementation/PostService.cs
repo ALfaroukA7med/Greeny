@@ -107,6 +107,8 @@ namespace Greeny.BLL.Services.Implementation
                 .GetAllByPostId(id)
                 .Select(c => new CommentListVM
                 {
+                    Id = c.Id,
+                    UserId = c.UserId,
                     Content = c.Content,
                     AuthorName = c.User.FirstName + ' ' + c.User.LastName,
                     TimeAgo = DateTimeExtensions.ToTimeAgo(c.Date)
@@ -117,11 +119,13 @@ namespace Greeny.BLL.Services.Implementation
                 .GetByIdAsync(id)
                 .Select(p => new PostDetailsVM
                 {
+                    Id = p.Id,
                     ImagePath = p.ImagePath,
                     Content = p.Content,
                     AuthorName = p.User.FirstName + ' ' + p.User.LastName,
                     Comments = comments,
-                    Votes = p.Votes
+                    Votes = p.Votes,
+                    FormattedDate = DateTimeExtensions.ToTimeAgo(p.Date),
                 }).FirstOrDefaultAsync();
 
 

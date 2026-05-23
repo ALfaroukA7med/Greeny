@@ -8,7 +8,7 @@
         [Range(0,1)]
 
         public int Votes { get; set; } = 0;
-        public DateTime Date { get; set; } = DateTime.UtcNow;
+        public DateTime Date { get; set; } = DateTime.UtcNow.AddHours(3);
         public bool IsDeleted { get; set; } = false;
 
 
