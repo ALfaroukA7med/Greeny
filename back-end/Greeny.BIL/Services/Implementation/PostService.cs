@@ -127,5 +127,9 @@ namespace Greeny.BLL.Services.Implementation
 
             return Result.Success(post);
         }
+        public async Task<int> GetVotes()
+        {
+            return await _postrepo.GetVotes();
+        }
     }
 }

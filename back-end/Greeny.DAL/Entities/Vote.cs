@@ -10,6 +10,6 @@ namespace Greeny.DAL.Entities
         public int Id { get; set; } // Primary Key
         public int PostId { get; set; }
         public string UserId { get; set; }
-        public Voting Type { get; set; } = Voting.Dismiss; 
+        public Voting Type { get; set; } = Voting.Dismiss;
     }
 }

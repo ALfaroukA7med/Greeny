@@ -13,12 +13,14 @@ namespace Greeny.PL.Controllers
     {
         private readonly IPostService _postService;
         private readonly ICommentService _commentService;
+        private readonly IVoteService _voteservice;
         //private readonly IUserService userService;
 
-        public PostController(IPostService postService, ICommentService commentservice)
+        public PostController(IPostService postService, ICommentService commentservice, IVoteService voteService)
         {
             _postService = postService;
             _commentService = commentservice;
+            _voteservice = voteService;
         }
         [HttpGet]
         public async Task<IActionResult> Feed()
@@ -30,6 +32,13 @@ namespace Greeny.PL.Controllers
                 CreatePost = new PostCreateVM()
             };
             return View("Feed", commvm);
+        }
+        public async Task<IActionResult> Dashboard()
+        {
+            var result = await _postService.GetAllAsync();
+            var posts = result?.Value.ToList();
+            ViewBag.SumVotes = await _postService.GetVotes();
+            return View("Dashboard", posts);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
