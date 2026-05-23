@@ -31,7 +31,9 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task<Product?> GetByIdAsync(int id)
         {
             return await _context.Products
-                .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+        .Include(p => p.Reviews)
+            .ThenInclude(r => r.User)
+        .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
         }
 
         public async Task UpdateAsync(Product newProduct)

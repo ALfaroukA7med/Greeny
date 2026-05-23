@@ -71,8 +71,9 @@ namespace Greeny.PL.Controllers
         {
             var result = await _productService.GetByIdAsync(id);
 
-            //if (!result.IsSuccess)
-            //    return NotFound();
+            if (result.Data == null)
+                return NotFound();
+
 
             return View(result.Data);
         }

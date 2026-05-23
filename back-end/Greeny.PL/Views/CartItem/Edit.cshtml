@@ -1,0 +1,55 @@
+﻿@model Greeny.BLL.ModelVM.CartItem.UpdateCartItemVM
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-5">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h3>
+
+                        Update Quantity
+
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form asp-action="Edit"
+                          method="post">
+
+                        <input asp-for="Id"
+                               type="hidden" />
+
+                        <div class="mb-3">
+
+                            <label asp-for="Quantity"></label>
+
+                            <input asp-for="Quantity"
+                                   class="form-control" />
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+
+                            Save Changes
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

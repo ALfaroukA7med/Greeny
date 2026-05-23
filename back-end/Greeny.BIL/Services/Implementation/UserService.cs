@@ -29,7 +29,7 @@ namespace Greeny.BLL.Services.Implementation
 
             user.IsDeleted = true;
 
-            await _userManager.UpdateAsync(user);
+            await _userManager.DeleteAsync(user);
 
             return Response<bool>.Success(true);
         }

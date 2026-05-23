@@ -22,7 +22,7 @@ namespace Greeny.DAL.Repository.Implementation
         public IQueryable<Cart> GetAll()
         {
             return _context.Carts
-                .Where(c=>!c.IsDeleted)
+                .Where(c => !c.IsDeleted)
                 .AsNoTracking();
         }
 
@@ -73,10 +73,10 @@ namespace Greeny.DAL.Repository.Implementation
             // above is more optimized.
 
             //return await _context.CartItems
-           //.Where(c => c.CartId == cartId && !c.IsDeleted)
-           //.SumAsync(c => c.Quantity * c.Product.Price);
-           
-            
+            //.Where(c => c.CartId == cartId && !c.IsDeleted)
+            //.SumAsync(c => c.Quantity * c.Product.Price);
+
+
             //.Include(c => c.Product)
         }
 

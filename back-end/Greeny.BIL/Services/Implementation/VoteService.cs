@@ -1,10 +1,5 @@
 ﻿using Greeny.BLL.Abstraction;
 using Greeny.DAL.Enums;
-using Greeny.DAL.Repository.Implementation;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace Greeny.BLL.Services.Implementation
 {

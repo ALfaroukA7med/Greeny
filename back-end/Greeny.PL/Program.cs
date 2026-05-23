@@ -45,6 +45,7 @@ namespace Greeny.PL
             builder.Services.AddScoped<IReviewRepo, ReviewRepo>();
             builder.Services.AddScoped<IReferencePlanetRepo, ReferencePlanetRepo>();
             builder.Services.AddScoped<ICommentRepo, CommentRepo>();
+            builder.Services.AddScoped<INotificationRepo, NotificationRepo>();
             builder.Services.AddScoped<IPostRepo, PostRepo>();
             builder.Services.AddScoped<IUserRepo, UserRepo>();
             builder.Services.AddScoped<ICartRepo, CartRepo>();
@@ -66,7 +67,9 @@ namespace Greeny.PL
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
+            builder.Services.AddScoped<INotificationService, NotificationService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IVoteService, VoteService>();
             builder.Services.AddScoped<ICartItemService, CartItemService>();
             builder.Services.AddScoped<ICartService, CartService>();

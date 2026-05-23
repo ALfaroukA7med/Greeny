@@ -1,5 +1,7 @@
 ﻿using Greeny.BLL.Abstraction;
 using Greeny.BLL.Helper;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Greeny.BLL.Services.Implementation
 {
@@ -8,13 +10,15 @@ namespace Greeny.BLL.Services.Implementation
         private readonly IProductRepo _productRepo;
         private readonly IReviewRepo _reviewRepo;
         private readonly ICategoryRepo _categoryRepo;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public ProductService(IProductRepo productRepo, IReviewRepo reviewRepo, ICategoryRepo categoryRepo, IMapper mapper)
+        public ProductService(IProductRepo productRepo, IReviewRepo reviewRepo, ICategoryRepo categoryRepo, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _productRepo = productRepo;
             _reviewRepo = reviewRepo;
             _categoryRepo = categoryRepo;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
@@ -81,25 +85,53 @@ namespace Greeny.BLL.Services.Implementation
         public async Task<Response<DetailsProductVM>> GetByIdAsync(int id)
         {
             var product = await _productRepo.GetByIdAsync(id);
+
             if (product == null)
             {
-                return Response<DetailsProductVM>.Fail(ProductError.NotFound);
+                return Response<DetailsProductVM>
+                    .Fail(ProductError.NotFound);
             }
+
             var data = _mapper.Map<DetailsProductVM>(product);
-            data.averageRating = await _reviewRepo.GetAverageRatingForProductAsync(id);
-            data.totalReviews = await _reviewRepo.CountByProductIdAsync(id);
-            data.Reviews = _reviewRepo.GetAllByProductId(id).Select(r => new DetailsReviewVM
-            {
-                Id = r.Id,
-                Content = r.Content,
-                Stars = r.Stars,
-                Date = r.Date,
-                UserId = r.UserId,
-                UserName = r.User.FirstName + " " + r.User.LastName,
-                ProductId = r.ProductId,
-                ProductName = r.Product.Name,
-                UserImage = r.User.ProfilePicture
-            }).ToList();
+
+            data.averageRating =
+                await _reviewRepo.GetAverageRatingForProductAsync(id);
+
+            data.totalReviews =
+                await _reviewRepo.CountByProductIdAsync(id);
+
+            data.Reviews = _reviewRepo.GetAllByProductId(id)
+                .Select(r => new DetailsReviewVM
+                {
+                    Id = r.Id,
+                    Content = r.Content,
+                    Stars = r.Stars,
+                    Date = r.Date,
+                    UserId = r.UserId,
+                    UserName = r.User.FirstName + " " + r.User.LastName,
+                    ProductId = r.ProductId,
+                    ProductName = r.Product.Name,
+                    UserImage = r.User.ProfilePicture
+                })
+                .ToList();
+
+            var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            data.UserReview = _productRepo.GetByIdAsync(id).Result.Reviews
+                .Select(r => new DetailsReviewVM
+                {
+                    Id = r.Id,
+                    Content = r.Content,
+                    Stars = r.Stars,
+                    Date = r.Date,
+                    UserId = r.UserId,
+                    UserName = r.User.FirstName + " " + r.User.LastName,
+                    ProductId = r.ProductId,
+                    ProductName = r.Product.Name,
+                    UserImage = r.User.ProfilePicture
+                })
+                .FirstOrDefault();
+
             return Response<DetailsProductVM>.Success(data);
         }
 

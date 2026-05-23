@@ -1,4 +1,4 @@
-﻿@using Greeny.DAL.Entities
+﻿﻿@using Greeny.DAL.Entities
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<User> UserManager
 
@@ -94,8 +94,8 @@
                 <div class="user-profile-wrapper">
                     <button class="profile-dropdown-btn" id="profile-dropdown-btn">
                         <img src="@(string.IsNullOrEmpty(user?.ProfilePicture)
-                                ? Url.Content("~/media/photos/default-user.jpg")
-                              : Url.Content("~/Files/" + user.ProfilePicture))"
+                          ? Url.Content("~/media/photos/default-user.jpg")
+                           : Url.Content("~/Files/" + user.ProfilePicture))"
                              class="profile-avatar" />
                         <span class="profile-name">@user?.FirstName @user?.LastName</span>
                         <i class="fa-solid fa-chevron-down profile-chevron"></i>
@@ -155,13 +155,13 @@
     </nav>
      
     <div class="menu">
-      <a href="index.html" class="active-link">home</a>
-      <a href="market.html">marketplace</a>
-      <a href="community.html">community</a>
-      <a href="refrence.html">refrence</a>
-      <a href="profile.html">profile</a>
-      <a href="logIn.html" class="logIn">log in</a>
-      <a href="signUp.html" class="signUp">join us</a>
+        <a href="index.html" class="active-link">home</a>
+        <a href="market.html">marketplace</a>
+        <a href="community.html">community</a>
+        <a href="refrence.html">refrence</a>
+        <a href="profile.html">profile</a>
+        <a href="logIn.html" class="logIn">log in</a>
+        <a href="signUp.html" class="signUp">join us</a>
     </div>
 
     @RenderBody()

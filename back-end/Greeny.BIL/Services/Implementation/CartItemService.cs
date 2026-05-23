@@ -50,7 +50,7 @@ namespace Greeny.BLL.Services.Implementation
             {
                 existingItem.Quantity += vm.Quantity;
 
-                await _cartItemRepo.UpdateAsync(existingItem,cart.Id);
+                await _cartItemRepo.UpdateAsync(existingItem, cart.Id);
             }
             else
             {
@@ -91,7 +91,7 @@ namespace Greeny.BLL.Services.Implementation
             return Response<IEnumerable<DetailsCartItemVM>>.Success(data);
         }
 
-        public async Task<Response<bool>> UpdateAsync(UpdateCartItemVM vm,int cartId)
+        public async Task<Response<bool>> UpdateAsync(UpdateCartItemVM vm, int cartId)
         {
             var cartItem = await _cartItemRepo.GetById(vm.Id);
 
@@ -106,7 +106,7 @@ namespace Greeny.BLL.Services.Implementation
             return Response<bool>.Success(true);
         }
 
-        public async Task<Response<bool>> DecreaseQuantityAsync(int cartItemId , int cartId)
+        public async Task<Response<bool>> DecreaseQuantityAsync(int cartItemId, int cartId)
         {
             var item = await _cartItemRepo.GetById(cartItemId);
             if (item == null)
@@ -116,12 +116,12 @@ namespace Greeny.BLL.Services.Implementation
 
             if (item.Quantity <= 1)
             {
-                await _cartItemRepo.DeleteAsync(cartItemId ,cartId);
+                await _cartItemRepo.DeleteAsync(cartItemId, cartId);
             }
             else
             {
                 item.Quantity -= 1;
-                await _cartItemRepo.UpdateAsync(item,cartId);
+                await _cartItemRepo.UpdateAsync(item, cartId);
             }
 
             return Response<bool>.Success(true);
@@ -136,14 +136,14 @@ namespace Greeny.BLL.Services.Implementation
                 return Response<bool>.Fail(CartItemError.NotFound);
             }
 
-                item.Quantity += 1;
-                await _cartItemRepo.UpdateAsync(item, cartId);
+            item.Quantity += 1;
+            await _cartItemRepo.UpdateAsync(item, cartId);
 
             return Response<bool>.Success(true);
         }
 
 
-      public async  Task<Response<DetailsCartItemVM>> GetById(int Id)
+        public async Task<Response<DetailsCartItemVM>> GetById(int Id)
         {
             var cartItem = await _cartItemRepo.GetById(Id);
             if (cartItem == null)

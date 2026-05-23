@@ -14,7 +14,7 @@ namespace Greeny.DAL.Repository.Implementation
         {
             _context = context;
         }
-        
+
 
         public async Task CreateAsync(CartItem cartItem)
         {
@@ -31,7 +31,7 @@ namespace Greeny.DAL.Repository.Implementation
         public async Task UpdateAsync(CartItem newCartItem, int cartId)
         {
             await _context.CartItems
-                .Where(c => c.Id == newCartItem.Id&& c.CartId==cartId)
+                .Where(c => c.Id == newCartItem.Id && c.CartId == cartId)
                 .ExecuteUpdateAsync(setter => setter
                 .SetProperty(r => r.Quantity, newCartItem.Quantity)
                 );
@@ -52,8 +52,8 @@ namespace Greeny.DAL.Repository.Implementation
         {
             return _context.CartItems
             .Where(c => c.CartId == cartId && !c.IsDeleted)
-            .Include(p=>p.Product)
-            .ThenInclude(pi=>pi.Category)
+            .Include(p => p.Product)
+            .ThenInclude(pi => pi.Category)
             .AsNoTracking();
         }
 

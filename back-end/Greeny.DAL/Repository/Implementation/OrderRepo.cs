@@ -70,7 +70,7 @@ namespace Greeny.DAL.Repository.Implementation
         public IQueryable<Order> GetOrdersByUserIdAndStatusAsync(string userId, Status status)
         {
             return _context.Orders
-                .Where(o => o.UserId == userId && o.Status == status &&!o.IsDeleted)
+                .Where(o => o.UserId == userId && o.Status == status && !o.IsDeleted)
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
                 .AsNoTracking();
@@ -96,7 +96,7 @@ namespace Greeny.DAL.Repository.Implementation
            .AsNoTracking();
         }
 
-       public async Task<bool> ExistsAsync(int id)
+        public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Orders
                 .AnyAsync(o => o.Id == id && !o.IsDeleted);

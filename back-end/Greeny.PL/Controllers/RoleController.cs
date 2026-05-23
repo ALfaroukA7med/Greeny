@@ -76,7 +76,7 @@ namespace Greeny.PL.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","User");
         }
 
 

@@ -172,6 +172,9 @@ namespace Greeny.DAL.Migrations
                     b.Property<string>("SenderId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ReceiverId");
@@ -340,8 +343,7 @@ namespace Greeny.DAL.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("ImagePath")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -623,9 +625,12 @@ namespace Greeny.DAL.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId", "PostId")
+                        .IsUnique();
 
                     b.ToTable("Votes");
                 });

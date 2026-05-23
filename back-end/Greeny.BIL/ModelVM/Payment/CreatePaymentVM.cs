@@ -3,7 +3,7 @@
 namespace Greeny.BLL.ModelVM.Payment
 {
     public class PaymentCreateVM
-    { 
+    {
         public int OrderId { get; set; }
         public string? TransactionRef { get; set; }
         public string Email { get; set; }

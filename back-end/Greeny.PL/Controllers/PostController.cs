@@ -1,8 +1,10 @@
 ﻿using Greeny.BLL.Errors;
+using Greeny.BLL.Helper;
 using Greeny.BLL.ModelVM.Post;
 using Greeny.BLL.ModelVM.Wrapper;
 using Greeny.BLL.Services.Implementation;
 using Greeny.BLL.Services.Interfaces;
+using Greeny.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -12,12 +14,14 @@ namespace Greeny.PL.Controllers
     {
         private readonly IPostService _postService;
         private readonly ICommentService _commentService;
+        private readonly IVoteService _voteservice;
         //private readonly IUserService userService;
-        
-        public PostController(IPostService postService, ICommentService commentservice)
+
+        public PostController(IPostService postService, ICommentService commentservice, IVoteService voteService)
         {
             _postService = postService;
             _commentService = commentservice;
+            _voteservice = voteService;
         }
         [HttpGet]
         public async Task<IActionResult> Feed()
@@ -30,12 +34,17 @@ namespace Greeny.PL.Controllers
             };
             return View("Feed", commvm);
         }
+        public async Task<IActionResult> Dashboard()
+        {
+            var result = await _postService.GetAllAsync();
+            var posts = result?.Value.ToList();
+            ViewBag.SumVotes = await _postService.GetVotes();
+            return View("Dashboard", posts);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind(Prefix = "CreatePost")] PostCreateVM vm)
         {
-            ModelState.Remove("UserId");
-
             if (!ModelState.IsValid)
             {
                 TempData["ErrorMessage"] = "Please fill out the content before posting.";
@@ -43,7 +52,6 @@ namespace Greeny.PL.Controllers
             }
 
             vm.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var result = await _postService.AddAsync(vm);
 
             if (!result.IsSuccess)
@@ -54,15 +62,16 @@ namespace Greeny.PL.Controllers
 
             return RedirectToAction("Feed");
         }
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var post = await _postService.GetByIdAsync(id);
-            var comments = await _commentService.GetAllByPostId(id);
+            
+            // i'm already getting all post comments in post.
 
-            return View("Post");
+            return View("Details", post.Value);
         }
 
-        
 
         // Delete
         [HttpPost]
@@ -95,6 +104,12 @@ namespace Greeny.PL.Controllers
 
             return RedirectToAction("Feed");
         }
+        public async Task<IActionResult> Index()
+        {
+            var post = _postService.GetByIdAsync(26);
+            var res = post.Result;
 
+            return View("~/Views/Home/Index.cshtml", res);
+        }
     }
 }

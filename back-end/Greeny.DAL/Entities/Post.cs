@@ -1,14 +1,17 @@
 ﻿
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Greeny.DAL.Entities
 {
     public class Post
     {
         public int Id { get; set; }
-        public string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
         public int Votes { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow.AddHours(3);
-        public string? ImagePath { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public string? ImagePath { get; set; }
 
 
         //Relationships

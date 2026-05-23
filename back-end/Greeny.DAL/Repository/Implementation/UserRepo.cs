@@ -30,12 +30,12 @@ namespace Greeny.DAL.Repository.Implementation
 
         public async Task UpdateAsync(User newUser)
         {
-             await _context.Users.Where(u => u.Id == newUser.Id && !u.IsDeleted).ExecuteUpdateAsync(setter => setter
-            .SetProperty(u => u.FirstName , newUser.FirstName)
-            .SetProperty(u => u.LastName , newUser.LastName)
-            .SetProperty(u => u.Address , newUser.Address)
-            .SetProperty(u => u.ProfilePicture , newUser.ProfilePicture)
-            );
+            await _context.Users.Where(u => u.Id == newUser.Id && !u.IsDeleted).ExecuteUpdateAsync(setter => setter
+           .SetProperty(u => u.FirstName, newUser.FirstName)
+           .SetProperty(u => u.LastName, newUser.LastName)
+           .SetProperty(u => u.Address, newUser.Address)
+           .SetProperty(u => u.ProfilePicture, newUser.ProfilePicture)
+           );
         }
 
         public async Task DeleteAsync(string id)

@@ -14,7 +14,7 @@ namespace Greeny.BLL.Services.Implementation
         private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public PaymentService(IPaymentRepo repo , IHttpContextAccessor httpContextAccessor)
+        public PaymentService(IPaymentRepo repo, IHttpContextAccessor httpContextAccessor)
         {
             _repo = repo;
             _httpContextAccessor = httpContextAccessor;

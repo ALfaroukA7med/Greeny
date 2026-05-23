@@ -16,7 +16,7 @@ namespace Greeny.BLL.Services.Implementation
         private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public OrderService(IOrderRepo orderRepo,ICartItemRepo cartItemRepo, IHttpContextAccessor httpContextAccessor, ICartRepo cartRepo)
+        public OrderService(IOrderRepo orderRepo, ICartItemRepo cartItemRepo, IHttpContextAccessor httpContextAccessor, ICartRepo cartRepo)
         {
             _orderRepo = orderRepo;
             _cartItemRepo = cartItemRepo;
@@ -37,7 +37,7 @@ namespace Greeny.BLL.Services.Implementation
             {
                 Status = Status.Pending,
                 Date = DateTime.UtcNow,
-                UserId= userId,
+                UserId = userId,
                 OrderItems = new List<OrderItem>()
             };
 

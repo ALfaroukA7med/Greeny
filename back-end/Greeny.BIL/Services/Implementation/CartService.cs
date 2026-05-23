@@ -24,7 +24,7 @@ namespace Greeny.BLL.Services.Implementation
                 return Response<CartDetailsVM>.Fail(CartError.NotFound);
             }
 
-            var itemsVM = items.CartItems.Where(c=>!c.IsDeleted).Select(ci => new DetailsCartItemVM
+            var itemsVM = items.CartItems.Where(c => !c.IsDeleted).Select(ci => new DetailsCartItemVM
             {
                 Id = ci.Id,
                 ProductName = ci.Product.Name,
@@ -35,10 +35,10 @@ namespace Greeny.BLL.Services.Implementation
             }).ToList();
 
             var totalPrice = itemsVM.Sum(item => item.Price * item.Quantity);
-            
+
             CartDetailsVM Result = new CartDetailsVM
             {
-                CartId= items.Id,
+                CartId = items.Id,
                 Items = itemsVM,
                 Total = totalPrice
             };
