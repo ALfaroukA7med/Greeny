@@ -4,6 +4,7 @@ using Greeny.BLL.ModelVM.Post;
 using Greeny.BLL.ModelVM.Wrapper;
 using Greeny.BLL.Services.Implementation;
 using Greeny.BLL.Services.Interfaces;
+using Greeny.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -103,6 +104,12 @@ namespace Greeny.PL.Controllers
 
             return RedirectToAction("Feed");
         }
+        public async Task<IActionResult> Index()
+        {
+            var post = _postService.GetByIdAsync(26);
+            var res = post.Result;
 
+            return View("~/Views/Home/Index.cshtml", res);
+        }
     }
 }
